@@ -144,10 +144,11 @@ $RECYCLE.BIN/
 
 
 # My ignore files
-sklearn_models/
-static_data/
+#sklearn_models/
+#static_data/
 db.sqlite3/
 
 *.sqlite3
 *.csv
+*.sav
 *.idea
