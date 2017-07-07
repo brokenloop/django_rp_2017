@@ -1,0 +1,28 @@
+body {
+    background: #394864;
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    color: white;
+    text-align: center;
+
+}
+
+.business-header {
+  margin-top: 5%;
+  font-weight: 900;
+}
+
+.subtitle {
+}
+
+.top-buffer {
+    margin-top: 30px;
+}
+
+.bus-time {
+  background-color: #48597a;
+}
+
+.tagline {
+
+}

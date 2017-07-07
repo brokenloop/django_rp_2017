@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>DublinBus</title>
+
+    {% load staticfiles %}
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <!-- Custom CSS -->
+    <link href="{% static 'bus/custom.css' %}" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Image Background Page Header -->
+    <!-- Note: The background image is set within the business-casual.css file. -->
+    <header class="business-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="tagline">DublinBus</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Content -->
+    <div class="container">
+
+
+        <div class="row">
+            <div class="col-sm-12">
+                <h2 class="subtitle top-buffer">Your bus will arrive in</h2>
+                <div class="jumbotron bus-time">
+                    <h1>{{ time_prediction }}</h1>
+                </div>
+            </div>
+        
+        </div>
+        <!-- /.row -->
+
+
+        <form method='GET' action='/bus/'>
+            <div class="row top-buffer">
+               {% for key, value in form_selects.items %}
+                    <div class="col-sm-3">
+                        <label for="{{ key }}">Select your {{ key }}:</label>
+                        <select class="form-control" id="{{ key }}" name="{{ key }}">
+                            {% for option in value %}
+                                <option value="{{ option }}"
+                                        {% for key2, value2 in user_options.items %}
+                                            {% if key2 == key %}
+                                                {% if value2 == option %}
+                                                    selected
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+                                >{{ option }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="row top-buffer">
+                <div class="col-sm-12">
+                    <input type="submit" value="Submit" class="btn btn-default">
+                </div>
+            </div>
+        </form>
+        
+
+        <!-- Footer -->
+        <footer>
+            <div class="row top-buffer">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; Fantastic4UCD 2017</p>
+                </div>
+            </div>
+            <!-- /.row -->
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
