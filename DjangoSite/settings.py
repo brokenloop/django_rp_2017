@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'DublinBus.apps.DublinbusConfig',
+    'bus.apps.DublinbusConfig',
 ]
 
 MIDDLEWARE = [

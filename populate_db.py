@@ -9,7 +9,7 @@ import sys, os, csv
 os.environ['DJANGO_SETTINGS_MODULE'] = 'DjangoSite.settings'
 django.setup()
 
-from DublinBus.models import Stop
+from bus.models import Stop
 
 
 def populate_stops(csv_path):

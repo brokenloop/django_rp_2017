@@ -7,6 +7,9 @@ class Stop(models.Model):
     name = models.CharField(max_length=250)
     stop_id = models.IntegerField()
 
+    def __str__(self):
+        return self.name
+
 
 # class Route(models.Model):
 #     route_id = models.IntegerField()

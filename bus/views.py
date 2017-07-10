@@ -44,4 +44,4 @@ def index(request):
         "time_prediction": str(pred),
     }
 
-    return render(request, 'DublinBus/index.html', context)
+    return render(request, 'bus/index.html', context)
