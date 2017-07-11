@@ -14,7 +14,7 @@ class Stop(models.Model):
 class Route(models.Model):
     route_id = models.CharField(max_length=20)
     journey_pattern = models.CharField(max_length=20)
-    # stops = models.ManyToManyField(Stop, through="RouteStation")
+    stops = models.ManyToManyField(Stop, through="RouteStation")
 
     class Meta:
         unique_together = ('route_id', 'journey_pattern')

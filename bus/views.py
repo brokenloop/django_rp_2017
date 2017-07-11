@@ -5,7 +5,7 @@ from .scripts import predict, convert_weekday
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from .models import Stop, Route, RouteStation
-from .serializers import StopSerializer
+from .serializers import StopSerializer, RouteSerializer
 
 
 def index(request):
@@ -73,5 +73,18 @@ def stop_detail(request, stop_id):
         return JsonResponse(serializer.data)
 
 
-def route_stops_detail(request, route_id):
-    pass
+def route_stops_detail(request, stop_id1, stop_id2):
+    try:
+        stop1 = Stop.objects.get(stop_id=stop_id1)
+        stop2 = Stop.objects.get(stop_id=stop_id2)
+    except:
+        return HttpResponse(status=404)
+
+    if request.method == 'GET':
+        routes1 = stop1.route_set.all()
+        routes2 = stop2.route_set.all()
+        common = routes1 & routes2
+        serializer = RouteSerializer(common, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
+
