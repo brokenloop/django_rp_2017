@@ -1,7 +1,11 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from .scripts import predict, convert_weekday
 import datetime
+from django.shortcuts import render
+from django.http import HttpResponse, JsonResponse
+from .scripts import predict, convert_weekday
+from rest_framework.renderers import JSONRenderer
+from rest_framework.parsers import JSONParser
+from .models import Stop, Route, RouteStation
+from .serializers import StopSerializer
 
 
 def index(request):
@@ -45,3 +49,29 @@ def index(request):
     }
 
     return render(request, 'bus/index.html', context)
+
+
+def stop_list(request):
+    """
+    :param request:
+    :return: A list of all stops
+    """
+    if request.method == "GET":
+        stops = Stop.objects.all()
+        serializer = StopSerializer(stops, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
+
+def stop_detail(request, stop_id):
+    try:
+        stop = Stop.objects.get(stop_id=stop_id)
+    except Stop.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if request.method == 'GET':
+        serializer = StopSerializer(stop)
+        return JsonResponse(serializer.data)
+
+
+def route_stops_detail(request, route_id):
+    pass
