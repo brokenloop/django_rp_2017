@@ -2,7 +2,7 @@
 import pandas as pd
 import numpy as np
 import os
-
+from django.conf import settings
 
 # machine learning
 from sklearn.ensemble import RandomForestRegressor
@@ -14,14 +14,14 @@ from sklearn.ensemble import RandomForestRegressor
 # pickling
 import pickle
 
-
+# change this to the correct path on your machine
 
 def predict(stop, hour, day):
 
     day = convert_weekday(day)
 
-    pred_dir = os.path.dirname(__file__)  # get current directory
-    filename = os.path.join(pred_dir, 'sklearn_models/line15_RF.sav')
+    # pred_dir = os.path.dirname(__file__)  # get current directory
+    filename = os.path.join(settings.DATA_PATH, 'sklearn_models/line15_RF.sav')
 
     # loading pickled model
     model = pickle.load(open(filename, 'rb'))
