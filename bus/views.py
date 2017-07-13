@@ -84,6 +84,7 @@ def route_stops_detail(request, stop_id1, stop_id2):
         routes1 = stop1.route_set.all()
         routes2 = stop2.route_set.all()
         common = routes1 & routes2
+
         serializer = RouteSerializer(common, many=True)
         return JsonResponse(serializer.data, safe=False)
 
