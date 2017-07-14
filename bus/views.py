@@ -89,3 +89,20 @@ def route_stops_detail(request, stop_id1, stop_id2):
         return JsonResponse(serializer.data, safe=False)
 
 
+def time_estimate(request):
+    stop = request.GET['endStop']
+    hour = request.GET['hour']
+    day = request.GET['day']
+
+    stop = int(stop)
+    hour = int(hour)
+    day = int(day)
+
+    pred = predict(stop, hour, day)
+    pred = str(datetime.timedelta(seconds=pred))
+
+    return JsonResponse({'time': pred,
+                         'stop': stop,
+                         'hour': hour,
+                         'day': day,
+                         })

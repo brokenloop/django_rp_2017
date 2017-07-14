@@ -18,27 +18,28 @@ import pickle
 
 def predict(stop, hour, day):
 
-    day = convert_weekday(day)
-
-    # pred_dir = os.path.dirname(__file__)  # get current directory
-    filename = os.path.join(settings.DATA_PATH, 'sklearn_models/line15_RF.sav')
-
-    # loading pickled model
-    model = pickle.load(open(filename, 'rb'))
-
-    # creating the dataframe
-    params = [{
-        'Day': day,
-        'Hour': hour,
-        'StopID': stop,
-    }]
-    df = pd.DataFrame(params)
-
-    # making the prediction
-    pred = model.predict(df)
-
-    # converting the prediction into an int
-    pred = int(pred[0].item())
+    # day = convert_weekday(day)
+    #
+    # # pred_dir = os.path.dirname(__file__)  # get current directory
+    # filename = os.path.join(settings.DATA_PATH, 'sklearn_models/line15_RF.sav')
+    #
+    # # loading pickled model
+    # model = pickle.load(open(filename, 'rb'))
+    #
+    # # creating the dataframe
+    # params = [{
+    #     'Day': day,
+    #     'Hour': hour,
+    #     'StopID': stop,
+    # }]
+    # df = pd.DataFrame(params)
+    #
+    # # making the prediction
+    # pred = model.predict(df)
+    #
+    # # converting the prediction into an int
+    # pred = int(pred[0].item())
+    pred = 100
 
     return pred
 

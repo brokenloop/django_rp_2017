@@ -67,37 +67,80 @@
         <!-- /.row -->
 
 
-        <form method='GET' action=''>
+{#        <form method='GET' action=''>#}
+{#            <div class="row top-buffer">#}
+{#               {% for key, value in form_selects.items %}#}
+{#                    <div class="col-sm-3">#}
+{#                        <label for="{{ key }}">Select your {{ key }}:</label>#}
+{#                        <select class="form-control" id="{{ key }}" name="{{ key }}">#}
+{#                            {% for option in value %}#}
+{#                                <option value="{{ option }}"#}
+{#                                        {% for key2, value2 in user_options.items %}#}
+{#                                            {% if key2 == key %}#}
+{#                                                {% if value2 == option %}#}
+{#                                                    selected#}
+{#                                                {% endif %}#}
+{#                                            {% endif %}#}
+{#                                        {% endfor %}#}
+{#                                >{{ option }}</option>#}
+{#                            {% endfor %}#}
+{#                        </select>#}
+{#                    </div>#}
+{#                {% endfor %}#}
+{#            </div>#}
+{##}
+{#            <div class="row top-buffer">#}
+{#                <div class="col-sm-12">#}
+{#                    <input type="submit" value="Submit" class="btn btn-default">#}
+{#                </div>#}
+{#            </div>#}
+{#        </form>#}
+        <form id="params" action=''>
             <div class="row top-buffer">
-               {% for key, value in form_selects.items %}
-                    <div class="col-sm-3">
-                        <label for="{{ key }}">Select your {{ key }}:</label>
-                        <select class="form-control" id="{{ key }}" name="{{ key }}">
-                            {% for option in value %}
-                                <option value="{{ option }}"
-                                        {% for key2, value2 in user_options.items %}
-                                            {% if key2 == key %}
-                                                {% if value2 == option %}
-                                                    selected
-                                                {% endif %}
-                                            {% endif %}
-                                        {% endfor %}
-                                >{{ option }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                {% endfor %}
-            </div>
-
-            <div class="row top-buffer">
-                <div class="col-sm-12">
-                    <input type="submit" value="Submit" class="btn btn-default">
+                <div class="col-sm-2">
+                    <label for="startStop">Origin</label>
+                    <input type="text" class="form-control" name="startStop" placeholder="Enter station">
+                </div>
+                <div class="col-sm-2">
+                    <label for="endStop">Destination</label>
+                    <input type="text" class="form-control" name="endStop" placeholder="Enter station">
+                </div>
+                <div class="col-sm-2">
+                    <label for="route">Route</label>
+                    <input type="text" class="form-control" name="route" placeholder="Enter route">
+                </div>
+                <div class="col-sm-2">
+                    <label for="hour">Hour</label>
+                    <input type="text" class="form-control" name="hour" placeholder="Enter hour">
+                </div>
+                <div class="col-sm-2">
+                    <label for="day">Day</label>
+                    <input type="text" class="form-control" name="day" placeholder="Enter day">
+                </div>
+                <div class="col-sm-2">
+                    <label for="weather">Weather</label>
+                    <select type="text" class="form-control" name="weather">
+                        <option>Sunny</option>
+                        <option>Rainy</option>
+                    </select>
                 </div>
             </div>
+
+{#            <div class="row top-buffer">#}
+{#                <div class="col-sm-12">#}
+{#                    <input id="paramBtn" type="submit" value="Submit" class="btn btn-default">#}
+{#                </div>#}
+{#            </div>#}
         </form>
 
-        <button type="button" class="btn" onclick="getStops()">Get Stops</button>
-        
+{#        <form action="">#}
+{#          First name: <input type="text" name="FirstName" value="Mickey"><br>#}
+{#          Last name: <input type="text" name="LastName" value="Mouse"><br>#}
+{#        </form>#}
+
+        <button type="button" class="btn btn-primary top-buffer" id="submitBtn">Submit</button>
+
+        <div></div>
 
         <!-- Footer -->
         <footer>
