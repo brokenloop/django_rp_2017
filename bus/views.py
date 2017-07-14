@@ -106,3 +106,14 @@ def time_estimate(request):
                          'hour': hour,
                          'day': day,
                          })
+
+
+def route_list(request):
+    """
+    :param request:
+    :return: A list of all the routes
+    """
+    if request.method == "GET":
+        routes = Route.objects.all()
+        serializer = RouteSerializer(routes, many=True)
+        return JsonResponse(serializer.data, safe=False)

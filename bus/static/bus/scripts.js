@@ -32,5 +32,25 @@ $(document).ready(function(){
     });
 });
 
+//checks whether the form fields are empty and displays an error message if they are
+$(document).ready(function(){
+    $("#submitBtn").click(function(){
+        var isValid = true;
+        $(".form-control").each(function() {
+            if ( $(this).val() === '' )
+                isValid = false;
+        });
+        if (!isValid)
+            alert("One or more input fields have been left empty. Please make sure to fill all of them :)");
+        return isValid;
+    });
+ });
 
+$(document).ready(function(){
+    $("#submitBtn").click(function(){
+        $.get("routes", function(data, status){
+//        console.log(data);
+        });
+    });
+});
 
