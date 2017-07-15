@@ -2,8 +2,11 @@ import datetime
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from .scripts import predict, convert_weekday
+from rest_framework import status
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
+from rest_framework.exceptions import ValidationError
+from rest_framework.response import Response
 from .models import Stop, Route, RouteStation
 from .serializers import StopSerializer, RouteSerializer
 
@@ -94,15 +97,30 @@ def time_estimate(request):
     hour = request.GET['hour']
     day = request.GET['day']
 
-    stop = int(stop)
-    hour = int(hour)
-    day = int(day)
+    try:
+        stop = int(stop)
+        hour = int(hour)
+        day = int(day)
 
-    pred = predict(stop, hour, day)
-    pred = str(datetime.timedelta(seconds=pred))
+        pred = predict(stop, hour, day)
+        pred = str(datetime.timedelta(seconds=pred))
+
+    except:
+        return HttpResponse(status=400)
 
     return JsonResponse({'time': pred,
                          'stop': stop,
                          'hour': hour,
                          'day': day,
                          })
+
+
+def route_list(request):
+    """
+    :param request:
+    :return: List of all routes in the bus network
+    """
+    if request.method == "GET":
+        routes = Route.objects.all()
+        serializer = RouteSerializer(routes, many=True)
+        return JsonResponse(serializer.data, safe=False)
