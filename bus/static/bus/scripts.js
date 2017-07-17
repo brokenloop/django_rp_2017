@@ -96,6 +96,11 @@ $(document).ready(function(){
                     });
                 })
     $('input[name="tags"]').autocomplete({
-        source: test
+        minLength: 2,
+        source: function (request, response) {
+            var results = $.ui.autocomplete.filter(test, request.term);
+
+            response(results.slice(0, 20));
+        }
     });
 });
