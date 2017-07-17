@@ -79,10 +79,16 @@ $(document).ready(function(){
 
 
 //trying to use autocomplete:
-//$(document).ready(function(){
-//    $('#tags').autocomplete({
-//        source: $.get("stops", function(data, status){
-//                    return (data.stop_id);
-//                });
-//    });
-//});
+$(document).ready(function(){
+    var test = [];
+     $.get("stops", function(data, status){
+                    $.each(data, function() {
+//                        console.log(this.name);
+//                        return data.name
+                          test.push(this.name);
+                    });
+                })
+    $('input[name="tags"]').autocomplete({
+        source: test
+    });
+});
