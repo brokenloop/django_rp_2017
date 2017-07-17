@@ -118,7 +118,7 @@ def time_estimate(request):
 def route_list(request):
     """
     :param request:
-    :return: List of all routes in the bus network
+    :return: A list of all the routes
     """
     if request.method == "GET":
         routes = Route.objects.all()
