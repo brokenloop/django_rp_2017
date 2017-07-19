@@ -77,20 +77,28 @@ def stop_detail(request, stop_id):
 
 
 def common_routes(request, origin, destination):
-    try:
-        stop1 = Stop.objects.get(stop_id=origin)
-        stop2 = Stop.objects.get(stop_id=destination)
-    except:
-        return HttpResponse(status=404)
 
     if request.method == 'GET':
-        routes1 = stop1.route_set.all()
-        routes2 = stop2.route_set.all()
-        common = routes1 & routes2
-        common = [route for route in common if connected(stop1, stop2, route)]
+        try:
+            stop1 = Stop.objects.get(stop_id=origin)
+            stop2 = Stop.objects.get(stop_id=destination)
+        except:
+            return HttpResponse(status=404)
 
-        serializer = RouteSerializer(common, many=True)
-        return JsonResponse(serializer.data, safe=False)
+        sql = '''
+                SELECT * FROM bus_routestation r1, bus_routestation r2
+                WHERE r1.stop_id = {s1} AND
+                  r2.stop_id = {s2} AND
+                  r1.route_id = r2.route_id AND
+                  r1.order < r2.order
+            '''
+        rs_query = RouteStation.objects.raw(sql.format(s1=stop1.id, s2=stop2.id))
+
+        routes = set()
+        for rs in rs_query:
+            routes.add(str(rs.route))
+
+        return JsonResponse(list(routes), safe=False)
 
 
 def time_estimate(request):
