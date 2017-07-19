@@ -156,6 +156,7 @@ $(document).ready(function(){
 
 $(document).ready(function(){
     function updateFunction(){
-
+        var startInput = document.getElementByName('startStop');
+        if (startInput == )
     }
 });
