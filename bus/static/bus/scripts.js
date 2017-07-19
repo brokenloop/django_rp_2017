@@ -2,11 +2,11 @@
  * Created by danieljordan on 11/07/2017.
  */
 
-function getStops() {
-    $.get("stops", function(data, status){
-        console.log(data);
-    });
-}
+// function getStops() {
+//     $.get("stops", function(data, status){
+//         console.log(data);
+//     });
+// }
 
 
 function getTime(params) {
