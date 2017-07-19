@@ -1,8 +1,11 @@
 import django
 import os
 
-# data analysis and wrangling
 os.environ['DJANGO_SETTINGS_MODULE'] = 'DjangoSite.settings'
+django.setup()
+
+from django.conf import settings
+from bus.models import Stop, Route, RouteStation
 
 import pandas as pd
 import numpy as np
@@ -20,28 +23,26 @@ from sklearn.ensemble import RandomForestRegressor
 import pickle
 
 def predict(origin, destination, line, pattern, hour, day):
-
-    # temporary variables - for testing only
-    line = 15
-    pattern = 1
-    hour = 9
-    day = 2
+    """ Predicts time taken to get from origin to destination, using query_model
+    """
 
     day = convert_weekday(day)
 
-    # pred_dir = os.path.dirname(__file__)  # get current directory
     filename = os.path.join(settings.DATA_PATH, 'sklearn_models/line15_all_RF.sav')
 
     # loading pickled model
     model = pickle.load(open(filename, 'rb'))
 
-    pred1 = query_model1(model, origin, pattern, hour, day)
-    pred2 = query_model1(model, destination, pattern, hour, day)
+    pred1 = query_model(model, origin, pattern, hour, day)
+    pred2 = query_model(model, destination, pattern, hour, day)
 
     return (pred2 - pred1)
 
 
-def query_model1(model, stop, pattern, hour, day):
+def query_model(model, stop, pattern, hour, day):
+    """ Queries the Random Forest model, returning an estimate for how long it will take to reach that stop
+    """
+
     params = [{
         'Day': day,
         'Hour': hour,
@@ -55,25 +56,7 @@ def query_model1(model, stop, pattern, hour, day):
     pred = model.predict(df)
 
     # converting the prediction into an int
-    # pred = int(pred[0].item())
-
-    return pred
-
-
-def query_model2(model, stop, hour, day):
-    params = [{
-        'Day': day,
-        'Hour': hour,
-        'StopID': stop,
-    }]
-
-    df = pd.DataFrame(params)
-
-    # making the prediction
-    pred = model.predict(df)
-
-    # converting the prediction into an int
-    # pred = int(pred[0].item())
+    pred = int(pred[0].item())
 
     return pred
 
@@ -87,25 +70,91 @@ def convert_weekday(day):
         return int(day)
 
 
+def connected(origin, destination, route):
+    """
+    :param origin: StopID for the first station
+    :param destination: StopID for the second station
+    :return: bool, indicating whether the destination is accessible via the origin
+    """
+
+    try:
+        origin_rs = RouteStation.objects.get(stop=origin, route=route)
+        dest_rs = RouteStation.objects.get(stop=destination, route=route)
+    except RouteStation.DoesNotExist:
+        return False
+    return origin_rs.order < dest_rs.order
+
+
+# def get_common(origin, destination):
+#     try:
+#         stop1 = Stop.objects.get(stop_id=origin)
+#         stop2 = Stop.objects.get(stop_id=destination)
+#     except Stop.DoesNotExist:
+#         return "None"
+#
+#     routes1 = stop1.route_set.all()
+#     routes2 = stop2.route_set.all()
+#     common = routes1 & routes2
+#     common = [[route.route_id, route.journey_pattern] for route in common if connected(stop1, stop2, route)]
+#
+#     return common
+
+def get_common(origin, destination):
+    stop1 = Stop.objects.get(stop_id=origin)
+    stop2 = Stop.objects.get(stop_id=destination)
+
+    sql = '''
+        SELECT * FROM bus_routestation r1, bus_routestation r2
+        WHERE r1.stop_id = {s1} AND
+          r2.stop_id = {s2} AND
+          r1.route_id = r2.route_id AND
+          r1.order < r2.order
+    '''
+    rs_query = RouteStation.objects.raw(sql.format(s1=stop1.id, s2=stop2.id))
+
+    route_list = set()
+
+    for rs in rs_query:
+        route_list.add(str(rs.route))
+
+    # route_list = []
+    #
+    # for rs in rs_query:
+    #     if not str(rs.route) in route_list:
+    #         route_list.append(str(rs.route))
+
+    print(list(route_list))
+
+
+    # sql = '''
+    #         SELECT r1.name FROM bus_stop r1
+    #         WHERE r1.stop_id = {s1}
+    #     '''
+    # rs_query = RouteStation.objects.raw(sql.format(s1=stop1.id))
+    # print(rs_query)
+
+
+
+
+
 if __name__=="__main__":
-    # print(predict(4596, 6282, 15, 1, 9, 1))
-
-    # model, stop, line, pattern, hour, day
 
 
-    filename = os.path.join(settings.DATA_PATH, 'sklearn_models/line15_all_RF.sav')
     # loading pickled model
-    model = pickle.load(open(filename, 'rb'))
+    # filename = os.path.join(settings.DATA_PATH, 'sklearn_models/line15_all_RF.sav')
+    # model = pickle.load(open(filename, 'rb'))
+    #
+    # print(predict(6282, 1083, 15, 1, 9, 1))
+    # origin = Stop.objects.get(stop_id=4886)
+    # destination = Stop.objects.get(stop_id=1166)
+    # route_15 = Route.objects.get(route_id=15, journey_pattern=1)
 
-    # print(query_model(model, 6318, 15, 1, 9, 2))
-    # print(query_model(model, 1083, 15, 1, 9, 2))
-    # print(query_model(model, 6282, 15, 1, 9, 2))
+    # print(connected(origin, destination, route_15))
+    get_common(4886, 1166)
+    # stops = route_15.stops.all()
+    # print(stops)
 
-    # print(query_model2(model, 6318, 9, 2))
-    # print(query_model2(model, 1083, 9, 2))
-    # print(query_model2(model, 6282, 9, 2))
-    print(query_model1(model, 6318, 1, 9, 2))
-    print(query_model1(model, 1083, 1, 9, 2))
-    print(query_model1(model, 6282, 1, 9, 2))
 
-    # print(convert_weekday(2))
+
+
+

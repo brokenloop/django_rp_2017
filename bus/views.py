@@ -1,7 +1,7 @@
 import datetime
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
-from .scripts import predict, convert_weekday
+from .scripts import *
 from rest_framework import status
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
@@ -76,10 +76,10 @@ def stop_detail(request, stop_id):
         return JsonResponse(serializer.data)
 
 
-def route_stops_detail(request, stop_id1, stop_id2):
+def common_routes(request, origin, destination):
     try:
-        stop1 = Stop.objects.get(stop_id=stop_id1)
-        stop2 = Stop.objects.get(stop_id=stop_id2)
+        stop1 = Stop.objects.get(stop_id=origin)
+        stop2 = Stop.objects.get(stop_id=destination)
     except:
         return HttpResponse(status=404)
 
@@ -87,6 +87,7 @@ def route_stops_detail(request, stop_id1, stop_id2):
         routes1 = stop1.route_set.all()
         routes2 = stop2.route_set.all()
         common = routes1 & routes2
+        common = [route for route in common if connected(stop1, stop2, route)]
 
         serializer = RouteSerializer(common, many=True)
         return JsonResponse(serializer.data, safe=False)

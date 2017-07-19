@@ -101,10 +101,10 @@ def populate_route_stations(csv_path):
                     order=Order,
                 )
 
-                if created:
-                    print(stop, route, "created")
-                else:
-                    print(stop, route, "already exists")
+                # if created:
+                #     print(stop, route, "created")
+                # else:
+                #     print(stop, route, "already exists")
             except:
                 print("Error!")
 

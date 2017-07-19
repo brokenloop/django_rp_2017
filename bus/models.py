@@ -20,7 +20,7 @@ class Route(models.Model):
         unique_together = ('route_id', 'journey_pattern')
 
     def __str__(self):
-        return str(self.route_id) + " " + str(self.journey_pattern)
+        return str(self.route_id)
 
 
 class RouteStation(models.Model):
