@@ -34,7 +34,7 @@ $(document).ready(function(){
     });
 });
 
-//checks whether the form fields are empty and displays an error message if they are
+////checks whether the form fields are empty and displays an error message if they are
 //$(document).ready(function(){
 //    $("#submitBtn").click(function(){
 //        var isValid = true;
@@ -54,53 +54,103 @@ $(document).ready(function(){
 //     });
 // });
 
-//loads the stops into a dropdown
-$(document).ready(function(){
-    $.get("stops", function(data, status){
-        var options = $('select[name="startStop"]')
-        $.each(data, function() {
-            options.append($("<option />").val(this.id).text(this.stop_id + "-" + this.name));
-        });
-    });
-});
+////loads the stops into a dropdown
+//$(document).ready(function(){
+//    $.get("stops", function(data, status){
+//        var options = $('select[name="startStop"]')
+//        $.each(data, function() {
+//            options.append($("<option />").val(this.id).text(this.stop_id + "-" + this.name));
+//        });
+//    });
+//});
 
-//loads the stops into a dropdown
-$(document).ready(function(){
-    $.get("stops", function(data, status){
-        var options = $('select[name="endStop"]')
-        $.each(data, function() {
-            options.append($("<option />").val(this.id).text(this.stop_id + "-" + this.name));
-        });
-    });
-});
+////loads the stops into a dropdown
+//$(document).ready(function(){
+//    $.get("stops", function(data, status){
+//        var options = $('select[name="endStop"]')
+//        $.each(data, function() {
+//            options.append($("<option />").val(this.id).text(this.stop_id + "-" + this.name));
+//        });
+//    });
+//});
 
-//loads the route_ids into a dropdown
+////loads the route_ids into a dropdown
+//$(document).ready(function(){
+//    $.get("routes", function(data, status){
+//        var options = $('select[name="route"]')
+//        $.each(data, function() {
+//            options.append($("<option />").val(this.id).text(this.route_id));
+//        });
+//    });
+//});
+
+//loads routes and displays them using autocomplete
 $(document).ready(function(){
+    var route_list = [];
     $.get("routes", function(data, status){
-        var options = $('select[name="route"]')
         $.each(data, function() {
-            options.append($("<option />").val(this.id).text(this.route_id));
+            route_list.push(this.route_id);
         });
     });
-});
-
-
-//trying to use autocomplete:
-$(document).ready(function(){
-    var test = [];
-     $.get("stops", function(data, status){
-                    $.each(data, function() {
-//                        console.log(this.name);
-//                        return data.name
-                          test.push(this.name);
-                    });
-                })
-    $('input[name="tags"]').autocomplete({
-        minLength: 2,
+    $('input[name="route"]').autocomplete({
+        minLength: 1,
         source: function (request, response) {
-            var results = $.ui.autocomplete.filter(test, request.term);
-
+            var results = $.ui.autocomplete.filter(route_list, request.term);
+            if (results.length == 0) {
+                results.push ({
+                    id: 0,
+                    label: "No match found",
+                });
+            }
             response(results.slice(0, 20));
         }
     });
 });
+
+
+//loads stops and displays them using autocomplete
+$(document).ready(function(){
+    var start_stop = [];
+    $.get("stops", function(data, status){
+        $.each(data, function() {
+            start_stop.push(this.name);
+        });
+    });
+    $('input[name="startStop"]').autocomplete({
+        minLength: 1,
+        source: function (request, response) {
+        var results = $.ui.autocomplete.filter(start_stop, request.term);
+        if (results.length == 0) {
+                results.push ({
+                    id: 0,
+                    label: "No match found",
+                });
+            }
+        response(results.slice(0, 20));
+        }
+    });
+});
+
+//loads stops and displays them using autocomplete
+$(document).ready(function(){
+    var end_stop = [];
+    $.get("stops", function(data, status){
+        $.each(data, function() {
+            end_stop.push(this.name);
+        });
+    });
+    $('input[name="endStop"]').autocomplete({
+        minLength: 1,
+        source: function (request, response) {
+        var results = $.ui.autocomplete.filter(end_stop, request.term);
+        if (results.length == 0) {
+                results.push ({
+                    id: 0,
+                    label: "No match found",
+                });
+            }
+        response(results.slice(0, 20));
+        }
+    });
+});
+
