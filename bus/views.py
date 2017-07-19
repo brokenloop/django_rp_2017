@@ -131,5 +131,5 @@ def route_list(request):
     """
     if request.method == "GET":
         routes = Route.objects.all()
-        serializer = RouteSerializer(routes, many=True, fields='route_id')
+        serializer = RouteSerializer(routes, many=True)
         return JsonResponse(serializer.data, safe=False)
