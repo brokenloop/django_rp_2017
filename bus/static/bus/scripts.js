@@ -154,9 +154,17 @@ $(document).ready(function(){
     });
 });
 
+
+// listener for origin and destination inputs, checks if they're empty and does something if both aren't
 $(document).ready(function(){
-    function updateFunction(){
-        var startInput = document.getElementByName('startStop');
-        if (startInput == )
-    }
+    $('#startStop, #endStop').change(function() {
+        var value1=$.trim($('#startStop').val());
+        var value2=$.trim($('#endStop').val());
+
+        if ((value1.length>0) && (value2.length>0))
+        {
+             alert("Something");
+        }
+
+    });
 });
