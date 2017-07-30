@@ -161,10 +161,35 @@ $(document).ready(function(){
         var value1=$.trim($('#startStop').val());
         var value2=$.trim($('#endStop').val());
 
-        if ((value1.length>0) && (value2.length>0))
-        {
-             alert("Something");
+        if ((value1.length>0) && (value2.length>0)){
+//             alert("Something");
+//             return(route_test(value1, value2));
         }
 
     });
 });
+
+//Populate route dropdown with route connecting stops inputed
+//$(document).ready(function(){
+//    function route_test(param1, param2){
+//        var common_routes = [];
+//        $.get("routes", function(data, status){
+//            $.each(data, function() {
+////                console.log(this.stops);
+//                $.each(data.stops, function(){
+//                    console.log(this.val);
+//                });
+//            });
+//        });
+//        alert(common_routes);
+//     }
+//});
+
+//Creates simple Google Map
+function myMap() {
+    var mapProp= {
+        center:new google.maps.LatLng(53.3498, -6.2603),
+        zoom:11,
+    };
+    var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+}
