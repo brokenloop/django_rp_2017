@@ -28,6 +28,12 @@ class RouteStation(models.Model):
     route = models.ForeignKey(Route, on_delete=models.CASCADE)
     order = models.IntegerField()
 
+    class Meta:
+        unique_together = ('stop', 'route')
+
+    def __str__(self):
+        return str(self.stop) + " " + str(self.order)
+
 
 # class Timetable(models.Model):
 #     route = models.ForeignKey(Route, on_delete=models.CASCADE)
