@@ -152,4 +152,5 @@ def route_list(request):
 def route_stops(request, route_id, journey_pattern):
     route = Route.objects.get(route_id=route_id)
 
-    pass
+    print(route)
+
