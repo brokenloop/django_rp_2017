@@ -8,7 +8,6 @@
 //     });
 // }
 
-
 function getTime(params) {
     $.get("time", params, function(data, status){
         // alert("Data: " + data.Name + "\nStatus: " + status);
@@ -193,3 +192,69 @@ function myMap() {
     };
     var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
 }
+
+function showStationMarkers() {
+      var jqxhr = $.getJSON($SCRIPT_ROOT + "/stations", function(data) {
+              var stations = data.stations;
+
+              _.forEach(stations, function(station) {
+                   console.log(station.name, station.number);
+                  var marker = new google.maps.Marker({
+                      position: {
+                          lat: station.latitude,
+                          lng: station.longitude
+                      },
+                      map: map,
+                      title: station.name,
+                      station_number: station.number
+                  });
+
+                   google.maps.event.addListener(marker,'click',function(){
+                         console.log('touched marker');
+                         window.location.href ="http://127.0.0.1:5000/"+station.number;
+                   });
+
+              })
+          })
+          .fail(function() {
+              console.log("error");
+          })
+  }
+
+function showSingleMarker() {
+    var marker = new google.maps.Marker({
+               position: {
+                          lat: 53.340937,
+                          lng: -6.2626352
+                      },
+               map: map
+                  });
+}
+
+
+
+
+$(document).ready(function(){
+    $('#testBtn').on('click', function() {
+        // var marker = new google.maps.Marker({
+        //    position: {
+        //               lat: 53.340937,
+        //               lng: -6.2626352
+        //           },
+        //    setMap: map
+        //       });
+        // alert("Fuck");
+        var marker = new google.maps.Marker({
+            position: {
+                  lat: 53.340937,
+                  lng: -6.2626352
+              },
+            title:"Hello World!"
+        });
+
+        // To add the marker to the map, call setMap();
+        marker.setMap(map);
+
+    });
+});
+
