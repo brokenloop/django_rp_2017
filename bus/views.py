@@ -161,17 +161,17 @@ def route_stops(request, route_id, journey_pattern):
 
 
 def middle_stops(request, route_id, journey_pattern, origin, destination):
+    """ Given a route_id and journey_pattern, returns all stops on the route between origin and destination
+    """
     try:
         stop1 = Stop.objects.get(stop_id=origin)
         stop2 = Stop.objects.get(stop_id=destination)
         route = Route.objects.get(route_id=route_id, journey_pattern=journey_pattern)
 
-        inter1 = RouteStation.objects.filter(stop=stop1, route=route).first()
-        inter2 = RouteStation.objects.filter(stop=stop2, route=route).first()
+        inter1 = RouteStation.objects.get(stop=stop1, route=route)
+        inter2 = RouteStation.objects.get(stop=stop2, route=route)
     except:
         return HttpResponse(status=404)
-
-    print(inter1.order, inter2.order)
 
     sql = '''
             SELECT * FROM bus_routestation r
@@ -180,11 +180,7 @@ def middle_stops(request, route_id, journey_pattern, origin, destination):
               r.order <= {s2}
         '''
 
-    # rs_query = RouteStation.objects.raw(sql.format(route=route.id, s1=stop1.id, s2=stop2.id))
-
     rs_query = RouteStation.objects.raw(sql.format(route=route.id, s1=inter1.order, s2=inter2.order))
-
-    # rs_query = RouteStation.objects.raw(sql.format(route=route.id, s1=inter1[0].order, s2=inter2[0].order))
 
     stops = []
     # print(rs_query)
