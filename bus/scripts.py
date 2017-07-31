@@ -125,7 +125,6 @@ def get_common(origin, destination):
 
     print(list(route_list))
 
-
     # sql = '''
     #         SELECT r1.name FROM bus_stop r1
     #         WHERE r1.stop_id = {s1}
