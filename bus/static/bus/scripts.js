@@ -27,12 +27,12 @@ function getTime(params) {
 // });
 
 // Submitting the form and returning time prediction
-$(document).ready(function(){
-    $("#submitBtn").click(function(){
-        params = $("form").serialize();
-        getTime(params);
-    });
-});
+//$(document).ready(function(){
+//    $("#submitBtn").click(function(){
+//        params = $("form").serialize();
+//        getTime(params);
+//    });
+//});
 
 ////checks whether the form fields are empty and displays an error message if they are
 //$(document).ready(function(){
@@ -187,9 +187,57 @@ $(document).ready(function(){
 
 //Creates simple Google Map
 function myMap() {
-    var mapProp= {
-        center:new google.maps.LatLng(53.3498, -6.2603),
-        zoom:11,
+    var mapProp = {
+        center: new google.maps.LatLng(53.3498, -6.2603),
+        zoom: 11,
     };
-    var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+    var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+
+    var marker = new google.maps.Marker({
+            position: {
+                lat: 53.3498,
+                lng: -6.2603
+            },
+            title: 'new marker',
+            draggable: true,
+            map: map
+    });
 }
+
+//Creates a new marker
+//function addMarker(lati, lngi) {
+//    var marker = new google.maps.Marker({
+//        position: {
+//            lat: lati,
+//            lng: lngi
+//        },
+//        title: 'new marker',
+//        draggable: true,
+//        map: map
+//    });
+//}
+//
+//
+//
+////Creates new marker when submit button is clicked
+//$(document).ready(function(){
+//    $('#submitBtn').click(function() {
+//        addMarker(53.3498, -6.2603);
+//    });
+//});
+
+
+function addmarker(latilongi) {
+    var marker = new google.maps.Marker({
+        position: latilongi,
+        title: 'new marker',
+        map: map
+    });
+    map.setCenter(marker.getPosition())
+}
+
+var latlng = new google.maps.LatLng(42.745334, 12.738430);
+
+$('#submitBtn').on('click', function() {
+    addmarker(latlng)
+})
