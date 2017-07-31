@@ -77,6 +77,17 @@ def stop_detail(request, stop_id):
 
 
 def common_routes(request, origin, destination):
+    """
+    Takes a start stop (origin) and an end stop (destination), and returns JSON list containing the lines that connect
+    them, or an empty JSON list if there are no connecting lines.
+
+    Pass origin and destination as the StopID of those stops.
+
+    :param request:
+    :param origin: First stop
+    :param destination: End stop
+    :return:
+    """
 
     if request.method == 'GET':
         try:
@@ -133,3 +144,7 @@ def route_list(request):
         routes = Route.objects.all()
         serializer = RouteSerializer(routes, many=True)
         return JsonResponse(serializer.data, safe=False)
+
+
+def route_stops(request, route_id):
+    pass
