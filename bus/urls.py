@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'^stops/(?P<stop_id>[0-9]+)/$', views.stop_detail),
     url(r'^time/$', views.time_estimate),
     url(r'^routes/$', views.route_list),
+    url(r'^routes/stops/(?P<route_id>[a-zA-Z0-9]+)/(?P<journey_pattern>[a-zA-Z0-9]+)/$', views.route_list),
 ]
