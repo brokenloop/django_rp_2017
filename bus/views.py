@@ -8,7 +8,7 @@ from rest_framework.parsers import JSONParser
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from .models import Stop, Route, RouteStation
-from .serializers import StopSerializer, RouteSerializer
+from .serializers import StopSerializer, RouteSerializer, RouteStationSerializer
 
 
 def index(request):
@@ -105,11 +105,14 @@ def common_routes(request, origin, destination):
             '''
         rs_query = RouteStation.objects.raw(sql.format(s1=stop1.id, s2=stop2.id))
 
+
         routes = set()
         for rs in rs_query:
             routes.add(str(rs.route))
 
         return JsonResponse(list(routes), safe=False)
+
+
 
 
 def time_estimate(request):
@@ -146,5 +149,7 @@ def route_list(request):
         return JsonResponse(serializer.data, safe=False)
 
 
-def route_stops(request, route_id):
+def route_stops(request, route_id, journey_pattern):
+    route = Route.objects.get(route_id=route_id)
+
     pass
