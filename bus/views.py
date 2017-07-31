@@ -150,7 +150,10 @@ def route_list(request):
 
 
 def route_stops(request, route_id, journey_pattern):
-    route = Route.objects.get(route_id=route_id)
-
-    print(route)
+    """ Given a route_id and journey_pattern, returns all stops on the route
+    """
+    route = Route.objects.get(route_id=route_id, journey_pattern=journey_pattern)
+    stops = route.stops.all()
+    serializer = StopSerializer(stops, many=True)
+    return JsonResponse(serializer.data, safe=False)
 
