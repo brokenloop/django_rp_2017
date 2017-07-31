@@ -10,4 +10,7 @@ urlpatterns = [
     url(r'^time/$', views.time_estimate),
     url(r'^routes/$', views.route_list),
     url(r'^routes/stops/(?P<route_id>[a-zA-Z0-9]+)/(?P<journey_pattern>[a-zA-Z0-9]+)/$', views.route_stops),
+    url(r'^routes/stops/(?P<route_id>[a-zA-Z0-9]+)/(?P<journey_pattern>[a-zA-Z0-9]+)/(?P<origin>[0-9]+)/'
+        r'(?P<destination>[0-9]+)/$', views.middle_stops),
+
 ]
