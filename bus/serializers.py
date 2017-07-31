@@ -14,6 +14,12 @@ class RouteSerializer(serializers.ModelSerializer):
         fields = ('id', 'route_id', 'journey_pattern', 'stops')
 
 
+class RouteStationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RouteStation
+        fields = ('stop', 'route', 'order')
+
+
 
 
 

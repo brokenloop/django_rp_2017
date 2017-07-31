@@ -162,12 +162,19 @@ $(document).ready(function(){
         var value2=$.trim($('#endStop').val());
 
         if ((value1.length>0) && (value2.length>0)){
-//             alert("Something");
-//             return(route_test(value1, value2));
+            var origin =2041;
+            var destination = 4568;
+            getRoutes(origin, destination);
         }
 
     });
 });
+
+function getRoutes(origin, destination) {
+    $.get("stops/common/" + origin + "/" + destination, function(data){
+        console.log(data);
+    });
+}
 
 //Populate route dropdown with route connecting stops inputed
 //$(document).ready(function(){
