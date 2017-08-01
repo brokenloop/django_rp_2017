@@ -37,6 +37,7 @@ $(document).ready(function() {
 function getTime(params) {
     $.get("time", params, function(data, status){
         // alert("Data: " + data.Name + "\nStatus: " + status);
+        $('#timePrediction').text(data.time)
        console.log(data);
     });
 }
@@ -130,6 +131,7 @@ $(document).ready(function(){
             //gets routes that connect the stops and displays them in the route dropdown
             $.get("stops/common/" + origin + "/" + destination, function(data){
                 var options = $('select[name="route"]')
+                options.empty()
                 $.each(data, function() {
                     options.append($("<option></option>").text(this));
                 });
@@ -140,42 +142,52 @@ $(document).ready(function(){
 });
 
 
-//$(document).ready(function(){
-//    $('#testBtn').on('click', function() {
-//        var marker = new google.maps.Marker({
-//            position: {
-//                  lat: 53.340937,
-//                  lng: -6.2626352
-//              },
-//            title:"Hello World!"
-//        });
-//        // To add the marker to the map, call setMap();
-//        marker.setMap(map);
-//    });
-//});
-
 //Takes form inputs and creates markers based on the origin/destination and the stops inbetween
 $(document).ready(function(){
     $('#testBtn').on('click', function() {
-//        var value1 = $.trim($('#startStop').val().substring(0,4));
-//        var value2 = $.trim($('#endStop').val().substring(0,4));
-//        var value3 = $.trim($('select[name="route"]').val().substring(0,2));
-//        var value4 = $.trim($('select[name="route"]').val().substring(2,));
-        var value1 = 2041;
-        var value2 = 4568;
-        var value3 = 75;
-        var value4 = 1004;
-        $.get("routes/stops/" + value3 + "/" + value4 + "/" + value1 + "/" + value2, function(data){
+        var origin = $.trim($('#startStop').val().substring(0,4));
+        var destination = $.trim($('#endStop').val().substring(0,4));
+        var route_pattern = $('#route').val().split(" ");
+        var line = route_pattern[0];
+        var journeyPattern = route_pattern[1];
+
+        $.get("routes/stops/" + line + "/" + journeyPattern + "/" + origin + "/" + destination, function(data){
+            deleteMarkers();
             $.each(data, function(index, stop) {
-                var marker = new google.maps.Marker({
-                    position: {
-                          'lat': stop.lat,
-                          'lng': stop.lon,
-                      },
-                    title:"Station Marker",
-                });
-                marker.setMap(map);
+
+                createMarker(stop.lat, stop.lon);
+
+                setMapOnAll(map);
+
             });
         });
     });
 });
+
+//Creates a new marker
+function createMarker(lat, lon){
+    var marker = new google.maps.Marker({
+        position: {
+              'lat': lat,
+              'lng': lon,
+          },
+        title:"Station Marker",
+        map: map
+    });
+    markerArray.push(marker);
+}
+
+function setMapOnAll(map) {
+    for (var i = 0; i < markerArray.length; i++) {
+        markerArray[i].setMap(map);
+    }
+}
+
+function clearMarkers() {
+    setMapOnAll(null);
+}
+
+function deleteMarkers() {
+    clearMarkers();
+    markerArray = [];
+}

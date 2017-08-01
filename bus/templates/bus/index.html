@@ -78,41 +78,12 @@
                     <div class="col-sm-12">
                         <h2 class="subtitle top-buffer">Your bus will arrive in</h2>
                         <div class="jumbotron bus-time">
-                            <h1>{{ time_prediction }}</h1>
+                            <h1 id="timePrediction"></h1>
                         </div>
                     </div>
                 </div>
                 <!-- /.row -->
 
-
-{#        <form method='GET' action=''>#}
-{#            <div class="row top-buffer">#}
-{#               {% for key, value in form_selects.items %}#}
-{#                    <div class="col-sm-3">#}
-{#                        <label for="{{ key }}">Select your {{ key }}:</label>#}
-{#                        <select class="form-control" id="{{ key }}" name="{{ key }}">#}
-{#                            {% for option in value %}#}
-{#                                <option value="{{ option }}"#}
-{#                                        {% for key2, value2 in user_options.items %}#}
-{#                                            {% if key2 == key %}#}
-{#                                                {% if value2 == option %}#}
-{#                                                    selected#}
-{#                                                {% endif %}#}
-{#                                            {% endif %}#}
-{#                                        {% endfor %}#}
-{#                                >{{ option }}</option>#}
-{#                            {% endfor %}#}
-{#                        </select>#}
-{#                    </div>#}
-{#                {% endfor %}#}
-{#            </div>#}
-{##}
-{#            <div class="row top-buffer">#}
-{#                <div class="col-sm-12">#}
-{#                    <input type="submit" value="Submit" class="btn btn-default">#}
-{#                </div>#}
-{#            </div>#}
-{#        </form>#}
         <form id="params" action=''>
             <div class="row top-buffer">
                 <div class="col-sm-2">
@@ -192,6 +163,7 @@
                             <script>
                               <!--global map variable. Allows us to interact with the map from outside this program.-->
                               var map;
+                              var markerArray = [];
 
                               <!--Initialize the map-->
                               function initMap() {
