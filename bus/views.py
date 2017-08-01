@@ -11,6 +11,10 @@ from .models import Stop, Route, RouteStation
 from .serializers import StopSerializer, RouteSerializer, RouteStationSerializer
 
 
+def index(request):
+    return render(request, 'bus/index.html')
+
+
 def stop_list(request):
     """
     :param request:
