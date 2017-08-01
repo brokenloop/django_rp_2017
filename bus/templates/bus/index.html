@@ -41,158 +41,83 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-    <!--Google Maps API-->
-    <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCnykkzTXg3JpDVbnZkn6HO3bYK5XVVZgk&callback=myMap"></script>-->
-
-
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-{#    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>#}
-{#    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>#}
-    <![endif]-->
-
 </head>
 
 <body>
-
-    <!-- Image Background Page Header -->
-    <!-- Note: The background image is set within the business-casual.css file. -->
-{#    <header class="business-header">#}
-{#        <div class="container">#}
-{#            <div class="row">#}
-{#                <div class="col-lg-12">#}
-{#                    <h1 class="tagline">DublinBus</h1>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-{#    </header>#}
-
-    <!-- Page Content -->
-    <div class="container">
-
-        <div class="row">
-            <div class="col-sm-3">
-{#                <div class="row">#}
-{#                    <div class="col-sm-12">#}
-{#                        <h2 class="subtitle top-buffer">Your bus will arrive in</h2>#}
-{#                        <div class="jumbotron bus-time">#}
-{#                            <h1 id="timePrediction"></h1>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-                <!-- /.row -->
-
-        <form id="params" action=''>
-            <div class="row top-buffer">
+<div class="container-fluid mainwindow">
+  <div class="row">
+{#      <-------MENU SECTION------->#}
+      <div class="col-sm-4" id="menu">
+          <h1 id="tagline">DublinBus</h1>
+          <hr>
+            <div class="row">
                 <div class="col-sm-12">
-{#                    <label for="startStop">Origin</label>#}
-                    <input type="text" class="form-control" name="startStop" id="startStop" placeholder="Enter station">
-                    <!--<select class="form-control" name="startStop">-->
-                        <!--<option>Select Start</option>-->
-                    <!--</select>-->
+                    <input type="text" class="form-control" name="startStop" id="startStop" placeholder="Origin">
                 </div>
                 <div class="col-sm-12">
-{#                    <label for="endStop">Destination</label>#}
-                    <input type="text" class="form-control" name="endStop" id="endStop" placeholder="Enter station">
-                    <!--<select class="form-control" name="endStop">-->
-                        <!--<option>Select End</option>-->
-                    <!--</select>-->
+                    <input type="text" class="form-control" name="endStop" id="endStop" placeholder="Destination">
                 </div>
                 <div class="col-sm-12">
-{#                    <label for="route">Route</label>#}
-                    <!--<input type="text" class="form-control" name="route" placeholder="Enter route">-->
                     <select class="form-control" name="route" id="route">
-                        <option>Select Route</option>
+                        <option>Route</option>
                     </select>
                 </div>
                 <div class="col-sm-12">
-{#                    <label for="hour">Hour</label>#}
-                    <!--<input type="text" class="form-control" name="route" placeholder="Enter route">-->
-                    <select class="form-control" name="hour" id="hour"></select>
+                    <select class="form-control" name="hour" id="hour">
+                    </select>
                 </div>
                 <div class="col-sm-12">
-{#                    <label for="day">Day</label>#}
-                    <!--<input type="text" class="form-control" name="route" placeholder="Enter route">-->
-                    <select class="form-control" name="day" id="day"></select>
+                    <select class="form-control" name="day" id="day">
+                    </select>
                 </div>
-{#                <div class="col-sm-2">#}
-{#                    <label for="hour">Hour</label>#}
-{#                    <input type="text" class="form-control" name="hour" id="hour" placeholder="Enter hour">#}
-{#                </div>#}
-{#                <div class="col-sm-2">#}
-{#                    <label for="day">Day</label>#}
-{#                    <input type="text" class="form-control" name="day" id="day" placeholder="Enter day">#}
-{#                </div>#}
                 <div class="col-sm-12">
-{#                    <label for="weather">Weather</label>#}
                     <select type="text" class="form-control" name="weather" id="weather">
                         <option>Sunny</option>
                         <option>Rainy</option>
                     </select>
                 </div>
+                <div class="col-sm-12">
+                    <button type="button" class="btn col-sm-12 btn-default" id="submitBtn">Submit</button>
+                </div>
+            </div>
+            <hr>
+
+{#          <-----RESULTS----->#}
+{#          <div class="jumbotron">#}
+{#              <h3 class="">Estimated Journey Time:</h3>#}
+{#          </div>#}
+          <div class="panel panel-default top-buffer">
+              <div class="panel-heading">Journey Time</div>
+              <div class="panel-body">
+                  <h2 id="timePrediction"></h2>
+              </div>
             </div>
 
-{#            <div class="row top-buffer">#}
-{#                <div class="col-sm-12">#}
-{#                    <input id="paramBtn" type="submit" value="Submit" class="btn btn-default">#}
-{#                </div>#}
-{#            </div>#}
-        </form>
 
-{#        <form action="">#}
-{#          First name: <input type="text" name="FirstName" value="Mickey"><br>#}
-{#          Last name: <input type="text" name="LastName" value="Mouse"><br>#}
-{#        </form>#}
+      </div>
 
-        <button type="button" class="btn btn-primary top-buffer" id="submitBtn">Submit</button>
-        <button type="button" class="btn btn-primary top-buffer" id="testBtn">Test</button>
+{#      <-------MAP SECTION------->#}
+      <div class="col-sm-8" id="mapwrapper">
+        <div id="map"></div>
+        <script>
+          <!--global map variable. Allows us to interact with the map from outside this program.-->
+          var map;
+          var markerArray = [];
 
-                </div>
-                <div class="col-sm-9">
-{#                    <h2 class="subtitle top-buffer">Follow your journey here</h2>#}
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div id="mapwrapper">
-                                <div id="map"></div>
-                            <script>
-                              <!--global map variable. Allows us to interact with the map from outside this program.-->
-                              var map;
-                              var markerArray = [];
-
-                                  <!--Initialize the map-->
-                                  function initMap() {
-                                    var dublin = {lat: 53.3498, lng: -6.2603};
-                                    map = new google.maps.Map(document.getElementById('map'), {
-                                      zoom: 11,
-                                      center: dublin
-                                    });
-                                  }
-                                </script>
-                                <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB3um4WUb5l36zZyCnovdVFE6OEBfgf3wQ&callback=initMap">
-                                </script>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-        </div>
-
-
-{#        <!-- Footer -->#}
-{#        <footer>#}
-{#            <div class="row top-buffer">#}
-{#                <div class="col-lg-12">#}
-{#                    <p>Copyright &copy; Fantastic4UCD 2017</p>#}
-{#                </div>#}
-{#            </div>#}
-{#            <!-- /.row -->#}
-{#        </footer>#}
-
-    </div>
-    <!-- /.container -->
-
-
+              <!--Initialize the map-->
+              function initMap() {
+                var dublin = {lat: 53.3498, lng: -6.2603};
+                map = new google.maps.Map(document.getElementById('map'), {
+                  zoom: 11,
+                  center: dublin
+                });
+              }
+        </script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB3um4WUb5l36zZyCnovdVFE6OEBfgf3wQ&callback=initMap">
+        </script>
+      </div>
+  </div>
+</div>
 
 </body>
 

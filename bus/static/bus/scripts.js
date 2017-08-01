@@ -29,12 +29,16 @@ $(document).ready(function() {
     populate_day('#day', 0, 6);
 });
 
+
 function getTime(params) {
     $.get("time", params, function(data, status){
         // alert("Data: " + data.Name + "\nStatus: " + status);
         $('#timePrediction').text(data.time)
        console.log(data);
-    });
+    })
+        .fail(function() {
+            alert("Invalid input! Please change the input parameters.");
+        });
 }
 
 // Submitting the form and returning time prediction

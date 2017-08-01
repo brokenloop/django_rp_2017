@@ -22,12 +22,15 @@ body {
     margin-top: 30px;
 }
 
+.panel {
+}
+
 .bus-time {
   background-color: #48597a;
 }
 
 .tagline {
-
+    align-self: center;
 }
 
 body {
