@@ -15,10 +15,23 @@ function populate_day(selector, low, high) {
     }
 }
 
+function set_day(){
+    var d = new Date();
+    var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+    document.getElementById("day_option").innerHTML = days[d.getDay()];
+}
+
+function set_hour(){
+    var a = new Date();
+    document.getElementById("hour_option").innerHTML = String(a.getHours() + ':00');
+}
+
 // populate hour and day selects
 $(document).ready(function() {
     populate_hour('#hour', 5, 23);
-    populate_day('#day', 0, 6)
+    populate_day('#day', 0, 6);
+    set_hour();
+    set_day();
 });
 
 function getTime(params) {
