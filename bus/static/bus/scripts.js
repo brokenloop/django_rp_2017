@@ -4,21 +4,29 @@
 
 function populate_hour(selector, low, high) {
     for (var i = low; i <= high; i++) {
-        $(selector).append('<option value=' + i +'>' + i + ':00</option>')
+        if (i == new Date().getHours()) {
+            $(selector).append('<option value=' + i +' selected>' + i + ':00</option>');
+        } else {
+            $(selector).append('<option value=' + i +'>' + i + ':00</option>');
+        }
     }
 }
 
 function populate_day(selector, low, high) {
     var weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
     for (var i = low; i <= high; i++) {
-        $(selector).append('<option value=' + i +'>' + weekdays[i] + '</option>')
+        if (i == new Date().getDay()) {
+           $(selector).append('<option value=' + i +' selected>' + weekdays[i] + '</option>');
+        } else {
+            $(selector).append('<option value=' + i +'>' + weekdays[i] + '</option>');
+        }
     }
 }
 
 // populate hour and day selects
 $(document).ready(function() {
     populate_hour('#hour', 5, 23);
-    populate_day('#day', 0, 6)
+    populate_day('#day', 0, 6);
 });
 
 function getTime(params) {
