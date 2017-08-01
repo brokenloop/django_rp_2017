@@ -28,7 +28,7 @@ def predict(origin, destination, line, pattern, hour, day):
 
     day = convert_weekday(day)
 
-    filename = os.path.join(settings.DATA_PATH, 'sklearn_models/line15_all_RF.sav')
+    filename = os.path.join(settings.DATA_PATH, 'sklearn_models/' + line + '.sav')
 
     # loading pickled model
     model = pickle.load(open(filename, 'rb'))

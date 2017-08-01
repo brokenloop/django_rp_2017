@@ -2,16 +2,24 @@
  * Created by danieljordan on 11/07/2017.
  */
 
-function populate(selector, low, high) {
-    for (i = low; i <= high; i++) {
-        $(selector).append('<option value=i>i</option>')
+function populate_hour(selector, low, high) {
+    for (var i = low; i <= high; i++) {
+        $(selector).append('<option value=' + i +'>' + i + ':00</option>')
+    }
+}
+
+function populate_day(selector, low, high) {
+    var weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    for (var i = low; i <= high; i++) {
+        $(selector).append('<option value=' + i +'>' + weekdays[i] + '</option>')
     }
 }
 
 // populate hour and day selects
-// $(document).ready(function() {
-//
-// });
+$(document).ready(function() {
+    populate_hour('#hour', 5, 23);
+    populate_day('#day', 0, 6)
+});
 
 function getTime(params) {
     $.get("time", params, function(data, status){
@@ -94,6 +102,7 @@ $(document).ready(function(){
         }
     });
 });
+
 
 // listener for origin and destination inputs
 $(document).ready(function(){
