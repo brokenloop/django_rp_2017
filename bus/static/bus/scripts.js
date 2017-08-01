@@ -134,6 +134,15 @@ $(document).ready(function(){
                 $.each(data, function() {
                     options.append($("<option></option>").text(this));
                 });
+                // .fail(function() {
+                //     // $('select[name="route"]').prop('disabled', true);
+                //     // options.append($("<option></option>").text("No Route"));
+                //     alert("Fuck!");
+                // })
+                if(data == 'undefined' || data == ''){
+                    $('select[name="route"]').prop('disabled', true);
+                    options.append($("<option></option>").text("No Route"));
+                }
             });
 
         }
