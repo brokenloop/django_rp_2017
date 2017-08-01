@@ -2,86 +2,51 @@
  * Created by danieljordan on 11/07/2017.
  */
 
-// function getStops() {
-//     $.get("stops", function(data, status){
-//         console.log(data);
-//     });
-// }
+function populate(selector, low, high) {
+    for (i = low; i <= high; i++) {
+        $(selector).append('<option value=i>i</option>')
+    }
+}
+
+// populate hour and day selects
+// $(document).ready(function() {
+//
+// });
 
 function getTime(params) {
     $.get("time", params, function(data, status){
         // alert("Data: " + data.Name + "\nStatus: " + status);
-//        console.log(data);
+       console.log(data);
     });
 }
 
-// $( ":submit" ).submit(function( event ) {
-//   alert( "Handler for .submit() called." );
-//   // event.preventDefault();
-// });
-
-// $( "form" ).on( "submit", function( event ) {
-//   event.preventDefault();
-//   console.log( $( this ).serialize() );
-// });
-
 // Submitting the form and returning time prediction
 $(document).ready(function(){
-    $("#submitBtn").click(function(){
-        params = $("form").serialize();
+    $("#testBtn").click(function(){
+        // params = $("form").serialize();
+        var startStop=$.trim($('#startStop').val().substring(0,4));
+        var endStop=$.trim($('#endStop').val().substring(0,4));
+        var route_pattern = $('#route').val().split(" ");
+        var route = route_pattern[0];
+        var pattern = route_pattern[1];
+        var hour = $('#hour').val();
+        var day = $('#day').val();
+        var weather = $('#weather').val();
+
+        params = {
+            'startStop': startStop,
+            'endStop': endStop,
+            'route': route,
+            'pattern': pattern,
+            'hour': hour,
+            'day': day,
+            'weather': weather,
+        }
+        console.log(params);
+
         getTime(params);
     });
 });
-
-////checks whether the form fields are empty and displays an error message if they are
-//$(document).ready(function(){
-//    $("#submitBtn").click(function(){
-//        var isValid = true;
-//        $(".form-control").each(function() {
-//            if ( $(this).val() === '' )
-//                isValid = false;
-//        });
-//        if (!isValid)
-//            alert("One or more input fields have been left empty. Please make sure to fill all of them :)");
-//        return isValid;
-//    });
-// });
-
-// $(document).ready(function(){
-//     $("button").click(function(){
-//         alert("Click!");
-//     });
-// });
-
-////loads the stops into a dropdown
-//$(document).ready(function(){
-//    $.get("stops", function(data, status){
-//        var options = $('select[name="startStop"]')
-//        $.each(data, function() {
-//            options.append($("<option />").val(this.id).text(this.stop_id + "-" + this.name));
-//        });
-//    });
-//});
-
-////loads the stops into a dropdown
-//$(document).ready(function(){
-//    $.get("stops", function(data, status){
-//        var options = $('select[name="endStop"]')
-//        $.each(data, function() {
-//            options.append($("<option />").val(this.id).text(this.stop_id + "-" + this.name));
-//        });
-//    });
-//});
-
-////loads the route_ids into a dropdown
-//$(document).ready(function(){
-//    $.get("routes", function(data, status){
-//        var options = $('select[name="route"]')
-//        $.each(data, function() {
-//            options.append($("<option />").val(this.id).text(this.route_id));
-//        });
-//    });
-//});
 
 
 //loads stops and displays them using autocomplete
@@ -130,30 +95,6 @@ $(document).ready(function(){
     });
 });
 
-//loads routes and displays them using autocomplete
-//$(document).ready(function(){
-//    var route_list = [];
-//    $.get("routes", function(data, status){
-//        $.each(data, function() {
-//            route_list.push(this.route_id);
-//        });
-//    });
-//    $('input[name="route"]').autocomplete({
-//        minLength: 1,
-//        source: function (request, response) {
-//            var results = $.ui.autocomplete.filter(route_list, request.term);
-//            if (results.length == 0) {
-//                results.push ({
-//                    id: 0,
-//                    label: "No match found",
-//                });
-//            }
-//            response(results.slice(0, 20));
-//        }
-//    });
-//});
-
-
 // listener for origin and destination inputs
 $(document).ready(function(){
     $('#startStop, #endStop').change(function() {
@@ -163,6 +104,7 @@ $(document).ready(function(){
         if ((value1.length>0) && (value2.length>0)){
             var origin = value1;
             var destination = value2;
+
             //gets routes that connect the stops and displays them in the route dropdown
             $.get("stops/common/" + origin + "/" + destination, function(data){
                 var options = $('select[name="route"]')

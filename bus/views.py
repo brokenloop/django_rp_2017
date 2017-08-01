@@ -116,26 +116,28 @@ def common_routes(request, origin, destination):
 
 
 def time_estimate(request):
-    stop = request.GET['endStop']
-    hour = request.GET['hour']
-    day = request.GET['day']
 
     try:
-        stop = int(stop)
+        origin = request.GET['startStop']
+        destination = request.GET['endStop']
+        route = request.GET['route']
+        pattern = request.GET['pattern']
+        hour = request.GET['hour']
+        day = request.GET['day']
+
+        origin = int(origin)
+        destination = int(destination)
         hour = int(hour)
         day = int(day)
 
-        pred = predict(stop, hour, day)
+        #format: origin, destination, line, pattern, hour, day
+        pred = predict(origin, destination, route, pattern, hour, day)
         pred = str(datetime.timedelta(seconds=pred))
 
     except:
         return HttpResponse(status=400)
 
-    return JsonResponse({'time': pred,
-                         'stop': stop,
-                         'hour': hour,
-                         'day': day,
-                         })
+    return JsonResponse({'time': pred})
 
 
 def route_list(request):
@@ -189,3 +191,26 @@ def middle_stops(request, route_id, journey_pattern, origin, destination):
 
     serializer = StopSerializer(stops, many=True)
     return JsonResponse(serializer.data, safe=False)
+
+
+def accessible_stops(request):
+    print("Fuck")
+
+    if request.GET:
+        stop_id = request.GET['stop_id']
+        stop = Stop.objects.get(stop_id=stop_id)
+        routes = stop.route_set.all()
+        print(routes)
+
+        stops = set()
+
+        # order = RouteStation.objects.get(stop=stop, route=route).order
+        afters = Stop.objects.filter(route__in=routes)
+
+        # for rs in afters:
+        #     stops.add(rs.stop)
+        # return JsonResponse({'length': len(afters)})
+
+        serializer = StopSerializer(afters, many=True)
+        return JsonResponse(serializer.data, safe=False)
+        # return JsonResponse({'data': stop_id})
