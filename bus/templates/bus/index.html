@@ -59,62 +59,62 @@
 
     <!-- Image Background Page Header -->
     <!-- Note: The background image is set within the business-casual.css file. -->
-    <header class="business-header">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1 class="tagline">DublinBus</h1>
-                </div>
-            </div>
-        </div>
-    </header>
+{#    <header class="business-header">#}
+{#        <div class="container">#}
+{#            <div class="row">#}
+{#                <div class="col-lg-12">#}
+{#                    <h1 class="tagline">DublinBus</h1>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </header>#}
 
     <!-- Page Content -->
     <div class="container">
 
         <div class="row">
-            <div class="col-sm-6">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <h2 class="subtitle top-buffer">Your bus will arrive in</h2>
-                        <div class="jumbotron bus-time">
-                            <h1 id="timePrediction"></h1>
-                        </div>
-                    </div>
-                </div>
+            <div class="col-sm-3">
+{#                <div class="row">#}
+{#                    <div class="col-sm-12">#}
+{#                        <h2 class="subtitle top-buffer">Your bus will arrive in</h2>#}
+{#                        <div class="jumbotron bus-time">#}
+{#                            <h1 id="timePrediction"></h1>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
                 <!-- /.row -->
 
         <form id="params" action=''>
             <div class="row top-buffer">
-                <div class="col-sm-2">
-                    <label for="startStop">Origin</label>
+                <div class="col-sm-12">
+{#                    <label for="startStop">Origin</label>#}
                     <input type="text" class="form-control" name="startStop" id="startStop" placeholder="Enter station">
                     <!--<select class="form-control" name="startStop">-->
                         <!--<option>Select Start</option>-->
                     <!--</select>-->
                 </div>
-                <div class="col-sm-2">
-                    <label for="endStop">Destination</label>
+                <div class="col-sm-12">
+{#                    <label for="endStop">Destination</label>#}
                     <input type="text" class="form-control" name="endStop" id="endStop" placeholder="Enter station">
                     <!--<select class="form-control" name="endStop">-->
                         <!--<option>Select End</option>-->
                     <!--</select>-->
                 </div>
-                <div class="col-sm-2">
-                    <label for="route">Route</label>
+                <div class="col-sm-12">
+{#                    <label for="route">Route</label>#}
                     <!--<input type="text" class="form-control" name="route" placeholder="Enter route">-->
                     <select class="form-control" name="route" id="route">
                         <option>Select Route</option>
                     </select>
                 </div>
-                <div class="col-sm-2">
-                    <label for="hour">Hour</label>
+                <div class="col-sm-12">
+{#                    <label for="hour">Hour</label>#}
                     <!--<input type="text" class="form-control" name="route" placeholder="Enter route">-->
                     <select class="form-control" name="hour" id="hour">
                     </select>
                 </div>
-                <div class="col-sm-2">
-                    <label for="day">Day</label>
+                <div class="col-sm-12">
+{#                    <label for="day">Day</label>#}
                     <!--<input type="text" class="form-control" name="route" placeholder="Enter route">-->
                     <select class="form-control" name="day" id="day">
                     </select>
@@ -127,8 +127,8 @@
 {#                    <label for="day">Day</label>#}
 {#                    <input type="text" class="form-control" name="day" id="day" placeholder="Enter day">#}
 {#                </div>#}
-                <div class="col-sm-2">
-                    <label for="weather">Weather</label>
+                <div class="col-sm-12">
+{#                    <label for="weather">Weather</label>#}
                     <select type="text" class="form-control" name="weather" id="weather">
                         <option>Sunny</option>
                         <option>Rainy</option>
@@ -152,42 +152,43 @@
         <button type="button" class="btn btn-primary top-buffer" id="testBtn">Test</button>
 
                 </div>
-
-                <div class="col-sm-6">
-                    <h2 class="subtitle top-buffer">Follow your journey here</h2>
+                <div class="col-sm-9">
+{#                    <h2 class="subtitle top-buffer">Follow your journey here</h2>#}
                     <div class="row">
                         <div class="col-lg-12">
-                            <div id="map"></div>
-                            <script>
-                              <!--global map variable. Allows us to interact with the map from outside this program.-->
-                              var map;
+                            <div id="mapwrapper">
+                                <div id="map"></div>
+                                <script>
+                                  <!--global map variable. Allows us to interact with the map from outside this program.-->
+                                  var map;
 
-                              <!--Initialize the map-->
-                              function initMap() {
-                                var dublin = {lat: 53.3498, lng: -6.2603};
-                                map = new google.maps.Map(document.getElementById('map'), {
-                                  zoom: 11,
-                                  center: dublin
-                                });
-                              }
-                            </script>
-                            <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB3um4WUb5l36zZyCnovdVFE6OEBfgf3wQ&callback=initMap">
-                            </script>
+                                  <!--Initialize the map-->
+                                  function initMap() {
+                                    var dublin = {lat: 53.3498, lng: -6.2603};
+                                    map = new google.maps.Map(document.getElementById('map'), {
+                                      zoom: 11,
+                                      center: dublin
+                                    });
+                                  }
+                                </script>
+                                <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB3um4WUb5l36zZyCnovdVFE6OEBfgf3wQ&callback=initMap">
+                                </script>
+                            </div>
                         </div>
                     </div>
                 </div>
         </div>
 
 
-        <!-- Footer -->
-        <footer>
-            <div class="row top-buffer">
-                <div class="col-lg-12">
-                    <p>Copyright &copy; Fantastic4UCD 2017</p>
-                </div>
-            </div>
-            <!-- /.row -->
-        </footer>
+{#        <!-- Footer -->#}
+{#        <footer>#}
+{#            <div class="row top-buffer">#}
+{#                <div class="col-lg-12">#}
+{#                    <p>Copyright &copy; Fantastic4UCD 2017</p>#}
+{#                </div>#}
+{#            </div>#}
+{#            <!-- /.row -->#}
+{#        </footer>#}
 
     </div>
     <!-- /.container -->
