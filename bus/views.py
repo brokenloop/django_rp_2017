@@ -118,27 +118,26 @@ def common_routes(request, origin, destination):
 def time_estimate(request):
 
     try:
-        hour = request.GET['hour']
-        day = request.GET['day']
         origin = request.GET['startStop']
         destination = request.GET['endStop']
+        route = request.GET['route']
+        pattern = request.GET['pattern']
+        hour = request.GET['hour']
+        day = request.GET['day']
 
         origin = int(origin)
         destination = int(destination)
         hour = int(hour)
         day = int(day)
 
-        pred = predict(stop, hour, day)
+        #format: origin, destination, line, pattern, hour, day
+        pred = predict(origin, destination, route, pattern, hour, day)
         pred = str(datetime.timedelta(seconds=pred))
 
     except:
         return HttpResponse(status=400)
 
-    return JsonResponse({'time': pred,
-                         'stop': stop,
-                         'hour': hour,
-                         'day': day,
-                         })
+    return JsonResponse({'time': pred})
 
 
 def route_list(request):
