@@ -149,12 +149,14 @@ $(document).ready(function(){
         $.get("routes/stops/" + line + "/" + journeyPattern + "/" + origin + "/" + destination, function(data){
             deleteMarkers();
             $.each(data, function(index, stop) {
-
                 createMarker(stop.lat, stop.lon);
-
                 setMapOnAll(map);
-
             });
+            var bounds = new google.maps.LatLngBounds();
+            for (var i = 0; i < markerArray.length; i++) {
+                bounds.extend(markerArray[i].getPosition());
+            }
+            map.fitBounds(bounds);
         });
     });
 });
