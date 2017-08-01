@@ -24,6 +24,7 @@ $(document).ready(function() {
 function getTime(params) {
     $.get("time", params, function(data, status){
         // alert("Data: " + data.Name + "\nStatus: " + status);
+        $('#timePrediction').text(data.time)
        console.log(data);
     });
 }
