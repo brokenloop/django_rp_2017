@@ -2,28 +2,12 @@
  * Created by danieljordan on 11/07/2017.
  */
 
-// function getStops() {
-//     $.get("stops", function(data, status){
-//         console.log(data);
-//     });
-// }
-
 function getTime(params) {
     $.get("time", params, function(data, status){
         // alert("Data: " + data.Name + "\nStatus: " + status);
         console.log(data);
     });
 }
-
-// $( ":submit" ).submit(function( event ) {
-//   alert( "Handler for .submit() called." );
-//   // event.preventDefault();
-// });
-
-// $( "form" ).on( "submit", function( event ) {
-//   event.preventDefault();
-//   console.log( $( this ).serialize() );
-// });
 
 // Submitting the form and returning time prediction
 $(document).ready(function(){
@@ -32,56 +16,6 @@ $(document).ready(function(){
         getTime(params);
     });
 });
-
-////checks whether the form fields are empty and displays an error message if they are
-//$(document).ready(function(){
-//    $("#submitBtn").click(function(){
-//        var isValid = true;
-//        $(".form-control").each(function() {
-//            if ( $(this).val() === '' )
-//                isValid = false;
-//        });
-//        if (!isValid)
-//            alert("One or more input fields have been left empty. Please make sure to fill all of them :)");
-//        return isValid;
-//    });
-// });
-
-// $(document).ready(function(){
-//     $("button").click(function(){
-//         alert("Click!");
-//     });
-// });
-
-////loads the stops into a dropdown
-//$(document).ready(function(){
-//    $.get("stops", function(data, status){
-//        var options = $('select[name="startStop"]')
-//        $.each(data, function() {
-//            options.append($("<option />").val(this.id).text(this.stop_id + "-" + this.name));
-//        });
-//    });
-//});
-
-////loads the stops into a dropdown
-//$(document).ready(function(){
-//    $.get("stops", function(data, status){
-//        var options = $('select[name="endStop"]')
-//        $.each(data, function() {
-//            options.append($("<option />").val(this.id).text(this.stop_id + "-" + this.name));
-//        });
-//    });
-//});
-
-////loads the route_ids into a dropdown
-//$(document).ready(function(){
-//    $.get("routes", function(data, status){
-//        var options = $('select[name="route"]')
-//        $.each(data, function() {
-//            options.append($("<option />").val(this.id).text(this.route_id));
-//        });
-//    });
-//});
 
 
 //loads stops and displays them using autocomplete
@@ -107,6 +41,7 @@ $(document).ready(function(){
     });
 });
 
+
 //loads stops and displays them using autocomplete
 $(document).ready(function(){
     var end_stop = [];
@@ -129,6 +64,7 @@ $(document).ready(function(){
         }
     });
 });
+
 
 //loads routes and displays them using autocomplete
 $(document).ready(function(){
@@ -160,8 +96,8 @@ $(document).ready(function(){
         var value1=$.trim($('#startStop').val());
         var value2=$.trim($('#endStop').val());
 
-        if ((value1.length>0) && (value2.length>0)){
-            var origin =2041;
+        if ((value1.length > 0) && (value2.length > 0)){
+            var origin = 2041;
             var destination = 4568;
             getRoutes(origin, destination);
         }
@@ -169,27 +105,12 @@ $(document).ready(function(){
     });
 });
 
+
 function getRoutes(origin, destination) {
     $.get("stops/common/" + origin + "/" + destination, function(data){
         console.log(data);
     });
 }
-
-//Populate route dropdown with route connecting stops inputed
-//$(document).ready(function(){
-//    function route_test(param1, param2){
-//        var common_routes = [];
-//        $.get("routes", function(data, status){
-//            $.each(data, function() {
-////                console.log(this.stops);
-//                $.each(data.stops, function(){
-//                    console.log(this.val);
-//                });
-//            });
-//        });
-//        alert(common_routes);
-//     }
-//});
 
 
 $(document).ready(function(){
@@ -215,4 +136,16 @@ $(document).ready(function(){
 
     });
 });
+
+
+// returns all stops accessible by another stop
+$(document).ready(function(){
+    $('#testBtn').on('click', function() {
+        $.get('stops/accessible/', {stop_id: '495'}, function(data) {
+            console.log(data);
+        });
+    });
+});
+
+
 

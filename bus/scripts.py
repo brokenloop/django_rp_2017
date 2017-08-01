@@ -28,9 +28,8 @@ def predict(origin, destination, line, pattern, hour, day):
 
     day = convert_weekday(day)
 
-    filename = os.path.join(settings.DATA_PATH, 'sklearn_models/line15_all_RF.sav')
-
     # loading pickled model
+    filename = os.path.join(settings.DATA_PATH, 'sklearn_models/line15_all_RF.sav')
     model = pickle.load(open(filename, 'rb'))
 
     pred1 = query_model(model, origin, pattern, hour, day)
@@ -85,58 +84,6 @@ def connected(origin, destination, route):
     return origin_rs.order < dest_rs.order
 
 
-# def get_common(origin, destination):
-#     try:
-#         stop1 = Stop.objects.get(stop_id=origin)
-#         stop2 = Stop.objects.get(stop_id=destination)
-#     except Stop.DoesNotExist:
-#         return "None"
-#
-#     routes1 = stop1.route_set.all()
-#     routes2 = stop2.route_set.all()
-#     common = routes1 & routes2
-#     common = [[route.route_id, route.journey_pattern] for route in common if connected(stop1, stop2, route)]
-#
-#     return common
-
-def get_common(origin, destination):
-    stop1 = Stop.objects.get(stop_id=origin)
-    stop2 = Stop.objects.get(stop_id=destination)
-
-    sql = '''
-        SELECT * FROM bus_routestation r1, bus_routestation r2
-        WHERE r1.stop_id = {s1} AND
-          r2.stop_id = {s2} AND
-          r1.route_id = r2.route_id AND
-          r1.order < r2.order
-    '''
-    rs_query = RouteStation.objects.raw(sql.format(s1=stop1.id, s2=stop2.id))
-
-    route_list = set()
-
-    for rs in rs_query:
-        route_list.add(str(rs.route))
-
-    # route_list = []
-    #
-    # for rs in rs_query:
-    #     if not str(rs.route) in route_list:
-    #         route_list.append(str(rs.route))
-
-    print(list(route_list))
-
-
-    # sql = '''
-    #         SELECT r1.name FROM bus_stop r1
-    #         WHERE r1.stop_id = {s1}
-    #     '''
-    # rs_query = RouteStation.objects.raw(sql.format(s1=stop1.id))
-    # print(rs_query)
-
-
-
-
-
 if __name__=="__main__":
 
 
@@ -144,13 +91,12 @@ if __name__=="__main__":
     # filename = os.path.join(settings.DATA_PATH, 'sklearn_models/line15_all_RF.sav')
     # model = pickle.load(open(filename, 'rb'))
     #
-    # print(predict(6282, 1083, 15, 1, 9, 1))
+    print(predict(6282, 1083, 15, 1, 15, 4))
     # origin = Stop.objects.get(stop_id=4886)
     # destination = Stop.objects.get(stop_id=1166)
     # route_15 = Route.objects.get(route_id=15, journey_pattern=1)
 
     # print(connected(origin, destination, route_15))
-    get_common(4886, 1166)
     # stops = route_15.stops.all()
     # print(stops)
 
