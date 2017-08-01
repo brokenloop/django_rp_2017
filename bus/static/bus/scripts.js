@@ -132,6 +132,7 @@ $(document).ready(function(){
 //Takes form inputs and creates markers based on the origin/destination and the stops inbetween
 $(document).ready(function(){
     $('#testBtn').on('click', function() {
+
         var origin = $.trim($('#startStop').val().substring(0,4));
         var destination = $.trim($('#endStop').val().substring(0,4));
         var route_pattern = $('#route').val().split(" ");
@@ -141,12 +142,14 @@ $(document).ready(function(){
         $.get("routes/stops/" + line + "/" + journeyPattern + "/" + origin + "/" + destination, function(data){
             deleteMarkers();
             $.each(data, function(index, stop) {
-
                 createMarker(stop.lat, stop.lon);
-
                 setMapOnAll(map);
-
             });
+            var bounds = new google.maps.LatLngBounds();
+            for (var i = 0; i < markerArray.length; i++) {
+                bounds.extend(markerArray[i].getPosition());
+            }
+            map.fitBounds(bounds);
         });
     });
 });
