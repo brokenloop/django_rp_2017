@@ -39,7 +39,7 @@ function getTime(params) {
 
 // Submitting the form and returning time prediction
 $(document).ready(function(){
-    $("#testBtn").click(function(){
+    $("#submitBtn").click(function(){
         // params = $("form").serialize();
         var startStop=$.trim($('#startStop').val().substring(0,4));
         var endStop=$.trim($('#endStop').val().substring(0,4));
@@ -139,7 +139,7 @@ $(document).ready(function(){
 
 //Takes form inputs and creates markers based on the origin/destination and the stops inbetween
 $(document).ready(function(){
-    $('#testBtn').on('click', function() {
+    $('#submitBtn').on('click', function() {
         var origin = $.trim($('#startStop').val().substring(0,4));
         var destination = $.trim($('#endStop').val().substring(0,4));
         var route_pattern = $('#route').val().split(" ");
