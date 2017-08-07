@@ -45,8 +45,8 @@ function getTime(params) {
 $(document).ready(function(){
     $("#submitBtn").click(function(){
         // params = $("form").serialize();
-        var startStop=$.trim($('#startStop').val().substring(0,4));
-        var endStop=$.trim($('#endStop').val().substring(0,4));
+        var startStop= $('#startStop').val().split(" ")[0];
+        var endStop=$('#endStop').val().split(" ")[0];
         var route_pattern = $('#route').val().split(" ");
         var route = route_pattern[0];
         var pattern = route_pattern[1];
@@ -75,36 +75,13 @@ $(document).ready(function(){
     var start_stop = [];
     $.get("stops", function(data, status){
         $.each(data, function() {
-            start_stop.push(this.stop_id +"-"+ this.name);
+            start_stop.push(this.stop_id +" - "+ this.name);
         });
     });
-    $('input[name="startStop"]').autocomplete({
+    $('input[name="startStop"], input[name="endStop"]').autocomplete({
         minLength: 1,
         source: function (request, response) {
         var results = $.ui.autocomplete.filter(start_stop, request.term);
-        if (results.length == 0) {
-                results.push ({
-                    id: 0,
-                    label: "No match found",
-                });
-            }
-        response(results.slice(0, 20));
-        }
-    });
-});
-
-//loads stops and displays them using autocomplete
-$(document).ready(function(){
-    var end_stop = [];
-    $.get("stops", function(data, status){
-        $.each(data, function() {
-            end_stop.push(this.stop_id+"-"+this.name);
-        });
-    });
-    $('input[name="endStop"]').autocomplete({
-        minLength: 1,
-        source: function (request, response) {
-        var results = $.ui.autocomplete.filter(end_stop, request.term);
         if (results.length == 0) {
                 results.push ({
                     id: 0,
@@ -130,6 +107,7 @@ $(document).ready(function(){
             //gets routes that connect the stops and displays them in the route dropdown
             $.get("stops/common/" + origin + "/" + destination, function(data){
                 var options = $('select[name="route"]')
+                $('select[name="route"]').prop('disabled', false);
                 options.empty()
                 $.each(data, function() {
                     options.append($("<option></option>").text(this));
@@ -153,8 +131,8 @@ $(document).ready(function(){
 //Takes form inputs and creates markers based on the origin/destination and the stops inbetween
 $(document).ready(function(){
     $('#submitBtn').on('click', function() {
-        var origin = $.trim($('#startStop').val().substring(0,4));
-        var destination = $.trim($('#endStop').val().substring(0,4));
+        var origin= $('#startStop').val().split(" ")[0];
+        var destination=$('#endStop').val().split(" ")[0];
         var route_pattern = $('#route').val().split(" ");
         var line = route_pattern[0];
         var journeyPattern = route_pattern[1];
@@ -201,3 +179,7 @@ function deleteMarkers() {
     clearMarkers();
     markerArray = [];
 }
+
+
+
+

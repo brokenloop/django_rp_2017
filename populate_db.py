@@ -24,13 +24,13 @@ def populate_stops(csv_path):
         for row in reader:
             index = row[0]
             stop_id = row[1]
-            name = row[2] + " - " + row[3]
+            name = row[2] + ", " + row[3]
             lat = row[4]
             lon = row[5]
 
             obj, created = Stop.objects.get_or_create(
                 stop_id=row[1],
-                name=row[2] + " - " + row[3],
+                name=row[2] + ", " + row[3],
                 lat=row[4],
                 lon=row[5],
             )

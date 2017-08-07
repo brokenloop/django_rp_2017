@@ -22,7 +22,7 @@ from sklearn.ensemble import RandomForestRegressor
 # pickling
 import pickle
 
-def predict(origin, destination, line, pattern, hour, day):
+def predict(origin, destination, line, pattern, hour, day, weather):
     """ Predicts time taken to get from origin to destination, using query_model
     """
 
@@ -33,13 +33,13 @@ def predict(origin, destination, line, pattern, hour, day):
     # loading pickled model
     model = pickle.load(open(filename, 'rb'))
 
-    pred1 = query_model(model, origin, pattern, hour, day)
-    pred2 = query_model(model, destination, pattern, hour, day)
+    pred1 = query_model(model, origin, pattern, hour, day, weather)
+    pred2 = query_model(model, destination, pattern, hour, day, weather)
 
     return (pred2 - pred1)
 
 
-def query_model(model, stop, pattern, hour, day):
+def query_model(model, stop, pattern, hour, day, weather):
     """ Queries the Random Forest model, returning an estimate for how long it will take to reach that stop
     """
 
@@ -48,6 +48,7 @@ def query_model(model, stop, pattern, hour, day):
         'Hour': hour,
         'JourneyPatternID': pattern,
         'StopID': stop,
+        "Rain": weather,
     }]
 
     df = pd.DataFrame(params)

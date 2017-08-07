@@ -85,6 +85,7 @@ def time_estimate(request):
         pattern = request.GET['pattern']
         hour = request.GET['hour']
         day = request.GET['day']
+        weather = request.GET['weather']
 
         origin = int(origin)
         destination = int(destination)
@@ -175,3 +176,9 @@ def accessible_stops(request):
         serializer = StopSerializer(afters, many=True)
         return JsonResponse(serializer.data, safe=False)
         # return JsonResponse({'data': stop_id})
+
+
+
+def cookie(request):
+    return render(request, 'bus/cookie.html')
+
