@@ -70,41 +70,21 @@ $(document).ready(function(){
 });
 
 
-//loads stops and displays them using autocomplete
-$(document).ready(function(){
-    var start_stop = [];
-    $.get("stops", function(data, status){
-        $.each(data, function() {
-            start_stop.push(this.stop_id +"-"+ this.name);
-        });
-    });
-    $('input[name="startStop"]').autocomplete({
-        minLength: 1,
-        source: function (request, response) {
-        var results = $.ui.autocomplete.filter(start_stop, request.term);
-        if (results.length == 0) {
-                results.push ({
-                    id: 0,
-                    label: "No match found",
-                });
-            }
-        response(results.slice(0, 20));
-        }
-    });
-});
 
-//loads stops and displays them using autocomplete
+//INPUT ROUTES:
+
+//loads routes and displays them using autocomplete
 $(document).ready(function(){
-    var end_stop = [];
-    $.get("stops", function(data, status){
+    var route_list = [];
+    $.get("routes", function(data, status){
         $.each(data, function() {
-            end_stop.push(this.stop_id+"-"+this.name);
+            route_list.push(this.route_id);
         });
     });
-    $('input[name="endStop"]').autocomplete({
+    $('#routeList').autocomplete({
         minLength: 1,
         source: function (request, response) {
-        var results = $.ui.autocomplete.filter(end_stop, request.term);
+        var results = $.ui.autocomplete.filter(route_list, request.term);
         if (results.length == 0) {
                 results.push ({
                     id: 0,
@@ -117,38 +97,143 @@ $(document).ready(function(){
 });
 
 
-// listener for origin and destination inputs
+//INPUT DIRECTION:
+
+// listener for route input
 $(document).ready(function(){
-    $('#startStop, #endStop').change(function() {
-        var value1=$.trim($('#startStop').val().substring(0,4));
-        var value2=$.trim($('#endStop').val().substring(0,4));
+    $('#routeList').change(function() {
+        var value1=$.trim($('#routeList').val());
         //checks if input fields are filled
-        if ((value1.length>0) && (value2.length>0)){
-            var origin = value1;
-            var destination = value2;
+        if (value1.length>0){
+            var routeChosen = value1;
 
-            //gets routes that connect the stops and displays them in the route dropdown
-            $.get("stops/common/" + origin + "/" + destination, function(data){
-                var options = $('select[name="route"]')
+            //gets the route and populates dropdown "Direction" with journeyPatterns
+            $.get("routes" + "/" + routeChosen, function(data){
+                var options = $('#direction')
                 options.empty()
                 $.each(data, function() {
                     options.append($("<option></option>").text(this));
                 });
-                // .fail(function() {
-                //     // $('select[name="route"]').prop('disabled', true);
-                //     // options.append($("<option></option>").text("No Route"));
-                //     alert("Fuck!");
-                // })
-                if(data == 'undefined' || data == ''){
-                    $('select[name="route"]').prop('disabled', true);
-                    options.append($("<option></option>").text("No Route"));
-                }
             });
 
         }
     });
 });
 
+
+//INPUT ORIGIN:
+
+$(document).ready(function(){
+    $('#direction').change(function() {
+        var value1 = $.trim($('#routeList').val());
+        var value2 = $.trim($('#direction').val());
+        //checks if input fields are filled
+        if ((value1.length>0) && (value2.length>0)){
+            var routeChosen = value1;
+            var directionChosen = value2;
+
+            //gets the route and populates dropdown "Direction" with journeyPatterns
+            $.get("routes" + "/" + "stops" + "/" + routeChosen + "/" + directionChosen, function(data){
+                var options = $('#startStop')
+                options.empty()
+                options.append($("<option></option>").text("Origin"))
+                $.each(data, function(index, stops) {
+                    options.append($("<option></option>").text(this.stop_id + " - " + this.name));
+                });
+            });
+        }
+    });
+});
+
+//loads stops and displays them using autocomplete
+//$(document).ready(function(){
+//    var start_stop = [];
+//    $.get("stops", function(data, status){
+//        $.each(data, function() {
+//            start_stop.push(this.stop_id +"-"+ this.name);
+//        });
+//    });
+//    $('input[name="startStop"]').autocomplete({
+//        minLength: 1,
+//        source: function (request, response) {
+//        var results = $.ui.autocomplete.filter(start_stop, request.term);
+//        if (results.length == 0) {
+//                results.push ({
+//                    id: 0,
+//                    label: "No match found",
+//                });
+//            }
+//        response(results.slice(0, 20));
+//        }
+//    });
+//});
+
+
+
+//INPUT DESTINATION:
+
+
+//loads stops and displays them using autocomplete
+//$(document).ready(function(){
+//    var end_stop = [];
+//    $.get("stops", function(data, status){
+//        $.each(data, function() {
+//            end_stop.push(this.stop_id+"-"+this.name);
+//        });
+//    });
+//    $('input[name="endStop"]').autocomplete({
+//        minLength: 1,
+//        source: function (request, response) {
+//        var results = $.ui.autocomplete.filter(end_stop, request.term);
+//        if (results.length == 0) {
+//                results.push ({
+//                    id: 0,
+//                    label: "No match found",
+//                });
+//            }
+//        response(results.slice(0, 20));
+//        }
+//    });
+//});
+
+
+// listener for origin and destination inputs
+//$(document).ready(function(){
+//    $('#startStop, #endStop').change(function() {
+//        var value1=$.trim($('#startStop').val().substring(0,4));
+//        var value2=$.trim($('#endStop').val().substring(0,4));
+//        //checks if input fields are filled
+//        if ((value1.length>0) && (value2.length>0)){
+//            var origin = value1;
+//            var destination = value2;
+//
+//            //gets routes that connect the stops and displays them in the route dropdown
+//            $.get("stops/common/" + origin + "/" + destination, function(data){
+//                var options = $('select[name="route"]')
+//                options.empty()
+//                $.each(data, function() {
+//                    options.append($("<option></option>").text(this));
+//                });
+//                // .fail(function() {
+//                //     // $('select[name="route"]').prop('disabled', true);
+//                //     // options.append($("<option></option>").text("No Route"));
+//                //     alert("Fuck!");
+//                // })
+//                if(data == 'undefined' || data == ''){
+//                    $('select[name="route"]').prop('disabled', true);
+//                    options.append($("<option></option>").text("No Route"));
+//                }
+//            });
+//
+//        }
+//    });
+//});
+
+
+
+
+
+//GOOGLE MAPS FUNCTIONS:
 
 //Takes form inputs and creates markers based on the origin/destination and the stops inbetween
 $(document).ready(function(){
