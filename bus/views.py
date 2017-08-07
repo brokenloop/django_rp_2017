@@ -162,6 +162,32 @@ def middle_stops(request, route_id, journey_pattern, origin, destination):
     serializer = StopSerializer(stops, many=True)
     return JsonResponse(serializer.data, safe=False)
 
+def origin_to_end(request, route_id, journey_pattern, origin):
+    """ Given a route_id and journey_pattern, returns all stops on the route from the origin to the end of the route
+    """
+    try:
+        stop1 = Stop.objects.get(stop_id=origin)
+        route = Route.objects.get(route_id=route_id, journey_pattern=journey_pattern)
+
+        inter1 = RouteStation.objects.get(stop=stop1, route=route)
+    except:
+        return HttpResponse(status=404)
+
+    sql = '''
+            SELECT * FROM bus_routestation r
+            WHERE r.route_id = {route} AND
+              r.order >= {s1}
+        '''
+
+    rs_query = RouteStation.objects.raw(sql.format(route=route.id, s1=inter1.order))
+
+    stops = []
+    # print(rs_query)
+    for rs in (rs_query):
+        stops.append(rs.stop)
+
+    serializer = StopSerializer(stops, many=True)
+    return JsonResponse(serializer.data, safe=False)
 
 def accessible_stops(request):
     print("Fuck")

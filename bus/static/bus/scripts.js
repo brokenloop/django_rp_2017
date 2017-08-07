@@ -172,6 +172,30 @@ $(document).ready(function(){
 
 //INPUT DESTINATION:
 
+$(document).ready(function(){
+    $('#startStop').change(function() {
+        var value1 = $.trim($('#routeList').val());
+        var value2 = $.trim($('#direction').val());
+        var value3 = $.trim($('#startStop').val().split(" - ")[0]);
+        //checks if input fields are filled
+        if ((value1.length>0) && (value2.length>0) && (value3.length>0)){
+            var routeChosen = value1;
+            var directionChosen = value2;
+            var originChosen = value3;
+
+            //gets the route, journeyPattern and origin stop and populates dropdown "Destination" with stops
+            $.get("routes" + "/" + "stops" + "/" + routeChosen + "/" + directionChosen + "/" + originChosen, function(data){
+                var options = $('#endStop')
+                options.empty()
+                options.append($("<option></option>").text("Destination"))
+                $.each(data, function(index, stops) {
+                    options.append($("<option></option>").text(this.stop_id + " - " + this.name));
+                });
+            });
+        }
+    });
+});
+
 
 //loads stops and displays them using autocomplete
 //$(document).ready(function(){
