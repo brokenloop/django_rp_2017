@@ -122,6 +122,14 @@ def route_stops(request, route_id, journey_pattern):
     serializer = StopSerializer(stops, many=True)
     return JsonResponse(serializer.data, safe=False)
 
+def route_patterns(request, route_id):
+    """ Given a route_id, returns the journeyPatterns for the route
+    """
+    routes = Route.objects.filter(route_id=route_id)
+    patterns = []
+    for route in routes:
+        patterns.append(route.journey_pattern)
+    return JsonResponse(patterns, safe=False)
 
 
 def middle_stops(request, route_id, journey_pattern, origin, destination):

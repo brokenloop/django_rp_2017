@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+<script>
+    // Cookie code gotten from
+    // https://stackoverflow.com/questions/39025368/setting-cookie-expiry-time
+
+
+    function setCookie(cname,cvalue,exdays) {
+        var now = new Date(); //get the current date
+        now.setMonth(now.getMonth() + exdays); //add exdays to expiry date
+        var expires = now.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+
+    function getCookie(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+
+    function removeCookie() {
+        var CookieAlert = document.getElementById('cookie');
+        var expire = new Date();
+        expire.setMonth(expire.getMonth() + 1);
+        setCookie('agreeCookies', 'yes', expire);
+    }
+
+    function testJquery(val) {
+        alert(document.cookie);
+
+    }
+
+    function showAll() {
+        alert(document.cookie);
+    }
+
+    function deleteCookie(name) {
+      var path = '/'; // root path
+
+      document.cookie = [
+        name, '=',
+        '; expires=' + new Date(0).toUTCString(),
+        '; path=' + path
+      ].join('');
+    }
+
+    function showCookie(name) {
+        alert(getCookie(name));
+    }
+
+</script>
+
+</head>
+<body>
+<h1>FUCK</h1>
+<input type="text" id="name">
+<button type="button" onclick="setCookie('name1', 'Go', (-1))">Set Cookie!</button>
+<button type="button" onclick="showCookie('name1')">Show Cookie!</button>
+<button type="button" onclick="deleteCookie('name')">Remove Cookie</button>
+<button type="button" onclick="showAll()">Show All</button>
+
+
+</body>
+</html>
