@@ -30,73 +30,44 @@ $(document).ready(function() {
 });
 
 
-//function getTime(params) {
-//    $.get("time", params, function(data, status){
-//        // alert("Data: " + data.Name + "\nStatus: " + status);
-//        $('#timePrediction').text(data.time)
-//       console.log(data);
-//    })
-//        .fail(function() {
-//            alert("Invalid input! Please change the input parameters.");
-//        });
-//}
+function getTime(params) {
+   $.get("time", params, function(data, status){
+       // alert("Data: " + data.Name + "\nStatus: " + status);
+       $('#timePrediction').text(data.time)
+      console.log(data);
+   })
+       .fail(function() {
+           alert("Invalid input! Please change the input parameters.");
+       });
+}
 
 // Submitting the form and returning time prediction
-//$(document).ready(function(){
-//    $("#submitBtn").click(function(){
-//        // params = $("form").serialize();
-//        var startStop= $('#startStop').val().split(" ")[0];
-//        var endStop=$('#endStop').val().split(" ")[0];
-//        var route_pattern = $('#route').val().split(" ");
-//        var route = route_pattern[0];
-//        var pattern = route_pattern[1];
-//        var hour = $('#hour').val();
-//        var day = $('#day').val();
-//        var weather = $('#weather').val();
-//
-//        params = {
-//            'startStop': startStop,
-//            'endStop': endStop,
-//            'route': route,
-//            'pattern': pattern,
-//            'hour': hour,
-//            'day': day,
-//            'weather': weather,
-//        }
-//        console.log(params);
-//
-//        getTime(params);
-//    });
-//});
+$(document).ready(function(){
+   $("#submitBtn").click(function(){
+       // params = $("form").serialize();
+       var startStop= $('#startStop').val().split(" ")[0];
+       var endStop=$('#endStop').val().split(" ")[0];
+       // var route_pattern = $('#routeList').val();
+       var route = $('#routeList').val();
+       var pattern = $('#direction').val();
+       var hour = $('#hour').val();
+       var day = $('#day').val();
+       var weather = $('#weather').val();
 
-//$(document).ready(function(){
-//    $("#submitBtn").click(function(){
-//        // params = $("form").serialize();
-//        var startStop= $('#startStop').val().split(" ")[0];
-//        var endStop=$('#endStop').val().split(" ")[0];
-//        var line = $('#routeList').val();
-//        var journeyPattern = $('#direction').val();
-//        var hour = $('#hour').val();
-//        var day = $('#day').val();
-//        var weather = $('#weather').val();
-//
-//        params = {
-//            'startStop': startStop,
-//            'endStop': endStop,
-//            'route': line,
-//            'pattern': journeyPattern,
-//            'hour': hour,
-//            'day': day,
-//            'weather': weather,
-//        }
-//        console.log(params);
-//
-//        getTime(params);
-//    });
-//});
+       params = {
+           'startStop': startStop,
+           'endStop': endStop,
+           'route': route,
+           'pattern': pattern,
+           'hour': hour,
+           'day': day,
+           'weather': weather,
+       }
+       console.log(params);
 
-
-
+       getTime(params);
+   });
+});
 
 
 //INPUT ROUTES:
@@ -224,66 +195,6 @@ $(document).ready(function(){
         }
     });
 });
-
-
-//loads stops and displays them using autocomplete
-//$(document).ready(function(){
-//    var end_stop = [];
-//    $.get("stops", function(data, status){
-//        $.each(data, function() {
-//            end_stop.push(this.stop_id+"-"+this.name);
-//        });
-//    });
-//    $('input[name="endStop"]').autocomplete({
-//        minLength: 1,
-//        source: function (request, response) {
-//        var results = $.ui.autocomplete.filter(end_stop, request.term);
-//        if (results.length == 0) {
-//                results.push ({
-//                    id: 0,
-//                    label: "No match found",
-//                });
-//            }
-//        response(results.slice(0, 20));
-//        }
-//    });
-//});
-
-
-// listener for origin and destination inputs
-//$(document).ready(function(){
-//    $('#startStop, #endStop').change(function() {
-//        var value1=$.trim($('#startStop').val().substring(0,4));
-//        var value2=$.trim($('#endStop').val().substring(0,4));
-//        //checks if input fields are filled
-//        if ((value1.length>0) && (value2.length>0)){
-//            var origin = value1;
-//            var destination = value2;
-//
-//            //gets routes that connect the stops and displays them in the route dropdown
-//            $.get("stops/common/" + origin + "/" + destination, function(data){
-//                var options = $('select[name="route"]')
-//                options.empty()
-//                $.each(data, function() {
-//                    options.append($("<option></option>").text(this));
-//                });
-//                // .fail(function() {
-//                //     // $('select[name="route"]').prop('disabled', true);
-//                //     // options.append($("<option></option>").text("No Route"));
-//                //     alert("Fuck!");
-//                // })
-//                if(data == 'undefined' || data == ''){
-//                    $('select[name="route"]').prop('disabled', true);
-//                    options.append($("<option></option>").text("No Route"));
-//                }
-//            });
-//
-//        }
-//    });
-//});
-
-
-
 
 
 //GOOGLE MAPS FUNCTIONS:

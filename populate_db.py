@@ -15,7 +15,9 @@ from bus.models import Stop, Route, RouteStation
 
 def populate_stops(csv_path):
 
-    with open(csv_path, encoding='utf-8', errors='ignore') as f:
+    # with open(csv_path, encoding='utf-8', errors='ignore') as f:
+    with open(csv_path, encoding='ISO-8859-1', errors='ignore') as f:
+
 
         reader = csv.reader(f)
 
@@ -25,7 +27,7 @@ def populate_stops(csv_path):
         for row in reader:
             index = row[0]
             stop_id = row[1]
-            name = row[2] + ", " + row[3]
+            name = row[3] + ", " + row[2]
             lat = row[4]
             lon = row[5]
 
@@ -86,25 +88,24 @@ def populate_route_stations(csv_path):
         next(reader)
 
         for row in reader:
-            index  = row[0]
+            index = row[0]
             LineID = row[1]
             JourneyPatternID = row[2]
             Order = row[3]
             StopID = row[4]
             Headsign = row[5]
-            Name = row[6] + ", " + row[7]
+            Name = row[7] + ", " + row[6]
             Lat = row[8]
             Lon = row[9]
 
             #
             # index = row[0]
             # StopID = row[1]
-            # Order = row[3]
             # Runtime = str(row[2])
+            # Order = row[3]
             # LineID = row[4]
             # JourneyPatternID = int(float(row[5]))
-            # lon = row[6]
-            # lat = row[7]
+
 
             try:
                 stop = Stop.objects.get(
@@ -139,9 +140,10 @@ if __name__=="__main__":
     stop_path = os.path.join(settings.DATA_PATH, 'static_data_eoghan/stops.csv')
     route_path = os.path.join(settings.DATA_PATH, 'static_data_eoghan/lines.csv')
     routestops_path = os.path.join(settings.DATA_PATH, 'static_data_eoghan/routestations3.csv')
+    # routestops_path = os.path.join(settings.DATA_PATH, 'static_data/route_stops_all.csv')
 
-    # populate_stops(stop_path)
-    # populate_routes(route_path)
+    populate_stops(stop_path)
+    populate_routes(route_path)
     populate_route_stations(routestops_path)
 
 

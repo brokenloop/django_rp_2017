@@ -94,7 +94,7 @@ def time_estimate(request):
         day = int(day)
 
         #format: origin, destination, line, pattern, hour, day
-        pred = predict(origin, destination, route, pattern, hour, day)
+        pred = predict(origin, destination, route, pattern, hour, day, weather)
         pred = str(datetime.timedelta(seconds=pred))
 
     except:
