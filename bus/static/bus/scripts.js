@@ -30,44 +30,72 @@ $(document).ready(function() {
 });
 
 
-function getTime(params) {
-    $.get("time", params, function(data, status){
-        // alert("Data: " + data.Name + "\nStatus: " + status);
-        $('#timePrediction').text(data.time)
-       console.log(data);
-    })
-        .fail(function() {
-            alert("Invalid input! Please change the input parameters.");
-        });
-}
+//function getTime(params) {
+//    $.get("time", params, function(data, status){
+//        // alert("Data: " + data.Name + "\nStatus: " + status);
+//        $('#timePrediction').text(data.time)
+//       console.log(data);
+//    })
+//        .fail(function() {
+//            alert("Invalid input! Please change the input parameters.");
+//        });
+//}
 
 // Submitting the form and returning time prediction
-$(document).ready(function(){
-    $("#submitBtn").click(function(){
-        // params = $("form").serialize();
-        var startStop= $('#startStop').val().split(" ")[0];
-        var endStop=$('#endStop').val().split(" ")[0];
-        var route_pattern = $('#route').val().split(" ");
-        var route = route_pattern[0];
-        var pattern = route_pattern[1];
-        var hour = $('#hour').val();
-        var day = $('#day').val();
-        var weather = $('#weather').val();
+//$(document).ready(function(){
+//    $("#submitBtn").click(function(){
+//        // params = $("form").serialize();
+//        var startStop= $('#startStop').val().split(" ")[0];
+//        var endStop=$('#endStop').val().split(" ")[0];
+//        var route_pattern = $('#route').val().split(" ");
+//        var route = route_pattern[0];
+//        var pattern = route_pattern[1];
+//        var hour = $('#hour').val();
+//        var day = $('#day').val();
+//        var weather = $('#weather').val();
+//
+//        params = {
+//            'startStop': startStop,
+//            'endStop': endStop,
+//            'route': route,
+//            'pattern': pattern,
+//            'hour': hour,
+//            'day': day,
+//            'weather': weather,
+//        }
+//        console.log(params);
+//
+//        getTime(params);
+//    });
+//});
 
-        params = {
-            'startStop': startStop,
-            'endStop': endStop,
-            'route': route,
-            'pattern': pattern,
-            'hour': hour,
-            'day': day,
-            'weather': weather,
-        }
-        console.log(params);
+//$(document).ready(function(){
+//    $("#submitBtn").click(function(){
+//        // params = $("form").serialize();
+//        var startStop= $('#startStop').val().split(" ")[0];
+//        var endStop=$('#endStop').val().split(" ")[0];
+//        var line = $('#routeList').val();
+//        var journeyPattern = $('#direction').val();
+//        var hour = $('#hour').val();
+//        var day = $('#day').val();
+//        var weather = $('#weather').val();
+//
+//        params = {
+//            'startStop': startStop,
+//            'endStop': endStop,
+//            'route': line,
+//            'pattern': journeyPattern,
+//            'hour': hour,
+//            'day': day,
+//            'weather': weather,
+//        }
+//        console.log(params);
+//
+//        getTime(params);
+//    });
+//});
 
-        getTime(params);
-    });
-});
+
 
 
 
@@ -262,11 +290,10 @@ $(document).ready(function(){
 //Takes form inputs and creates markers based on the origin/destination and the stops inbetween
 $(document).ready(function(){
     $('#submitBtn').on('click', function() {
-        var origin= $('#startStop').val().split(" ")[0];
-        var destination=$('#endStop').val().split(" ")[0];
-        var route_pattern = $('#route').val().split(" ");
-        var line = route_pattern[0];
-        var journeyPattern = route_pattern[1];
+        var origin= $('#startStop').val().split(" - ")[0];
+        var destination=$('#endStop').val().split(" - ")[0];
+        var line = $('#routeList').val();
+        var journeyPattern = $('#direction').val();
 
         $.get("routes/stops/" + line + "/" + journeyPattern + "/" + origin + "/" + destination, function(data){
             deleteMarkers();
