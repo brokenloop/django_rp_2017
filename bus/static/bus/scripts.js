@@ -145,31 +145,6 @@ $(document).ready(function(){
 });
 
 
-//loads stops and displays them using autocomplete
-//$(document).ready(function(){
-//    var start_stop = [];
-//    $.get("stops", function(data, status){
-//        $.each(data, function() {
-//            start_stop.push(this.stop_id +"-"+ this.name);
-//        });
-//    });
-//    $('input[name="startStop"]').autocomplete({
-//        minLength: 1,
-//        source: function (request, response) {
-//        var results = $.ui.autocomplete.filter(start_stop, request.term);
-//        if (results.length == 0) {
-//                results.push ({
-//                    id: 0,
-//                    label: "No match found",
-//                });
-//            }
-//        response(results.slice(0, 20));
-//        }
-//    });
-//});
-
-
-
 //INPUT DESTINATION:
 
 $(document).ready(function(){
