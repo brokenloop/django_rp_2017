@@ -8,12 +8,13 @@ class Stop(models.Model):
     stop_id = models.IntegerField(unique=True)
 
     def __str__(self):
-        return self.name + " - " + str(self.stop_id)
+        return self.name + ", " + str(self.stop_id)
 
 
 class Route(models.Model):
     route_id = models.CharField(max_length=20)
     journey_pattern = models.CharField(max_length=20)
+    headsign = models.CharField(max_length=40)
     stops = models.ManyToManyField(Stop, through="RouteStation")
 
     class Meta:

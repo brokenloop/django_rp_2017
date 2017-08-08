@@ -8,7 +8,8 @@ from rest_framework.parsers import JSONParser
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from .models import Stop, Route, RouteStation
-from .serializers import StopSerializer, RouteSerializer, RouteStationSerializer
+from .serializers import StopSerializer, RouteSerializer, \
+    RouteStationSerializer
 
 
 def index(request):
@@ -108,9 +109,16 @@ def route_list(request):
     :return: A list of all the routes
     """
     if request.method == "GET":
-        routes = Route.objects.all()
-        serializer = RouteSerializer(routes, many=True)
-        return JsonResponse(serializer.data, safe=False)
+        # routes = Route.objects.all()
+        # routes = Route.objects.values("route_id").distinct()
+        routes = Route.objects.order_by().values('route_id').distinct()
+        route_ids = []
+        for value in routes:
+            route_ids.append(value)
+        print(route_ids)
+        # routes = dict(routes)
+        # serializer = RouteSerializer(routes, many=True)
+        return JsonResponse(route_ids, safe=False)
 
 
 

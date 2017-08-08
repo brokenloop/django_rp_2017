@@ -15,7 +15,8 @@ from bus.models import Stop, Route, RouteStation
 
 def populate_stops(csv_path):
 
-    with open(csv_path) as f:
+    with open(csv_path, encoding='utf-8', errors='ignore') as f:
+
         reader = csv.reader(f)
 
         # skip first line, as this is the header
@@ -41,22 +42,29 @@ def populate_stops(csv_path):
                 print(stop_id, "already exists")
 
 
+    print("Finished stops!")
+    print()
+
+
 def populate_routes(csv_path):
 
-    with open(csv_path) as f:
+    with open(csv_path, encoding='utf-8', errors='ignore') as f:
         reader = csv.reader(f)
 
         # skip first line, as this is the header
         next(reader)
 
         for row in reader:
-            index = row[0]
-            route_id = row[1]
-            journey_pattern = str(row[2])
+            index1 = row[0]
+            index2 = row[1]
+            route_id = row[2]
+            journey_pattern = str(row[3])
+            headsign = row[4]
 
             obj, created = Route.objects.get_or_create(
                 route_id=route_id,
                 journey_pattern=journey_pattern,
+                headsign=headsign,
             )
 
             if created:
@@ -64,30 +72,43 @@ def populate_routes(csv_path):
             else:
                 print(route_id, "already exists")
 
+    print("Finished routes!")
+    print()
 
 def populate_route_stations(csv_path):
     missing_stops = set()
     missing_routes = set()
 
-    with open(csv_path) as f:
+    with open(csv_path, encoding='utf-8', errors='ignore') as f:
         reader = csv.reader(f)
 
         # skip first line, as this is the header
         next(reader)
 
         for row in reader:
-            index = row[0]
-            StopID = row[1]
-            Runtime = str(row[2])
+            index  = row[0]
+            LineID = row[1]
+            JourneyPatternID = row[2]
             Order = row[3]
-            LineID = row[4]
-            JourneyPatternID = int(float(row[5]))
-            lon = row[6]
-            lat = row[7]
+            StopID = row[4]
+            Headsign = row[5]
+            Name = row[6] + ", " + row[7]
+            Lat = row[8]
+            Lon = row[9]
+
+            #
+            # index = row[0]
+            # StopID = row[1]
+            # Order = row[3]
+            # Runtime = str(row[2])
+            # LineID = row[4]
+            # JourneyPatternID = int(float(row[5]))
+            # lon = row[6]
+            # lat = row[7]
 
             try:
                 stop = Stop.objects.get(
-                    stop_id=StopID
+                    stop_id=StopID,
                 )
 
                 route = Route.objects.get(
@@ -101,24 +122,26 @@ def populate_route_stations(csv_path):
                     order=Order,
                 )
 
-                # if created:
-                #     print(stop, route, "created")
-                # else:
-                #     print(stop, route, "already exists")
+                if created:
+                    print(stop, route, "created")
+                else:
+                    print(stop, route, "already exists")
             except:
                 print("Error!")
 
+    print("Finished route stops!")
+    print()
 
     return missing_stops, missing_routes
 
 
 if __name__=="__main__":
-    stop_path = os.path.join(settings.DATA_PATH, 'static_data/stops_all.csv')
-    route_path = os.path.join(settings.DATA_PATH, 'static_data/routes_all.csv')
-    routestops_path = os.path.join(settings.DATA_PATH, 'static_data/route_stops_all.csv')
+    stop_path = os.path.join(settings.DATA_PATH, 'static_data_eoghan/stops.csv')
+    route_path = os.path.join(settings.DATA_PATH, 'static_data_eoghan/lines.csv')
+    routestops_path = os.path.join(settings.DATA_PATH, 'static_data_eoghan/routestations3.csv')
 
-    populate_stops(stop_path)
-    populate_routes(route_path)
+    # populate_stops(stop_path)
+    # populate_routes(route_path)
     populate_route_stations(routestops_path)
 
 
