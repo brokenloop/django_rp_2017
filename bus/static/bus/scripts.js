@@ -173,6 +173,7 @@ $(document).ready(function(){
     });
 });
 
+
 //loads stops and displays them using autocomplete
 //$(document).ready(function(){
 //    var start_stop = [];
