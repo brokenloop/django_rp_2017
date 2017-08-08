@@ -1,6 +1,12 @@
 /**
  * Created by danieljordan on 11/07/2017.
  */
+var map;
+var busPath;
+var markerArray = [];
+var mapKey = "AIzaSyB3um4WUb5l36zZyCnovdVFE6OEBfgf3wQ";
+var roadKey = "AIzaSyAUX0EvazigXFp19OEGF-I5XsUQQuqkrAY";
+
 
 function populate_hour(selector, low, high) {
     for (var i = low; i <= high; i++) {
@@ -185,18 +191,17 @@ $(document).ready(function(){
 
         $.get("routes/stops/" + line + "/" + journeyPattern + "/" + origin + "/" + destination, function(data){
             deleteMarkers();
+            removeLine();
+            var stopCoords = [];
             $.each(data, function(index, stop) {
                 var contentString = '<div id="content">' + '<p id="stopHeader">' + stop.stop_id + " - " + stop.name + '</p>' + '</div>';
                 createMarker(stop.lat, stop.lon, contentString);
                 setMapOnAll(map);
-//                var contentString = '<div id="content">' + '<h2 id="stopHeader">' + stop.name + '</h2>' + '</div>';
-//                var infoWindow = new google.maps.InfoWindow({
-//                    content: contentString
-//                });
-//                marker.addListener('click', function(){
-//                    infoWindow.open(map, marker);
-//                });
+                stopCoords.push({lat: stop.lat, lng: stop.lon});
             });
+            // createPolyLine(stopCoords);
+            // drawLine();
+            getSnappedCoords(stopCoords);
             var bounds = new google.maps.LatLngBounds();
             for (var i = 0; i < markerArray.length; i++) {
                 bounds.extend(markerArray[i].getPosition());
@@ -205,6 +210,7 @@ $(document).ready(function(){
         });
     });
 });
+
 
 //Creates a new marker
 function createMarker(lat, lon, contentString){
@@ -226,15 +232,6 @@ function createMarker(lat, lon, contentString){
     });
 }
 
-function createPolyLine(coords) {
-    busPath = new google.maps.Polyline({
-        path: coords,
-        strokeColor: '#FF0000',
-        strokeOpacity: 1.0,
-        strokeWeight: 2,
-    });
-}
-
 function setMapOnAll(map) {
     for (var i = 0; i < markerArray.length; i++) {
         markerArray[i].setMap(map);
@@ -248,4 +245,63 @@ function clearMarkers() {
 function deleteMarkers() {
     clearMarkers();
     markerArray = [];
+}
+
+
+function createPolyLine(coords) {
+    busPath = new google.maps.Polyline({
+        path: coords,
+        strokeColor: '#42d1ff',
+        strokeOpacity: 1.0,
+        strokeWeight: 2,
+    });
+}
+
+
+function drawLine() {
+    busPath.setMap(map);
+}
+
+
+function removeLine() {
+    if (busPath) {
+        busPath.setMap(null);
+    }
+}
+
+function getSnappedCoords(coords) {
+    path = [];
+    $.each(coords, function(index, value) {
+        path.push(value.lat.toString() + "," + value.lng.toString());
+    });
+    path = path.join("|");
+    console.log(path);
+    $.get('https://roads.googleapis.com/v1/snapToRoads', {
+        interpolate: true,
+        key: roadKey,
+        path: path
+      }, function(data) {
+        createPolyLine(data);
+        drawLine();
+        console.log(data);
+      });
+}
+
+
+
+function runSnapToRoad(path) {
+  var pathValues = [];
+  for (var i = 0; i < path.getLength(); i++) {
+    pathValues.push(path.getAt(i).toUrlValue());
+  }
+
+  $.get('https://roads.googleapis.com/v1/snapToRoads', {
+    interpolate: true,
+    key: apiKey,
+    path: pathValues.join('|')
+  }, function(data) {
+    processSnapToRoadResponse(data);
+    drawSnappedPolyline();
+    getAndDrawSpeedLimits();
+  });
 }

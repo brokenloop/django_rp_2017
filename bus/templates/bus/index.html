@@ -117,11 +117,7 @@
         <div id="map"></div>
         <script>
 {#          <!--global map variable. Allows us to interact with the map from outside this program.-->#}
-          var map;
-          var busPath;
-          var markerArray = [];
-
-              <!--Initialize the map-->
+{#              <!--Initialize the map-->#}
               function initMap() {
                 var dublin = {lat: 53.3498, lng: -6.2603};
                 map = new google.maps.Map(document.getElementById('map'), {
