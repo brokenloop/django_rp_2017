@@ -16,5 +16,4 @@ urlpatterns = [
     url(r'^routes/(?P<route_id>[a-zA-Z0-9]+)/$', views.route_patterns),
     url(r'^cookie/$', views.cookie),
     url(r'^routes/stops/(?P<route_id>[a-zA-Z0-9]+)/(?P<journey_pattern>[a-zA-Z0-9]+)/(?P<origin>[0-9]+)/$', views.origin_to_end),
-
 ]
