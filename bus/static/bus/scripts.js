@@ -210,6 +210,15 @@ function createMarker(lat, lon){
     markerArray.push(marker);
 }
 
+function createPolyLine(coords) {
+    busPath = new google.maps.Polyline({
+        path: coords,
+        strokeColor: '#FF0000',
+        strokeOpacity: 1.0,
+        strokeWeight: 2,
+    });
+}
+
 function setMapOnAll(map) {
     for (var i = 0; i < markerArray.length; i++) {
         markerArray[i].setMap(map);
