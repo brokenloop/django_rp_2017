@@ -110,6 +110,7 @@ $(document).ready(function(){
             $.get("routes" + "/" + routeChosen, function(data){
                 var options = $('#direction')
                 options.empty()
+                options.append($("<option></option>").text("Direction"))
                 $.each(data, function() {
                     options.append($("<option></option>").text(this));
                 });
@@ -185,8 +186,16 @@ $(document).ready(function(){
         $.get("routes/stops/" + line + "/" + journeyPattern + "/" + origin + "/" + destination, function(data){
             deleteMarkers();
             $.each(data, function(index, stop) {
-                createMarker(stop.lat, stop.lon);
+                var contentString = '<div id="content">' + '<p id="stopHeader">' + stop.stop_id + " - " + stop.name + '</p>' + '</div>';
+                createMarker(stop.lat, stop.lon, contentString);
                 setMapOnAll(map);
+//                var contentString = '<div id="content">' + '<h2 id="stopHeader">' + stop.name + '</h2>' + '</div>';
+//                var infoWindow = new google.maps.InfoWindow({
+//                    content: contentString
+//                });
+//                marker.addListener('click', function(){
+//                    infoWindow.open(map, marker);
+//                });
             });
             var bounds = new google.maps.LatLngBounds();
             for (var i = 0; i < markerArray.length; i++) {
@@ -198,7 +207,7 @@ $(document).ready(function(){
 });
 
 //Creates a new marker
-function createMarker(lat, lon){
+function createMarker(lat, lon, contentString){
     var marker = new google.maps.Marker({
         position: {
               'lat': lat,
@@ -208,6 +217,13 @@ function createMarker(lat, lon){
         map: map
     });
     markerArray.push(marker);
+
+    var infoWindow = new google.maps.InfoWindow({
+        content: contentString
+    });
+    marker.addListener('click', function(){
+        infoWindow.open(map, marker);
+    });
 }
 
 function createPolyLine(coords) {
