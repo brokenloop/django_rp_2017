@@ -30,44 +30,44 @@ $(document).ready(function() {
 });
 
 
-function getTime(params) {
-   $.get("time", params, function(data, status){
-       // alert("Data: " + data.Name + "\nStatus: " + status);
-       $('#timePrediction').text(data.time)
-      console.log(data);
-   })
-       .fail(function() {
-           alert("Invalid input! Please change the input parameters.");
-       });
-}
+//function getTime(params) {
+//   $.get("time", params, function(data, status){
+//       // alert("Data: " + data.Name + "\nStatus: " + status);
+//       $('#timePrediction').text(data.time)
+//      console.log(data);
+//   })
+//       .fail(function() {
+//           alert("Invalid input! Please change the input parameters.");
+//       });
+//}
 
 // Submitting the form and returning time prediction
-$(document).ready(function(){
-   $("#submitBtn").click(function(){
-       // params = $("form").serialize();
-       var startStop= $('#startStop').val().split(" ")[0];
-       var endStop=$('#endStop').val().split(" ")[0];
-       // var route_pattern = $('#routeList').val();
-       var route = $('#routeList').val();
-       var pattern = $('#direction').val();
-       var hour = $('#hour').val();
-       var day = $('#day').val();
-       var weather = $('#weather').val();
-
-       params = {
-           'startStop': startStop,
-           'endStop': endStop,
-           'route': route,
-           'pattern': pattern,
-           'hour': hour,
-           'day': day,
-           'weather': weather,
-       }
-       console.log(params);
-
-       getTime(params);
-   });
-});
+//$(document).ready(function(){
+//   $("#submitBtn").click(function(){
+//       // params = $("form").serialize();
+//       var startStop= $('#startStop').val().split(" ")[0];
+//       var endStop=$('#endStop').val().split(" ")[0];
+//       // var route_pattern = $('#routeList').val();
+//       var route = $('#routeList').val();
+//       var pattern = $('#direction').val();
+//       var hour = $('#hour').val();
+//       var day = $('#day').val();
+//       var weather = $('#weather').val();
+//
+//       params = {
+//           'startStop': startStop,
+//           'endStop': endStop,
+//           'route': route,
+//           'pattern': pattern,
+//           'hour': hour,
+//           'day': day,
+//           'weather': weather,
+//       }
+//       console.log(params);
+//
+//       getTime(params);
+//   });
+//});
 
 
 //INPUT ROUTES:
@@ -109,8 +109,14 @@ $(document).ready(function(){
             //gets the route and populates dropdown "Direction" with journeyPatterns
             $.get("routes" + "/" + routeChosen, function(data){
                 var options = $('#direction')
+                var optionsOrigin = $('#startStop')
+                var optionsDestination = $('#endStop')
                 options.empty()
+                optionsOrigin.empty()
+                optionsDestination.empty()
                 options.append($("<option></option>").text("Direction"))
+                optionsOrigin.append($("<option></option>").text("Origin"))
+                optionsDestination.append($("<option></option>").text("Destination"))
                 $.each(data, function() {
                     options.append($("<option></option>").text(this));
                 });
@@ -123,6 +129,7 @@ $(document).ready(function(){
 
 //INPUT ORIGIN:
 
+//Listener for direction input
 $(document).ready(function(){
     $('#direction').change(function() {
         var value1 = $.trim($('#routeList').val());
@@ -134,11 +141,14 @@ $(document).ready(function(){
 
             //gets the route and populates dropdown "Direction" with journeyPatterns
             $.get("routes" + "/" + "stops" + "/" + routeChosen + "/" + directionChosen, function(data){
-                var options = $('#startStop')
-                options.empty()
-                options.append($("<option></option>").text("Origin"))
+                var optionsOrigin = $('#startStop')
+                var optionsDestination = $('#endStop')
+                optionsOrigin.empty()
+                optionsDestination.empty()
+                optionsOrigin.append($("<option></option>").text("Origin"))
+                optionsDestination.append($("<option></option>").text("Destination"))
                 $.each(data, function(index, stops) {
-                    options.append($("<option></option>").text(this.stop_id + " - " + this.name));
+                    optionsOrigin.append($("<option></option>").text(this.stop_id + " - " + this.name));
                 });
             });
         }
@@ -148,6 +158,7 @@ $(document).ready(function(){
 
 //INPUT DESTINATION:
 
+//Listener for origin stop
 $(document).ready(function(){
     $('#startStop').change(function() {
         var value1 = $.trim($('#routeList').val());
@@ -189,13 +200,6 @@ $(document).ready(function(){
                 var contentString = '<div id="content">' + '<p id="stopHeader">' + stop.stop_id + " - " + stop.name + '</p>' + '</div>';
                 createMarker(stop.lat, stop.lon, contentString);
                 setMapOnAll(map);
-//                var contentString = '<div id="content">' + '<h2 id="stopHeader">' + stop.name + '</h2>' + '</div>';
-//                var infoWindow = new google.maps.InfoWindow({
-//                    content: contentString
-//                });
-//                marker.addListener('click', function(){
-//                    infoWindow.open(map, marker);
-//                });
             });
             var bounds = new google.maps.LatLngBounds();
             for (var i = 0; i < markerArray.length; i++) {
