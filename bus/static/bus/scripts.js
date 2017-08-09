@@ -40,7 +40,6 @@ function getTime(params) {
    $.get("time", params, function(data, status){
        // alert("Data: " + data.Name + "\nStatus: " + status);
        $('#timePrediction').text(data.time)
-      console.log(data);
    })
        .fail(function() {
            alert("Invalid input! Please change the input parameters.");
@@ -69,8 +68,6 @@ $(document).ready(function(){
            'day': day,
            'weather': weather,
        }
-       console.log(params);
-
        getTime(params);
    });
 });
@@ -286,18 +283,29 @@ function getSnappedCoords(coords) {
         path.push(value.lat.toString() + "," + value.lng.toString());
     });
     path = path.join("|");
-    console.log(path);
+    // console.log(path);
     $.get('https://roads.googleapis.com/v1/snapToRoads', {
         interpolate: true,
         key: roadKey,
         path: path
       }, function(data) {
-        createPolyLine(data);
+        coords = transformCoords(data);
+        createPolyLine(coords);
         drawLine();
-        console.log(data);
       });
 }
 
+function transformCoords(data) {
+    data = data.snappedPoints;
+    var coords = [];
+    $.each(data, function(index, value) {
+        coords.push({
+            lat: value.location.latitude,
+            lng: value.location.longitude
+        });
+    });
+    return coords;
+}
 
 
 function runSnapToRoad(path) {
