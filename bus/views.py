@@ -103,6 +103,14 @@ def time_estimate(request):
     return JsonResponse({'time': pred})
 
 
+def routes(request):
+    if request.method == "GET":
+        routes = Route.objects.all()
+        serializer = RouteSerializer(routes, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
+
+
 def route_list(request):
     """
     :param request:
@@ -115,7 +123,7 @@ def route_list(request):
         route_ids = []
         for value in routes:
             route_ids.append(value)
-        print(route_ids)
+        # print(route_ids)
         # routes = dict(routes)
         # serializer = RouteSerializer(routes, many=True)
         return JsonResponse(route_ids, safe=False)
@@ -126,7 +134,9 @@ def route_stops(request, route_id, journey_pattern):
     """ Given a route_id and journey_pattern, returns all stops on the route
     """
     route = Route.objects.get(route_id=route_id, journey_pattern=journey_pattern)
+    print(route)
     stops = route.stops.all()
+    print(stops)
     serializer = StopSerializer(stops, many=True)
     return JsonResponse(serializer.data, safe=False)
 
@@ -199,13 +209,12 @@ def origin_to_end(request, route_id, journey_pattern, origin):
     return JsonResponse(serializer.data, safe=False)
 
 def accessible_stops(request):
-    print("Fuck")
 
     if request.GET:
         stop_id = request.GET['stop_id']
         stop = Stop.objects.get(stop_id=stop_id)
         routes = stop.route_set.all()
-        print(routes)
+        # print(routes)
 
         stops = set()
 

@@ -6,7 +6,26 @@ var busPath;
 var markerArray = [];
 var mapKey = "AIzaSyB3um4WUb5l36zZyCnovdVFE6OEBfgf3wQ";
 var roadKey = "AIzaSyAUX0EvazigXFp19OEGF-I5XsUQQuqkrAY";
+var routeList;
+var routeData;
 
+loadRouteData();
+
+function loadRouteData() {
+    $.get("routes", function(data, status){
+        routeData = {};
+        $.each(data, function(index, value) {
+            if (routeData[value.route_id]) {
+                // if entry exists, add new value to the array
+                routeData[value.route_id].push({headsign: value.headsign, pattern: value.journey_pattern});
+            } else {
+                //otherwise, create new entry
+                routeData[value.route_id] = [{headsign: value.headsign, pattern: value.journey_pattern}];
+            }
+        });
+        fillRoute(routeData)
+    });
+}
 
 function populate_hour(selector, low, high) {
     for (var i = low; i <= high; i++) {
@@ -28,6 +47,28 @@ function populate_day(selector, low, high) {
         }
     }
 }
+
+// Got some code for this here https://jsfiddle.net/Guffa/Askwb/
+// function getUnique(list) {
+//     var result = [];
+//     $.each(list, function(i, e) {
+//         if ($.inArray(e, result) == -1) result.push(e);
+//     });
+//     return result;
+// }
+
+function getUnique(list) {
+    var result = []
+    var seen = {};
+    $.each(list, function(i, e) {
+        if (!seen[e]) {
+            seen[e] = true;
+            result.push(e);
+        }
+    });
+    return result;
+}
+
 
 // populate hour and day selects
 $(document).ready(function() {
@@ -53,7 +94,7 @@ $(document).ready(function(){
        var startStop= $('#startStop').val().split(" ")[0];
        var endStop=$('#endStop').val().split(" ")[0];
        // var route_pattern = $('#routeList').val();
-       var route = $('#routeList').val();
+       var route = $('#route').val();
        var pattern = $('#direction').val();
        var hour = $('#hour').val();
        var day = $('#day').val();
@@ -72,59 +113,73 @@ $(document).ready(function(){
    });
 });
 
+function clearInputs(inputs) {
+    $.each(inputs, function(id, label) {
+       var option = $('#' + id);
+       console.log(id);
+       option.empty();
+       option.append($("<option></option>").text(label));
+    });
+    // var options = $('#direction');
+    // var optionsOrigin = $('#startStop');
+    // var optionsDestination = $('#endStop');
+    // options.empty();
+    // optionsOrigin.empty();
+    // optionsDestination.empty();
+    // options.append($("<option></option>").text("Direction"));
+    // optionsOrigin.append($("<option></option>").text("Origin"));
+    // optionsDestination.append($("<option></option>").text("Destination"));
+}
+
 
 //INPUT ROUTES:
 
-//loads routes and displays them using autocomplete
-$(document).ready(function(){
-    var route_list = [];
-    $.get("routes", function(data, status){
-        $.each(data, function() {
-            route_list.push(this.route_id);
-        });
-    });
-    $('#routeList').autocomplete({
-        minLength: 1,
-        source: function (request, response) {
-        var results = $.ui.autocomplete.filter(route_list, request.term);
-        if (results.length == 0) {
+//loads routes and displays them using autocomplete - called asyncly from loadRouteData()
+function fillRoute(data) {
+    $(document).ready(function(){
+
+        // reset inputs
+        clearInputs({direction: 'Direction', startStop: 'Origin', endStop: 'Destination'});
+
+        // get list of routes
+        var route_list = [];
+         $.each(data, function(index, value) {
+                route_list.push(index);
+            });
+        $('#route').autocomplete({
+            minLength: 1,
+            source: function (request, response) {
+            var results = $.ui.autocomplete.filter(route_list, request.term);
+            if (results.length == 0) {
                 results.push ({
                     id: 0,
                     label: "No match found",
                 });
             }
-        response(results.slice(0, 20));
-        }
+            response(results.slice(0, 20));
+            }
+        });
     });
-});
+
+}
 
 
 //INPUT DIRECTION:
 
 // listener for route input
 $(document).ready(function(){
-    $('#routeList').change(function() {
-        var value1=$.trim($('#routeList').val());
+    $('#route').change(function() {
+        var routeVar=$.trim($('#route').val());
         //checks if input fields are filled
-        if (value1.length>0){
-            var routeChosen = value1;
+        if (routeVar.length>0){
+            var options = $('#direction')
 
-            //gets the route and populates dropdown "Direction" with journeyPatterns
-            $.get("routes" + "/" + routeChosen, function(data){
-                var options = $('#direction')
-                var optionsOrigin = $('#startStop')
-                var optionsDestination = $('#endStop')
-                options.empty()
-                optionsOrigin.empty()
-                optionsDestination.empty()
-                options.append($("<option></option>").text("Direction"))
-                optionsOrigin.append($("<option></option>").text("Origin"))
-                optionsDestination.append($("<option></option>").text("Destination"))
-                $.each(data, function() {
-                    options.append($("<option></option>").text(this));
-                });
+            // clear inputs
+            clearInputs({direction: 'Direction', startStop: 'Origin', endStop: 'Destination'});
+
+            $.each(routeData[routeVar], function(key, value) {
+                options.append($("<option value=" + value.pattern + "></option>").text(value.headsign));
             });
-
         }
     });
 });
@@ -135,23 +190,19 @@ $(document).ready(function(){
 //Listener for direction input
 $(document).ready(function(){
     $('#direction').change(function() {
-        var value1 = $.trim($('#routeList').val());
-        var value2 = $.trim($('#direction').val());
+        var routeVar = $.trim($('#route').val());
+        var directionVar = $.trim($('#direction').val());
         //checks if input fields are filled
-        if ((value1.length>0) && (value2.length>0)){
-            var routeChosen = value1;
-            var directionChosen = value2;
+        if ((routeVar.length>0) && (directionVar.length>0)){
+
+            // clear inputs
+            clearInputs({startStop: 'Origin', endStop: 'Destination'});
 
             //gets the route and populates dropdown "Direction" with journeyPatterns
-            $.get("routes" + "/" + "stops" + "/" + routeChosen + "/" + directionChosen, function(data){
-                var optionsOrigin = $('#startStop')
-                var optionsDestination = $('#endStop')
-                optionsOrigin.empty()
-                optionsDestination.empty()
-                optionsOrigin.append($("<option></option>").text("Origin"))
-                optionsDestination.append($("<option></option>").text("Destination"))
-                $.each(data, function(index, stops) {
-                    optionsOrigin.append($("<option></option>").text(this.stop_id + " - " + this.name));
+            $.get("routes" + "/" + "stops" + "/" + routeVar + "/" + directionVar, function(data){
+                var optionsOrigin = $('#startStop');
+                $.each(data, function(index, stop) {
+                    optionsOrigin.append($("<option></option>").text(stop.stop_id + " - " + stop.name));
                 });
             });
         }
@@ -164,7 +215,7 @@ $(document).ready(function(){
 //Listener for origin stop
 $(document).ready(function(){
     $('#startStop').change(function() {
-        var value1 = $.trim($('#routeList').val());
+        var value1 = $.trim($('#route').val());
         var value2 = $.trim($('#direction').val());
         var value3 = $.trim($('#startStop').val().split(" - ")[0]);
         //checks if input fields are filled
@@ -194,7 +245,7 @@ $(document).ready(function(){
     $('#submitBtn').on('click', function() {
         var origin= $('#startStop').val().split(" - ")[0];
         var destination=$('#endStop').val().split(" - ")[0];
-        var line = $('#routeList').val();
+        var line = $('#route').val();
         var journeyPattern = $('#direction').val();
 
         $.get("routes/stops/" + line + "/" + journeyPattern + "/" + origin + "/" + destination, function(data){
