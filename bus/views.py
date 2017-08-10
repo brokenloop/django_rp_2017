@@ -134,9 +134,9 @@ def route_stops(request, route_id, journey_pattern):
     """ Given a route_id and journey_pattern, returns all stops on the route
     """
     route = Route.objects.get(route_id=route_id, journey_pattern=journey_pattern)
-    print(route)
+    # print(route)
     stops = route.stops.all()
-    print(stops)
+    # print(stops)
     serializer = StopSerializer(stops, many=True)
     return JsonResponse(serializer.data, safe=False)
 

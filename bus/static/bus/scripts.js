@@ -241,7 +241,7 @@ $(document).ready(function(){
             });
             // createPolyLine(stopCoords);
             // drawLine();
-            getSnappedCoords(stopCoords);
+            // getSnappedCoords(stopCoords);
             var bounds = new google.maps.LatLngBounds();
             for (var i = 0; i < markerArray.length; i++) {
                 bounds.extend(markerArray[i].getPosition());
