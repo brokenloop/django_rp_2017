@@ -10,7 +10,7 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'DjangoSite.settings'
 django.setup()
 
 from django.conf import settings
-from bus.models import Stop, Route, RouteStation
+from bus.models import Stop, Route, RouteStation, Timetable
 
 
 def populate_stops(csv_path):
@@ -193,9 +193,10 @@ if __name__=="__main__":
     stop_path = os.path.join(settings.DATA_PATH, 'static_data3/stops.csv')
     route_path = os.path.join(settings.DATA_PATH, 'static_data3/routes_all(headsigns).csv')
     routestops_path = os.path.join(settings.DATA_PATH, 'static_data3/route_stops_all.csv')
+    timetable_path = os.path.join(settings.DATA_PATH, 'static_data3/timetable3.csv')
 
     populate_stops(stop_path)
     populate_routes(route_path)
     populate_route_stations(routestops_path)
-
+    populate_timetable(timetable_path)
 
