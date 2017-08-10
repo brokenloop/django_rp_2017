@@ -16,9 +16,11 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.http import HttpResponseRedirect
 from django.contrib import admin
+from django.views.generic.base import RedirectView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    # url(r'^favicon\.ico$', RedirectView.as_view(url='/static/bus/favicon2.ico')),
     url(r'^$', lambda r: HttpResponseRedirect('bus/')),
     url(r'^bus/', include('bus.urls')),
 ]

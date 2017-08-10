@@ -48,15 +48,6 @@ function populate_day(selector, low, high) {
     }
 }
 
-// Got some code for this here https://jsfiddle.net/Guffa/Askwb/
-// function getUnique(list) {
-//     var result = [];
-//     $.each(list, function(i, e) {
-//         if ($.inArray(e, result) == -1) result.push(e);
-//     });
-//     return result;
-// }
-
 function getUnique(list) {
     var result = []
     var seen = {};
@@ -80,7 +71,9 @@ $(document).ready(function() {
 function getTime(params) {
    $.get("time", params, function(data, status){
        // alert("Data: " + data.Name + "\nStatus: " + status);
-       $('#timePrediction').text(data.time)
+       $('#timePrediction').text(data.time);
+      scrollTo(".bus-time");
+
    })
        .fail(function() {
            alert("Invalid input! Please change the input parameters.");
@@ -113,22 +106,14 @@ $(document).ready(function(){
    });
 });
 
+
+// Clears inputs - specify inputs to be cleared in the following form: {inputId: Label}
 function clearInputs(inputs) {
     $.each(inputs, function(id, label) {
        var option = $('#' + id);
-       console.log(id);
        option.empty();
        option.append($("<option></option>").text(label));
     });
-    // var options = $('#direction');
-    // var optionsOrigin = $('#startStop');
-    // var optionsDestination = $('#endStop');
-    // options.empty();
-    // optionsOrigin.empty();
-    // optionsDestination.empty();
-    // options.append($("<option></option>").text("Direction"));
-    // optionsOrigin.append($("<option></option>").text("Origin"));
-    // optionsDestination.append($("<option></option>").text("Destination"));
 }
 
 
@@ -146,6 +131,7 @@ function fillRoute(data) {
          $.each(data, function(index, value) {
                 route_list.push(index);
             });
+         console.log(route_list);
         $('#route').autocomplete({
             minLength: 1,
             source: function (request, response) {
@@ -178,7 +164,7 @@ $(document).ready(function(){
             clearInputs({direction: 'Direction', startStop: 'Origin', endStop: 'Destination'});
 
             $.each(routeData[routeVar], function(key, value) {
-                options.append($("<option value=" + value.pattern + "></option>").text(value.headsign));
+                options.append($("<option value=" + value.pattern + "></option>").text("Towards: " + value.headsign));
             });
         }
     });
@@ -374,4 +360,11 @@ function runSnapToRoad(path) {
     drawSnappedPolyline();
     getAndDrawSpeedLimits();
   });
+}
+
+function scrollTo(element) {
+    $('html, body').animate({
+        scrollTop: $(element).offset().top
+    }, 500);
+    return false;
 }
