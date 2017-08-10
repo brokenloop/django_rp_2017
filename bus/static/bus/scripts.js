@@ -205,12 +205,13 @@ $(document).ready(function(){
         var directionChosen = $.trim($('#direction').val());
         var originChosen = $.trim($('#startStop').val().split(" - ")[0]);
         //checks if input fields are filled
-        if ((value1.length>0) && (value2.length>0) && (value3.length>0)){
-            clearInputs({endStop: 'Destination'});
+        if ((routeChosen.length>0) && (directionChosen.length>0) && (originChosen.length>0)){
             //gets the route, journeyPattern and origin stop and populates dropdown "Destination" with stops
             $.get("routes" + "/" + "stops" + "/" + routeChosen + "/" + directionChosen + "/" + originChosen, function(data){
-                $.each(data, function(index, stops) {
-                    options.append($("<option></option>").text(this.stop_id + " - " + this.name));
+                clearInputs({endStop: 'Destination'});
+                var optionsDestination = $('#endStop');
+                $.each(data, function(index, stop) {
+                    optionsDestination.append($("<option></option>").text(stop.stop_id + " - " + stop.name));
                 });
             });
         }
