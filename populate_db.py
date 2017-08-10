@@ -93,6 +93,7 @@ def populate_routes(csv_path):
     print("Finished routes!")
     print()
 
+
 def populate_route_stations(csv_path):
     missing_stops = set()
     missing_routes = set()
@@ -151,6 +152,37 @@ def populate_route_stations(csv_path):
 
     return missing_stops, missing_routes
 
+
+def populate_timetable(csv_path):
+
+    with open(csv_path) as f:
+        reader = csv.reader(f)
+
+        # skip first line, as this is the header
+        next(reader)
+
+        for row in reader:
+            index = row[0]
+            day = row[1]
+            # direction = row[2]
+            route_id = row[3]
+            departure = row[4]
+            journey_pattern = row[5]
+            # stopheadsign =[6]
+
+            obj, created = Timetable.objects.get_or_create(
+                day=day,
+                route_id=route_id,
+                departure=departure,
+                # direction=row[2],
+                journey_pattern=journey_pattern,
+                # stopheadsign=[6]
+            )
+
+            if created:
+                print(obj, "created")
+            else:
+                print(obj, "already exists")
 
 if __name__=="__main__":
     # stop_path = os.path.join(settings.DATA_PATH, 'static_data_eoghan/stops.csv')
