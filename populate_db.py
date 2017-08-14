@@ -195,8 +195,8 @@ if __name__=="__main__":
     routestops_path = os.path.join(settings.DATA_PATH, 'static_data3/route_stops_all.csv')
     timetable_path = os.path.join(settings.DATA_PATH, 'static_data3/timetable3.csv')
 
-    populate_stops(stop_path)
-    populate_routes(route_path)
-    populate_route_stations(routestops_path)
+    # populate_stops(stop_path)
+    # populate_routes(route_path)
+    # populate_route_stations(routestops_path)
     populate_timetable(timetable_path)
 
