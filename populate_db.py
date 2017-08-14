@@ -163,20 +163,16 @@ def populate_timetable(csv_path):
 
         for row in reader:
             index = row[0]
-            day = row[1]
-            # direction = row[2]
-            route_id = row[3]
-            departure = row[4]
-            journey_pattern = row[5]
-            # stopheadsign =[6]
+            route_id = row[1]
+            day = row[2]
+            departure = row[3]
+            journey_pattern = row[4]
 
             obj, created = Timetable.objects.get_or_create(
-                day=day,
                 route_id=route_id,
+                day=day,
                 departure=departure,
-                # direction=row[2],
                 journey_pattern=journey_pattern,
-                # stopheadsign=[6]
             )
 
             if created:
@@ -185,18 +181,14 @@ def populate_timetable(csv_path):
                 print(obj, "already exists")
 
 if __name__=="__main__":
-    # stop_path = os.path.join(settings.DATA_PATH, 'static_data_eoghan/stops.csv')
-    # route_path = os.path.join(settings.DATA_PATH, 'static_data_eoghan/lines.csv')
-    # routestops_path = os.path.join(settings.DATA_PATH, 'static_data_eoghan/routestations3.csv')
-    # routestops_path = os.path.join(settings.DATA_PATH, 'static_data/route_stops_all.csv')
 
-    stop_path = os.path.join(settings.DATA_PATH, 'static_data3/stops.csv')
-    route_path = os.path.join(settings.DATA_PATH, 'static_data3/routes_all(headsigns).csv')
-    routestops_path = os.path.join(settings.DATA_PATH, 'static_data3/route_stops_all.csv')
-    timetable_path = os.path.join(settings.DATA_PATH, 'static_data3/timetable3.csv')
+    stop_path = os.path.join(settings.DATA_PATH, 'static_data/stops.csv')
+    route_path = os.path.join(settings.DATA_PATH, 'static_data/routes_all(headsigns).csv')
+    routestops_path = os.path.join(settings.DATA_PATH, 'static_data/route_stops_all.csv')
+    timetable_path = os.path.join(settings.DATA_PATH, 'static_data/final_timetable.csv')
 
-    populate_stops(stop_path)
-    populate_routes(route_path)
-    populate_route_stations(routestops_path)
+    # populate_stops(stop_path)
+    # populate_routes(route_path)
+    # populate_route_stations(routestops_path)
     populate_timetable(timetable_path)
 
