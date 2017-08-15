@@ -163,20 +163,16 @@ def populate_timetable(csv_path):
 
         for row in reader:
             index = row[0]
-            day = row[1]
-            # direction = row[2]
-            route_id = row[3]
-            departure = row[4]
-            journey_pattern = row[5]
-            # stopheadsign =[6]
+            route_id = row[1]
+            day = row[2]
+            departure = row[3]
+            journey_pattern = row[4]
 
             obj, created = Timetable.objects.get_or_create(
-                day=day,
                 route_id=route_id,
+                day=day,
                 departure=departure,
-                # direction=row[2],
                 journey_pattern=journey_pattern,
-                # stopheadsign=[6]
             )
 
             if created:
