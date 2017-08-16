@@ -181,11 +181,15 @@ def populate_timetable(csv_path):
                 print(obj, "already exists")
 
 if __name__=="__main__":
+    # stop_path = os.path.join(settings.DATA_PATH, 'static_data_eoghan/stops.csv')
+    # route_path = os.path.join(settings.DATA_PATH, 'static_data_eoghan/lines.csv')
+    # routestops_path = os.path.join(settings.DATA_PATH, 'static_data_eoghan/routestations3.csv')
+    # routestops_path = os.path.join(settings.DATA_PATH, 'static_data/route_stops_all.csv')
 
-    stop_path = os.path.join(settings.DATA_PATH, 'static_data/stops.csv')
-    route_path = os.path.join(settings.DATA_PATH, 'static_data/routes_all(headsigns).csv')
-    routestops_path = os.path.join(settings.DATA_PATH, 'static_data/route_stops_all.csv')
-    timetable_path = os.path.join(settings.DATA_PATH, 'static_data/final_timetable.csv')
+    stop_path = os.path.join(settings.DATA_PATH, 'static_data3/stops.csv')
+    route_path = os.path.join(settings.DATA_PATH, 'static_data3/routes_all(headsigns).csv')
+    routestops_path = os.path.join(settings.DATA_PATH, 'static_data3/route_stops_all.csv')
+    timetable_path = os.path.join(settings.DATA_PATH, 'static_data3/timetable3.csv')
 
     # populate_stops(stop_path)
     # populate_routes(route_path)

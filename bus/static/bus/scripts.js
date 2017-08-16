@@ -247,15 +247,24 @@ $(document).ready(function(){
             deleteMarkers();
             removeLine();
             var stopCoords = [];
+            var stopCount = 0;
             $.each(data, function(index, stop) {
+                var icon;
+                if (stopCount == 0 | stopCount == data.length - 1) {
+                    console.log(data.length)
+                    icon = "startEnd";
+                } else {
+                    icon = "middle";
+                }
+                stopCount++;
                 var contentString = '<div id="content">' + '<p id="stopHeader">' + stop.stop_id + " - " + stop.name + '</p>' + '</div>';
-                createMarker(stop.lat, stop.lon, contentString);
+                createMarker(stop.lat, stop.lon, contentString, icon);
                 setMapOnAll(map);
                 stopCoords.push({lat: stop.lat, lng: stop.lon});
             });
             // createPolyLine(stopCoords);
             // drawLine();
-            getSnappedCoords(stopCoords);
+            // getSnappedCoords(stopCoords);
             var bounds = new google.maps.LatLngBounds();
             for (var i = 0; i < markerArray.length; i++) {
                 bounds.extend(markerArray[i].getPosition());
@@ -267,14 +276,17 @@ $(document).ready(function(){
 
 
 //Creates a new marker
-function createMarker(lat, lon, contentString){
+function createMarker(lat, lon, contentString, icon){
+    var pinMarker = "https://maps.google.com/mapfiles/kml/paddle/red-circle.png";
+    var circleMarker = "https://maps.google.com/mapfiles/kml/paddle/red-circle-lv.png";
     var marker = new google.maps.Marker({
         position: {
               'lat': lat,
               'lng': lon,
           },
         title:"Station Marker",
-        map: map
+        map: map,
+        // icon: (icon == "startEnd") ? pinMarker : circleMarker
     });
     markerArray.push(marker);
 
