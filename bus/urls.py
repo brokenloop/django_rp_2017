@@ -18,4 +18,8 @@ urlpatterns = [
     url(r'^stops/accessible/$', views.accessible_stops),
     url(r'^cookie/$', views.cookie),
     url(r'^routes/stops/(?P<route_id>[a-zA-Z0-9]+)/(?P<journey_pattern>[a-zA-Z0-9]+)/(?P<origin>[0-9]+)/$', views.origin_to_end),
+    url(r'^timetables/$', views.timetable_list),
+    url(r'^timetables/(?P<route_id>[a-zA-Z0-9]+)/(?P<journey_pattern>[a-zA-Z0-9]+)/(?P<day>[a-zA-Z0-9]+)/$', views.get_timetable),
+    url(r'^clocktime/$', views.clocktime_estimate),
+
 ]

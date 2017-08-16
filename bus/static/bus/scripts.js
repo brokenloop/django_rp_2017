@@ -68,10 +68,23 @@ $(document).ready(function() {
 });
 
 
-function getTime(params) {
-   $.get("time", params, function(data, status){
+// function getTime(params) {
+//    $.get("time", params, function(data, status){
+//        // alert("Data: " + data.Name + "\nStatus: " + status);
+//        $('#timePrediction').text(data.time);
+//       scrollTo(".bus-time");
+//
+//    })
+//        .fail(function() {
+//            alert("Invalid input! Please change the input parameters.");
+//        });
+// }
+
+function getClockTime(params) {
+   $.get("clocktime", params, function(data, status){
        // alert("Data: " + data.Name + "\nStatus: " + status);
-       $('#timePrediction').text(data.time);
+       $('#originPrediction').text(data.clocktime[0]);
+       $('#destinationPrediction').text(data.clocktime[1]);
       scrollTo(".bus-time");
 
    })
@@ -102,7 +115,8 @@ $(document).ready(function(){
            'day': day,
            'weather': weather,
        }
-       getTime(params);
+       getClockTime(params);
+       // getTime(params);
    });
 });
 

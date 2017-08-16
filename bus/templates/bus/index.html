@@ -53,7 +53,8 @@
   <div class="row">
 {#      <-------MENU SECTION------->#}
       <div class="col-sm-4" id="menu">
-          <h1 id="tagline">DublinBus</h1>
+{#          <h1 id="tagline">DublinBus</h1>#}
+          <img src="/static/bus/dblogo.png" alt="DublinBus" style="max-width: 100%">
           <hr>
             <div class="row">
                 <div class="col-sm-12">
@@ -101,16 +102,32 @@
             <hr>
 
 {#          <-----RESULTS----->#}
-{#          <div class="jumbotron">#}
-{#              <h3 class="">Estimated Journey Time:</h3>#}
-{#          </div>#}
-          <div class="panel panel-default top-buffer bus-time">
-              <div class="panel-heading">Journey Time</div>
-              <div class="panel-body">
-                  <h2 id="timePrediction"></h2>
-              </div>
-            </div>
 
+{#          <div class="panel panel-default top-buffer bus-time">#}
+{#              <div class="panel-heading">Journey Time</div>#}
+{#              <div class="panel-body">#}
+{#                  <h2 id="timePrediction"></h2>#}
+{#              </div>#}
+{#          </div>#}
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="panel panel-default top-buffer bus-time">
+                        <div class="panel-heading">Departure Time</div>
+                        <div class="panel-body">
+                            <h5 id="originPrediction"></h5>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="panel panel-default top-buffer bus-time">
+                        <div class="panel-heading">Arrival Time</div>
+                        <div class="panel-body">
+                            <h5 id="destinationPrediction"></h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
 {#          <-----TESTING ROUTES----->#}
 
 
