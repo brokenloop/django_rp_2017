@@ -36,41 +36,41 @@ $(document).ready(function() {
 });
 
 
-function getTime(params) {
-   $.get("time", params, function(data, status){
-       // alert("Data: " + data.Name + "\nStatus: " + status);
-       $('#timePrediction').text(data.time)
-   })
-       .fail(function() {
-           alert("Invalid input! Please change the input parameters.");
-       });
-}
-
-// Submitting the form and returning time prediction
-$(document).ready(function(){
-   $("#submitBtn").click(function(){
-       // params = $("form").serialize();
-       var startStop= $('#startStop').val().split(" ")[0];
-       var endStop=$('#endStop').val().split(" ")[0];
-       // var route_pattern = $('#routeList').val();
-       var route = $('#routeList').val();
-       var pattern = $('#direction').val();
-       var hour = $('#hour').val();
-       var day = $('#day').val();
-       var weather = $('#weather').val();
-
-       params = {
-           'startStop': startStop,
-           'endStop': endStop,
-           'route': route,
-           'pattern': pattern,
-           'hour': hour,
-           'day': day,
-           'weather': weather,
-       }
-       getTime(params);
-   });
-});
+//function getTime(params) {
+//   $.get("time", params, function(data, status){
+//       // alert("Data: " + data.Name + "\nStatus: " + status);
+//       $('#timePrediction').text(data.time)
+//   })
+//       .fail(function() {
+//           alert("Invalid input! Please change the input parameters.");
+//       });
+//}
+//
+//// Submitting the form and returning time prediction
+//$(document).ready(function(){
+//   $("#submitBtn").click(function(){
+//       // params = $("form").serialize();
+//       var startStop= $('#startStop').val().split(" ")[0];
+//       var endStop=$('#endStop').val().split(" ")[0];
+//       // var route_pattern = $('#routeList').val();
+//       var route = $('#routeList').val();
+//       var pattern = $('#direction').val();
+//       var hour = $('#hour').val();
+//       var day = $('#day').val();
+//       var weather = $('#weather').val();
+//
+//       params = {
+//           'startStop': startStop,
+//           'endStop': endStop,
+//           'route': route,
+//           'pattern': pattern,
+//           'hour': hour,
+//           'day': day,
+//           'weather': weather,
+//       }
+//       getTime(params);
+//   });
+//});
 
 
 //INPUT ROUTES:
@@ -324,3 +324,13 @@ function runSnapToRoad(path) {
     getAndDrawSpeedLimits();
   });
 }
+
+//COOKIES
+
+//$(document).ready(function(){
+//    $('#routeList').val(Cookies.set('routeL'));
+//    $('#submitBtn').on('click', function() {
+//        var routeL = $('#routeList').val();
+//        Cookies.set('routeL', routeL);
+//    });
+//});'
