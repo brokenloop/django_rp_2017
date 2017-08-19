@@ -1,5 +1,6 @@
 import django
 import os
+import cProfile
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'DjangoSite.settings'
 django.setup()
@@ -150,7 +151,7 @@ if __name__=="__main__":
     # route_15 = Route.objects.get(route_id=15, journey_pattern=1)
 
     # print(connected(origin, destination, route_15))
-    get_common(4886, 1166)
+    cProfile.run(1 + 1)
     # stops = route_15.stops.all()
     # print(stops)
 

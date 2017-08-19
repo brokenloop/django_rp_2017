@@ -8,6 +8,12 @@ class StopSerializer(serializers.ModelSerializer):
         fields = ('id', 'lat', 'lon', 'name', 'stop_id')
 
 
+# class StopLocationSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Stop
+#         fields = ('stop_id', 'lat', 'lon')
+
+
 class RouteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Route

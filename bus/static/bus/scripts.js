@@ -93,7 +93,7 @@ $(document).ready(function(){
        var day = $('#day').val();
        var weather = $('#weather').val();
 
-       params = {
+       var params = {
            'startStop': startStop,
            'endStop': endStop,
            'route': route,
@@ -119,7 +119,7 @@ function clearInputs(inputs) {
 
 //INPUT ROUTES:
 
-//loads routes and displays them using autocomplete - called asyncly from loadRouteData()
+//loads routes and displays them using autocomplete - called asyncly from loadStopData()
 function fillRoute(data) {
     $(document).ready(function(){
 

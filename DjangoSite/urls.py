@@ -23,6 +23,7 @@ urlpatterns = [
     # url(r'^favicon\.ico$', RedirectView.as_view(url='/static/bus/favicon2.ico')),
     url(r'^$', lambda r: HttpResponseRedirect('bus/')),
     url(r'^bus/', include('bus.urls')),
+    url(r'^planner/', include('planner.urls')),
 ]
 
 
