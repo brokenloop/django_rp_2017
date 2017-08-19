@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>DublinBus</title>
+
+    {% load staticfiles %}
+
+    <!-- Jquery -->
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.min.js"
+      integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+      crossorigin="anonymous">
+    </script>
+
+    <script
+      src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+      integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+      crossorigin="anonymous">
+    </script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <!-- Custom CSS -->
+    <link href="{% static 'planner/custom.css' %}" rel="stylesheet">
+    <script type="text/javascript" src="{% static 'planner/scripts.js' %}"></script>
+
+    <!--Jquery for autocomplete-->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    {#    Loading data upfront      #}
+
+{#    <img src="{% static "bus/favicon2.ico" %}" alt="Bus favicon"/>#}
+
+    <link rel="shortcut icon" type="image/png" href={% static "planner/favicon1.ico" %}/>
+
+</head>
+
+<body>
+<div class="container-fluid mainwindow">
+  <div class="row">
+{#      <-------MENU SECTION------->#}
+      <div class="col-sm-4" id="menu">
+          <h1 id="tagline">DublinBus</h1>
+          <hr>
+            <div class="row">
+                <div class="col-sm-12">
+                    <input type="text" class="form-control" name="startStop" id="startStop" placeholder="Origin">
+                </div>
+                <div class="col-sm-12">
+                    <input type="text" class="form-control" name="endStop" id="endStop" placeholder="Destination">
+                </div>
+{#                <div class="col-sm-12">#}
+{#                    <select class="form-control" name="time" id="time">#}
+{#                    </select>#}
+{#                </div>#}
+                <div class="col-sm-12">
+                    <button type="button" class="btn col-sm-12 btn-default" id="submitBtn">Find Route</button>
+                </div>
+            </div>
+            <hr>
+
+{#          <-----RESULTS----->#}
+{#          <div class="jumbotron">#}
+{#              <h3 class="">Estimated Journey Time:</h3>#}
+{#          </div>#}
+          <div class="panel panel-default top-buffer bus-time">
+              <div class="panel-heading">Journey Time</div>
+              <div class="panel-body">
+                  <h2 id="timePrediction"></h2>
+              </div>
+            </div>
+
+{#          <-----TESTING ROUTES----->#}
+
+
+
+      </div>
+
+{#      <-------MAP SECTION------->#}
+      <div class="col-sm-8" id="mapwrapper">
+        <div id="map"></div>
+        <script>
+{#          <!--global map variable. Allows us to interact with the map from outside this program.-->#}
+{#              <!--Initialize the map-->#}
+              function initMap() {
+                var dublin = {lat: 53.3498, lng: -6.2603};
+                map = new google.maps.Map(document.getElementById('map'), {
+                  zoom: 11,
+                  center: dublin
+                });
+              }
+        </script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB3um4WUb5l36zZyCnovdVFE6OEBfgf3wQ&callback=initMap">
+        </script>
+      </div>
+  </div>
+</div>
+
+</body>
+
+</html>
