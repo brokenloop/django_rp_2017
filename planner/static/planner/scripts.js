@@ -93,7 +93,8 @@ function getDirections(origin, destination) {
     // https://maps.googleapis.com/maps/api/directions/json?origin=Toronto&destination=Montreal&key=YOUR_API_KEY
 
     $.get("directions", params, function(data) {
-        // console.log(data);
+        console.log(data);
+        clearResults("#journeyInfo");
         populateJourneyResults(data);
     });
 
@@ -138,24 +139,30 @@ function populateJourneyResults(data) {
 
 function createBusLeg(line, duration, origin, destination) {
 
-    var button = '<div class="col-xs-12">' +
-                    '<button type="button" class="btn btn-info col-xs-12" data-toggle="collapse" data-target="#' + line +'div"> ' +
+    var button = '<p><button class="btn btn-info col-xs-12 text-left" type="button" data-toggle="collapse" style="text-align:left;"' +
+                            'data-target="#' + line +'div" aria-expanded="false" aria-controls="collapseExample">' +
                         'Line: ' + line + ' - ' + duration +
-                     '</button>' +
-                  '</div>'
+                      '</button>' +
+                    '</p>'
 
-    // var div = '<div class="panel panel-default"><div class="panel-body>A Basic Panel</div></div>';
-    var div = '<p>Hello</p>';
+    var div = '<div class="collapse" id="' + line +'div">' +
+                        '<div class="panel panel-default">' +
+                            '<div class="panel-body">' +
+                                // '<br>' +
+                                '<p>Origin: ' + origin + '<br>' +
+                                'Destination: ' + destination + '</p>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>'
 
-    // var div = '<div id="' + line +'div" class="collapse">  '
-    //             + '<p>Origin: ' + origin + '<br>'
-    //             + 'Destination: ' + destination + '</p>' +
-    //           '</div>'
-    // var leg = '<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Simple collapsible</button>'
     $("#journeyInfo").append(button);
     $("#journeyInfo").append(div);
 }
 
 function createWalkLeg(duration, instruction) {
 
+}
+
+function clearResults(divID) {
+    $(divID).empty();
 }
