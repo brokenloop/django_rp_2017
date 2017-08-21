@@ -111,6 +111,10 @@ function calculateAndDisplayRoute(startStop, endStop) {
       origin: {lat: startStop.lat, lng: startStop.lon},
       destination: {lat: endStop.lat, lng: endStop.lon},
       travelMode: "TRANSIT",
+      transitOptions: {
+          // routingPreference: "LESS_WALKING",
+          modes: ["BUS"],
+      }
     }, function(response, status) {
       if (status == 'OK') {
         directionsDisplay.setDirections(response);

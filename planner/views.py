@@ -43,7 +43,7 @@ def get_directions(request):
                     origin = RouteStation.objects.get(order=0, route=route)
                     destination = RouteStation.objects.get(order=num_stops, route=route)
         except:
-            return JsonResponse(response)
+            print("")
 
 
         # Replace durations with our own estimates
