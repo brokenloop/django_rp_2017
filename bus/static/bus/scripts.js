@@ -63,7 +63,6 @@ function getUnique(list) {
 
 // populate hour and day selects
 $(document).ready(function() {
-    populate_hour('#hour', 5, 23);
     populate_day('#day', 0, 6);
 });
 

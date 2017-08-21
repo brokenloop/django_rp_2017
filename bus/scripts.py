@@ -204,12 +204,23 @@ def seconds_to_string(total_seconds):
     minutes, seconds = divmod(total_seconds, 60)
     hours, minutes = divmod(minutes, 60)
 
-    hours = (str(hours) + " hours") if (hours > 0) else ""
-    hours = str(hours) if hours > 0 else ""
+    if seconds > 30:
+        minutes = minutes + 1
+
+    if hours == 1:
+        hour_str = (str(hours) + " hour ")
+    elif hours > 1:
+        hour_str = (str(hours) + " hours ")
+    else:
+        hour_str = ""
+
+    minute_str = (str(minutes) + " mins") if (minutes > 0) else ""
+
+    return hour_str + minute_str
+
 
 
 if __name__=="__main__":
-
 
     # loading pickled model
     # filename = os.path.join(settings.DATA_PATH, 'sklearn_models/line15_all_RF.sav')

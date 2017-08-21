@@ -28,6 +28,12 @@ def get_directions(request):
             "transit_mode": request.GET["transit_mode"],
         }
 
+        # constants
+        hour = request.GET['hour']
+        day = request.GET['day']
+        weather = request.GET['weather']
+        pattern = 1
+
         url = "https://maps.googleapis.com/maps/api/directions/json"
         response = requests.get(url, params=params).json()
 
@@ -36,30 +42,17 @@ def get_directions(request):
         try:
             for leg in legs:
                 if leg["travel_mode"] == "TRANSIT":
-                    pp.pprint(leg)
                     route_id = leg["transit_details"]["line"]["short_name"]
-                    pattern = 1
                     num_stops = leg["transit_details"]["num_stops"]
-                    hour = 5
-                    day = 2
-                    weather = 1
-
-                    # print(route_id)
                     route = Route.objects.get(route_id=route_id, journey_pattern=1)
                     origin = RouteStation.objects.get(order=0, route=route).stop.stop_id
                     destination = RouteStation.objects.get(order=num_stops, route=route).stop.stop_id
+
                     travel_time = predict(origin, destination, route_id, pattern, hour, day, weather)
+                    duration_text = seconds_to_string(travel_time)
 
-                    minutes, seconds = divmod(travel_time, 60)
-                    hours, minutes = divmod(minutes, 60)
-
-                    print()
-                    print("Origin", origin)
-                    print("Destination", destination)
-                    print(type(origin))
-                    print(type(destination))
-
-                    print(travel_time)
+                    leg["duration"]["text"] = duration_text
+                    leg["duration"]["value"] = travel_time
         except:
             print("Route", route_id, "not found")
 

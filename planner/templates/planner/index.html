@@ -37,6 +37,14 @@
     <link href="{% static 'planner/custom.css' %}" rel="stylesheet">
     <script type="text/javascript" src="{% static 'planner/scripts.js' %}"></script>
 
+     <!-- Time Picker -->
+    <link rel="stylesheet" href="{% static 'bus/wickedpicker/stylesheets/wickedpicker.css' %}">
+    <script type="text/javascript" src="{% static 'bus/wickedpicker/src/wickedpicker.js' %}"></script>
+
+    <!-- Marker Clusterer -->
+    <script type="text/javascript" src="{% static 'planner/markerclusterer.js' %}"></script>
+
+
     <!--Jquery for autocomplete-->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -72,10 +80,19 @@
                 <div class="col-sm-12">
                     <input type="text" class="form-control" name="endStop" id="endStop" placeholder="Destination">
                 </div>
-{#                <div class="col-sm-12">#}
-{#                    <select class="form-control" name="time" id="time">#}
-{#                    </select>#}
-{#                </div>#}
+                <div class="col-sm-12">
+                        <input type="text" name="timepicker" class=" form-control timepicker" id="timepicker" style="width: 100%"/>
+                </div>
+                <div class="col-sm-12">
+                    <select class="form-control" name="day" id="day">
+                    </select>
+                </div>
+                <div class="col-sm-12">
+                    <select type="text" class="form-control" name="weather" id="weather">
+                        <option value="0">Sunny</option>
+                        <option value="1">Rainy</option>
+                    </select>
+                </div>
                 <div class="col-xs-12">
                     <button type="button" class="btn col-xs-12 btn-default" id="submitBtn">Find Route</button>
                 </div>
@@ -112,6 +129,7 @@
       <div class="col-sm-8" id="mapwrapper">
         <div id="map"></div>
         <script>
+            console.log("Map");
 
 {#            <!--Initialize the map-->#}
               function initMap() {
@@ -122,6 +140,17 @@
                   zoom: 11,
                   center: dublin
                 });
+
+{#                var markers = [];#}
+{#                $.each(stopData, function(index, value) {#}
+{#                    markers.push(new google.maps.Marker({#}
+{#                        position: {lat: value.lat, lng: value.lon},#}
+{#                      }));#}
+{#                });#}
+{#                  #}
+{#                var markerCluster = new MarkerClusterer(map, markers,#}
+{#                        {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});#}
+
 {#                directionsDisplay.setMap(map);#}
 {#                calculateAndDisplayRoute(directionsService, directionsDisplay);#}
               }

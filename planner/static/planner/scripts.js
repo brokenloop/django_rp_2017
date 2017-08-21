@@ -6,12 +6,14 @@ var directionsDisplay;
 var directionsService;
 var busPath;
 var markerArray = [];
+var markerCluster;
 var mapKey = "AIzaSyB3um4WUb5l36zZyCnovdVFE6OEBfgf3wQ";
 var roadKey = "AIzaSyAUX0EvazigXFp19OEGF-I5XsUQQuqkrAY";
 var directionsKey = "AIzaSyApzdf0AVWA3e8TgSBmTFIOoEivYSn3_Os";
 var routeList;
 var stopData = {};
 var stopList = [];
+// var markerList = []
 
 loadStopData();
 
@@ -20,11 +22,17 @@ function loadStopData() {
         $.each(data, function(index, value) {
             stopData[value.stop_id] = {lat: value.lat, lon: value.lon, name: value.name};
             stopList.push(value.stop_id.toString() + " " + value.name)
+            // markerList.push({lat: value.lat, lng: value.lng});
         });
         fillStops(stopData);
-        // console.log(stopList);
+        createMarkerArray();
     });
 }
+
+// populate hour and day selects
+$(document).ready(function() {
+    populate_day('#day', 0, 6);
+});
 
 
 //INPUT ROUTES:
@@ -32,16 +40,6 @@ function loadStopData() {
 //loads routes and displays them using autocomplete - called asyncly from loadStopData()
 function fillStops(data) {
     $(document).ready(function(){
-
-        // reset inputs
-        // clearInputs({direction: 'Direction', startStop: 'Origin', endStop: 'Destination'});
-
-        // get list of routes
-        // var stop_list = [];
-        //  $.each(data, function(index, value) {
-        //         stop_list.push(value);
-        //      console.log(value);
-        //     });
         $('#startStop, #endStop').autocomplete({
             minLength: 1,
             source: function (request, response) {
@@ -69,31 +67,37 @@ $(document).ready(function(){
        var origin = stopData[startStopId];
        var destination = stopData[endStopID];
 
-       // console.log(origin);
+       var time = $('#timepicker').val();
+       var timeparts = time.split(":");
+       var hour = timeparts[0];
+       var day = $('#day').val();
+       var weather = $('#weather').val();
 
-       getDirections(origin, destination);
+       clearMarkers();
+       getDirections(origin, destination, hour, day, weather);
        calculateAndDisplayRoute(origin, destination);
        // createBusLeg(12, 12, 12, 12);
    });
 });
 
 
-function getDirections(origin, destination) {
+function getDirections(origin, destination, hour, day, weather) {
     var params =  {
         origin: origin.lat.toString() + "," + origin.lon.toString(),
         destination: destination.lat.toString() + "," + destination.lon.toString(),
         mode: 'transit',
         transit_mode: 'bus',
         key: directionsKey,
+        hour: hour,
+        day: day,
+        weather: weather,
     };
 
 
-    // console.log(params);
     var url = "https://maps.googleapis.com/maps/api/directions/json";
     // https://maps.googleapis.com/maps/api/directions/json?origin=Toronto&destination=Montreal&key=YOUR_API_KEY
 
     $.get("directions", params, function(data) {
-        console.log(data);
         clearResults("#journeyInfo");
         populateJourneyResults(data);
     });
@@ -103,10 +107,6 @@ function getDirections(origin, destination) {
 
 // code adapted from https://developers.google.com/maps/documentation/javascript/examples/directions-travel-modes
 function calculateAndDisplayRoute(startStop, endStop) {
-    // console.log(startStop);
-
-    // console.log(typeof startStop.lat);
-    // var selectedMode = document.getElementById('mode').value;
     directionsService.route({
       origin: {lat: startStop.lat, lng: startStop.lon},
       destination: {lat: endStop.lat, lng: endStop.lon},
@@ -128,14 +128,13 @@ function calculateAndDisplayRoute(startStop, endStop) {
 
 function populateJourneyResults(data) {
     var legs = data.routes[0].legs[0].steps;
-    // console.log(legs);
     $.each(legs, function(index, value) {
+        console.log(value);
         if (value.travel_mode === "TRANSIT") {
             var line = value.transit_details.line.short_name;
             var duration = value.duration.text;
-            var origin = "origin";
-            var destination = "destination";
-            console.log(duration);
+            var origin = value.transit_details.departure_stop.name;
+            var destination = value.transit_details.arrival_stop.name;
             createBusLeg(line, duration, origin, destination);
         }
     });
@@ -153,8 +152,8 @@ function createBusLeg(line, duration, origin, destination) {
                         '<div class="panel panel-default">' +
                             '<div class="panel-body">' +
                                 // '<br>' +
-                                '<p>Origin: ' + origin + '<br>' +
-                                'Destination: ' + destination + '</p>' +
+                                '<p><b>Origin:</b> ' + origin + '<br>' +
+                                '<b>Destination:</b> ' + destination + '</p>' +
                             '</div>' +
                         '</div>' +
                     '</div>'
@@ -169,4 +168,59 @@ function createWalkLeg(duration, instruction) {
 
 function clearResults(divID) {
     $(divID).empty();
+}
+
+// gets timepicker ready
+$(document).ready(function() {
+    var options = { twentyFour: true, timeSeparator: ':' };
+    $('.timepicker').wickedpicker(options);
+});
+
+
+function createMarkerArray() {
+    $.each(stopData, function(index, value) {
+        var marker = new google.maps.Marker({
+          position: {lat: value.lat, lng: value.lon},
+          // map: map,
+          stopID: index,
+        });
+
+        marker.addListener('click', function() {
+            fillStopInputs(marker.stopID);
+        });
+        markerArray.push(marker);
+    });
+    markerCluster = new MarkerClusterer(map, markerArray,
+            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+}
+
+function setMapOnAll(map) {
+    for (var i = 0; i < markerArray.length; i++) {
+        markerArray[i].setMap(map);
+    }
+}
+
+function clearMarkers() {
+    markerCluster.clearMarkers();
+}
+
+function fillStopInputs(stopID) {
+    var stop = stopData[stopID];
+    var origin = $.trim($('#startStop').val());
+    if (origin.length > 0) {
+        $('#endStop').val(stopID.toString() + " " + stop.name);
+    } else {
+        $('#startStop').val(stopID.toString() + " " + stop.name);
+    }
+}
+
+function populate_day(selector, low, high) {
+    var weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    for (var i = low; i <= high; i++) {
+        if (i == new Date().getDay()) {
+           $(selector).append('<option value=' + i +' selected>' + weekdays[i] + '</option>');
+        } else {
+            $(selector).append('<option value=' + i +'>' + weekdays[i] + '</option>');
+        }
+    }
 }
