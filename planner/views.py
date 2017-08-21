@@ -32,15 +32,18 @@ def get_directions(request):
 
         legs = response["routes"][0]["legs"][0]["steps"]
 
-        for leg in legs:
-            if leg["travel_mode"] == "TRANSIT":
-                pp.pprint(leg)
-                route_id = leg["transit_details"]["line"]["short_name"]
-                num_stops = leg["transit_details"]["num_stops"]
-                # print(route_id)
-                route = Route.objects.get(route_id=route_id, journey_pattern=1)
-                origin = RouteStation.objects.get(order=0, route=route)
-                destination = RouteStation.objects.get(order=num_stops, route=route)
+        try:
+            for leg in legs:
+                if leg["travel_mode"] == "TRANSIT":
+                    pp.pprint(leg)
+                    route_id = leg["transit_details"]["line"]["short_name"]
+                    num_stops = leg["transit_details"]["num_stops"]
+                    # print(route_id)
+                    route = Route.objects.get(route_id=route_id, journey_pattern=1)
+                    origin = RouteStation.objects.get(order=0, route=route)
+                    destination = RouteStation.objects.get(order=num_stops, route=route)
+        except:
+            return JsonResponse(response)
 
 
         # Replace durations with our own estimates
