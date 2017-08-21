@@ -2,6 +2,8 @@
  * Created by danieljordan on 11/07/2017.
  */
 var map;
+var directionsDisplay;
+var directionsService;
 var busPath;
 var markerArray = [];
 var mapKey = "AIzaSyB3um4WUb5l36zZyCnovdVFE6OEBfgf3wQ";
@@ -67,7 +69,11 @@ $(document).ready(function(){
        var origin = stopData[startStopId];
        var destination = stopData[endStopID];
 
+       // console.log(origin);
+
        getDirections(origin, destination);
+       calculateAndDisplayRoute(origin, destination);
+       // createBusLeg(12, 12, 12, 12);
    });
 });
 
@@ -87,7 +93,69 @@ function getDirections(origin, destination) {
     // https://maps.googleapis.com/maps/api/directions/json?origin=Toronto&destination=Montreal&key=YOUR_API_KEY
 
     $.get("directions", params, function(data) {
-        console.log(data);
+        // console.log(data);
+        populateJourneyResults(data);
     });
+
+}
+
+
+// code adapted from https://developers.google.com/maps/documentation/javascript/examples/directions-travel-modes
+function calculateAndDisplayRoute(startStop, endStop) {
+    // console.log(startStop);
+
+    // console.log(typeof startStop.lat);
+    // var selectedMode = document.getElementById('mode').value;
+    directionsService.route({
+      origin: {lat: startStop.lat, lng: startStop.lon},
+      destination: {lat: endStop.lat, lng: endStop.lon},
+      travelMode: "TRANSIT",
+    }, function(response, status) {
+      if (status == 'OK') {
+        directionsDisplay.setDirections(response);
+        directionsDisplay.setMap(map);
+      } else {
+        window.alert('Directions request failed due to ' + status);
+      }
+    });
+}
+
+
+function populateJourneyResults(data) {
+    var legs = data.routes[0].legs[0].steps;
+    // console.log(legs);
+    $.each(legs, function(index, value) {
+        if (value.travel_mode === "TRANSIT") {
+            var line = value.transit_details.line.short_name;
+            var duration = value.duration.text;
+            var origin = "origin";
+            var destination = "destination";
+            console.log(duration);
+            createBusLeg(line, duration, origin, destination);
+        }
+    });
+}
+
+function createBusLeg(line, duration, origin, destination) {
+
+    var button = '<div class="col-xs-12">' +
+                    '<button type="button" class="btn btn-info col-xs-12" data-toggle="collapse" data-target="#' + line +'div"> ' +
+                        'Line: ' + line + ' - ' + duration +
+                     '</button>' +
+                  '</div>'
+
+    // var div = '<div class="panel panel-default"><div class="panel-body>A Basic Panel</div></div>';
+    var div = '<p>Hello</p>';
+
+    // var div = '<div id="' + line +'div" class="collapse">  '
+    //             + '<p>Origin: ' + origin + '<br>'
+    //             + 'Destination: ' + destination + '</p>' +
+    //           '</div>'
+    // var leg = '<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Simple collapsible</button>'
+    $("#journeyInfo").append(button);
+    $("#journeyInfo").append(div);
+}
+
+function createWalkLeg(duration, instruction) {
 
 }

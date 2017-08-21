@@ -115,6 +115,7 @@ $(document).ready(function(){
            'day': day,
            'weather': weather,
        }
+       console.log(params);
        getClockTime(params);
        // getTime(params);
    });
