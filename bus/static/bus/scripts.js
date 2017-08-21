@@ -102,7 +102,13 @@ $(document).ready(function(){
        // var route_pattern = $('#routeList').val();
        var route = $('#route').val();
        var pattern = $('#direction').val();
-       var hour = $('#hour').val();
+       var time = $('#timepicker').val();
+       var timeparts = time.split(":");
+       var hour = timeparts[0];
+       var minutes = timeparts[1];
+       console.log(hour);
+       console.log(minutes);
+       // var hour = $('#hour').val();
        var day = $('#day').val();
        var weather = $('#weather').val();
 
@@ -112,6 +118,7 @@ $(document).ready(function(){
            'route': route,
            'pattern': pattern,
            'hour': hour,
+           'minutes': minutes,
            'day': day,
            'weather': weather,
        }
@@ -389,3 +396,8 @@ function scrollTo(element) {
     }, 500);
     return false;
 }
+
+$(document).ready(function() {
+    var options = { twentyFour: true, timeSeparator: ':' };
+    $('.timepicker').wickedpicker(options);
+});

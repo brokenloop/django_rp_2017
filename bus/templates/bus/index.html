@@ -24,6 +24,10 @@
       crossorigin="anonymous">
     </script>
 
+    <!-- Time Picker -->
+    <link rel="stylesheet" href="{% static 'bus/wickedpicker/stylesheets/wickedpicker.css' %}">
+    <script type="text/javascript" src="{% static 'bus/wickedpicker/src/wickedpicker.js' %}"></script>
+
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
@@ -82,8 +86,7 @@
                     </select>
                 </div>
                 <div class="col-sm-12">
-                    <select class="form-control" name="hour" id="hour">
-                    </select>
+                        <input type="text" name="timepicker" class=" form-control timepicker" id="timepicker" style="width: 100%"/>
                 </div>
                 <div class="col-sm-12">
                     <select class="form-control" name="day" id="day">

@@ -63,11 +63,11 @@ def get_departure_times(route, service, journeypattern, time):
     return departure_list
 
 
-def get_clocktime(origin, destination, line, pattern, hour, day, weather):
+def get_clocktime(origin, destination, line, pattern, hour, minutes, day, weather):
     """
     For a given query finds the ideal terminus departure time using query_model
     """
-    current_time = datetime.timedelta(hours=hour)
+    current_time = datetime.timedelta(hours=hour, minutes=minutes)
 
     day = convert_weekday(day)
 
@@ -220,7 +220,7 @@ if __name__=="__main__":
     # get_common(4886, 1166)
     # stops = route_15.stops.all()
     # print(stops)
-    a, b = get_clocktime(808, 2035, "46A", 1, 17, 1, False)
+    a, b = get_clocktime(808, 2035, "46A", 1, 17, 30, 1, False)
     print(a)
     print(b)
 
