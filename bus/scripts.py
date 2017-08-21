@@ -53,12 +53,11 @@ def find_service_type(day):
 
 def get_departure_times(route, service, journeypattern, time):
     t1 = str(time).split(":")[0]
-    t2 = str(int(t1)+1)
+    t0 = str(int(t1)-1)
     t1_query = Timetable.objects.filter(route_id=route, day=service, journey_pattern=journeypattern, departure__startswith=t1).only("departure")
-    # t2_query = Timetable.objects.filter(route_id=route, day=service, journey_pattern=journeypattern, departure__startswith=t2).only("departure")
+    t0_query = Timetable.objects.filter(route_id=route, day=service, journey_pattern=journeypattern, departure__startswith=t0).only("departure")
 
-    departure_list = list(t1_query)
-                     # +list(t2_query)
+    departure_list = list(t0_query) + list(t1_query)
     print(departure_list)
     return departure_list
 
