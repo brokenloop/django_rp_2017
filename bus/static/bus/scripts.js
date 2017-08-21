@@ -241,7 +241,7 @@ $(document).ready(function(){
 
 //GOOGLE MAPS FUNCTIONS:
 
-//Takes form inputs and creates markers based on the origin/destination and the stops inbetween
+//Takes form inputs and creates markers based on the origin/destination and the stops in between
 $(document).ready(function(){
     $('#submitBtn').on('click', function() {
         var origin= $('#startStop').val().split(" - ")[0];
@@ -254,18 +254,21 @@ $(document).ready(function(){
             removeLine();
             var stopCoords = [];
             var stopCount = 0;
-            console.log("Length:", data.length);
+            var numStops = data.length;
+            var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            var labelIndex = 0;
             $.each(data, function(index, stop) {
                 var icon;
-                if (stopCount == 0 | stopCount == data.length - 1) {
-                    // console.log(data.length)
-                    icon = "startEnd";
-                } else {
-                    icon = "middle";
+                if (stopCount == 0) {
+                    label = labels[labelIndex++ % labels.length];
+                    var contentString = '<div id="content">' + '<p id="stopHeader">' + stop.stop_id + " - " + stop.name + '</p>' + '</div>';
+                    createMarker(stop.lat, stop.lon, contentString, label);
+                } else if (stopCount == numStops - 1) {
+                    label = labels[labelIndex++ % labels.length];
+                    var contentString = '<div id="content">' + '<p id="stopHeader">' + stop.stop_id + " - " + stop.name + '</p>' + '</div>';
+                    createMarker(stop.lat, stop.lon, contentString, label);
                 }
                 stopCount++;
-                var contentString = '<div id="content">' + '<p id="stopHeader">' + stop.stop_id + " - " + stop.name + '</p>' + '</div>';
-                createMarker(stop.lat, stop.lon, contentString, icon);
                 stopCoords.push({lat: stop.lat, lng: stop.lon});
             });
             setMapOnAll(map);
@@ -283,7 +286,7 @@ $(document).ready(function(){
 
 
 //Creates a new marker
-function createMarker(lat, lon, contentString, icon){
+function createMarker(lat, lon, contentString, label){
     var pinMarker = "https://maps.google.com/mapfiles/kml/paddle/red-circle.png";
     var circleMarker = "https://maps.google.com/mapfiles/kml/paddle/red-circle-lv.png";
     var marker = new google.maps.Marker({
@@ -292,7 +295,9 @@ function createMarker(lat, lon, contentString, icon){
               'lng': lon,
           },
         title:"Station Marker",
+        label: label,
         map: map,
+
         // icon: (icon == "startEnd") ? pinMarker : circleMarker
     });
     markerArray.push(marker);
