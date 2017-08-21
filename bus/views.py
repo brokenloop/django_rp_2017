@@ -7,9 +7,9 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
-from .models import Stop, Route, RouteStation
-from .serializers import StopSerializer, RouteSerializer, \
-    RouteStationSerializer
+from .models import Stop, Route, RouteStation, Timetable
+from .serializers import StopSerializer, RouteSerializer, TimetableSerializer
+    # RouteStationSerializer
 
 
 def index(request):
@@ -24,6 +24,38 @@ def stop_list(request):
     if request.method == "GET":
         stops = Stop.objects.all()
         serializer = StopSerializer(stops, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
+
+def get_timetable(request, route_id, journey_pattern, day):
+    """
+    :param request:
+    :param route_id:
+    :param journey_pattern:
+    :param day:
+
+    :return: a single timetable
+    """
+
+    try:
+        timetable = Timetable.objects.get(route=route_id, journeypattern=journey_pattern, service=day)
+    except Timetable.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if request.method == 'GET':
+        serializer = TimetableSerializer(timetable)
+        return JsonResponse(serializer.data)
+
+
+def timetable_list(request):
+    """
+    :param request:
+    :return: A list of all timetables
+    """
+
+    if request.method == "GET":
+        timetables = Timetable.objects.all()
+        serializer = TimetableSerializer(timetables, many=True)
         return JsonResponse(serializer.data, safe=False)
 
 
@@ -75,8 +107,6 @@ def common_routes(request, origin, destination):
         return JsonResponse(list(routes), safe=False)
 
 
-
-
 def time_estimate(request):
 
     try:
@@ -102,6 +132,29 @@ def time_estimate(request):
 
     return JsonResponse({'time': pred})
 
+
+def clocktime_estimate(request):
+
+    try:
+        origin = request.GET['startStop']
+        destination = request.GET['endStop']
+        route = request.GET['route']
+        pattern = request.GET['pattern']
+        hour = request.GET['hour']
+        day = request.GET['day']
+        weather = request.GET['weather']
+
+        origin = int(origin)
+        destination = int(destination)
+        hour = int(hour)
+        day = int(day)
+
+        # get_clocktime returns two timedelta objects, origin arrival and destination arrival
+        origin_t, destination_t = get_clocktime(origin, destination, route, pattern, hour, day, weather)
+    except:
+        return HttpResponse(status=400)
+
+    return JsonResponse({'clocktime': (str(origin_t), str(destination_t))})
 
 def routes(request):
     if request.method == "GET":
