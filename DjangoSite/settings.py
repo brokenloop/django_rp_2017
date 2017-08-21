@@ -80,6 +80,17 @@ WSGI_APPLICATION = 'DjangoSite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'dbdb',
+#         'USER': 'root',
+#         'PASSWORD': '12312821',
+#         'HOST': '127.0.0.1',
+#         'PORT': '3307',
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -138,5 +149,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 
-DATA_PATH = "/Users/danieljordan/desktop/compsci/ResearchPracticum/rp_repo/Data Analysis/Daniel/bus_data"
-
+# DATA_PATH = "/Users/danieljordan/desktop/compsci/ResearchPracticum/rp_repo/Data Analysis/Daniel/bus_data"
+DATA_PATH = "C:/COMPUTER SCIENCE UCD/SEMESTER 3/Research_practicum_2017/Data Analysis/Eoghan/Revised/Data Cleaning/bus_data"

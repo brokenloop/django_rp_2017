@@ -21,7 +21,7 @@ class Route(models.Model):
         unique_together = ('route_id', 'journey_pattern')
 
     def __str__(self):
-        return str(self.route_id) + " " + str(self.journey_pattern)
+        return str(self.route_id) + " " + str(self.headsign)
 
 
 class RouteStation(models.Model):
@@ -36,6 +36,11 @@ class RouteStation(models.Model):
         return str(self.stop) + " " + str(self.order)
 
 
-# class Timetable(models.Model):
-#     route = models.ForeignKey(Route, on_delete=models.CASCADE)
-#     time = models.
+class Timetable(models.Model):
+    route_id = models.CharField(max_length=20)
+    day = models.CharField(max_length=10)
+    departure = models.CharField(max_length=5)
+    journey_pattern = models.CharField(max_length=4)
+
+    def __str__(self):
+        return str(self.route_id) + " - " + str(self.journey_pattern) + " - " + str(self.departure)
