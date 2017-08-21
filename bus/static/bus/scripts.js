@@ -390,3 +390,13 @@ function scrollTo(element) {
     }, 500);
     return false;
 }
+
+//COOKIES
+
+//$(document).ready(function(){
+//    $('#routeList').val(Cookies.set('routeL'));
+//    $('#submitBtn').on('click', function() {
+//        var routeL = $('#routeList').val();
+//        Cookies.set('routeL', routeL);
+//    });
+//});'
