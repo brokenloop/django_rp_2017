@@ -129,13 +129,19 @@ function calculateAndDisplayRoute(startStop, endStop) {
 function populateJourneyResults(data) {
     var legs = data.routes[0].legs[0].steps;
     $.each(legs, function(index, value) {
-        console.log(value);
         if (value.travel_mode === "TRANSIT") {
             var line = value.transit_details.line.short_name;
             var duration = value.duration.text;
             var origin = value.transit_details.departure_stop.name;
             var destination = value.transit_details.arrival_stop.name;
             createBusLeg(line, duration, origin, destination);
+        } else if (value.travel_mode === "WALKING") {
+            console.log(value);
+            var duration = value.duration.text;
+            var distance_text = value.distance.text;
+            var distance_value = value.distance.value;
+            var instruction = value.html_instructions;
+            createWalkLeg(duration, distance_text, distance_value, instruction);
         }
     });
 }
@@ -148,22 +154,41 @@ function createBusLeg(line, duration, origin, destination) {
                       '</button>' +
                     '</p>'
 
-    var div = '<div class="collapse" id="' + line +'div">' +
+    var info = '<div class="collapse" id="' + line +'div">' +
                         '<div class="panel panel-default">' +
                             '<div class="panel-body">' +
                                 // '<br>' +
-                                '<p><b>Origin:</b> ' + origin + '<br>' +
-                                '<b>Destination:</b> ' + destination + '</p>' +
+                                '<p><b>Origin:</b> ' + origin + '</p>' +
+                                '<p><b>Destination:</b> ' + destination + '</p>' +
                             '</div>' +
                         '</div>' +
                     '</div>'
 
     $("#journeyInfo").append(button);
-    $("#journeyInfo").append(div);
+    $("#journeyInfo").append(info);
 }
 
-function createWalkLeg(duration, instruction) {
+function createWalkLeg(duration, distance_text, distance_value, instruction) {
+    console.log("WALK");
+    var button = '<p><button class="btn btn-success col-xs-12 text-left" type="button" data-toggle="collapse" style="text-align:left;"' +
+                            'data-target="#' + distance_value +'div" aria-expanded="false" aria-controls="collapseExample">' +
+                        'Walk' + " - " + duration +
+                      '</button>' +
+                    '</p>'
 
+    var info = '<div class="collapse" id="' + distance_value +'div">' +
+                        '<div class="panel panel-default">' +
+                            '<div class="panel-body">' +
+                                // '<br>' +
+                                '<p><b>Details:</b> ' + instruction +
+                                '<p><b>Distance:</b> ' + distance_text +
+
+                            '</div>' +
+                        '</div>' +
+                    '</div>'
+
+    $("#journeyInfo").append(button);
+    $("#journeyInfo").append(info);
 }
 
 function clearResults(divID) {

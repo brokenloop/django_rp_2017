@@ -254,10 +254,11 @@ $(document).ready(function(){
             removeLine();
             var stopCoords = [];
             var stopCount = 0;
+            console.log("Length:", data.length);
             $.each(data, function(index, stop) {
                 var icon;
                 if (stopCount == 0 | stopCount == data.length - 1) {
-                    console.log(data.length)
+                    // console.log(data.length)
                     icon = "startEnd";
                 } else {
                     icon = "middle";
@@ -265,12 +266,12 @@ $(document).ready(function(){
                 stopCount++;
                 var contentString = '<div id="content">' + '<p id="stopHeader">' + stop.stop_id + " - " + stop.name + '</p>' + '</div>';
                 createMarker(stop.lat, stop.lon, contentString, icon);
-                setMapOnAll(map);
                 stopCoords.push({lat: stop.lat, lng: stop.lon});
             });
+            setMapOnAll(map);
             // createPolyLine(stopCoords);
             // drawLine();
-            // getSnappedCoords(stopCoords);
+            getSnappedCoords(stopCoords);
             var bounds = new google.maps.LatLngBounds();
             for (var i = 0; i < markerArray.length; i++) {
                 bounds.extend(markerArray[i].getPosition());
