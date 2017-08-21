@@ -134,6 +134,7 @@ def time_estimate(request):
 
 
 def clocktime_estimate(request):
+    print("Fuck")
 
     try:
         origin = request.GET['startStop']
@@ -144,7 +145,10 @@ def clocktime_estimate(request):
         minutes = request.GET['minutes']
         day = request.GET['day']
         weather = request.GET['weather']
+    except:
+        return HttpResponse(status=400)
 
+    try:
         origin = int(origin)
         destination = int(destination)
         hour = int(hour)
@@ -154,7 +158,7 @@ def clocktime_estimate(request):
         # get_clocktime returns two timedelta objects, origin arrival and destination arrival
         origin_t, destination_t = get_clocktime(origin, destination, route, pattern, hour, minutes, day, weather)
     except:
-        return HttpResponse(status=400)
+            return HttpResponse(status=500)
 
     return JsonResponse({'clocktime': (str(origin_t), str(destination_t))})
 

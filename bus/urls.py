@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from . import views
 from django.views.generic.base import RedirectView
+from planner import views as planner_views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
@@ -21,5 +22,5 @@ urlpatterns = [
     url(r'^timetables/$', views.timetable_list),
     url(r'^timetables/(?P<route_id>[a-zA-Z0-9]+)/(?P<journey_pattern>[a-zA-Z0-9]+)/(?P<day>[a-zA-Z0-9]+)/$', views.get_timetable),
     url(r'^clocktime/$', views.clocktime_estimate),
-
+    url(r'^planner/$', planner_views.index),
 ]

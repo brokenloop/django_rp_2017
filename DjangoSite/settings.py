@@ -38,7 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'bus.apps.DublinbusConfig',
+    'bus',
+    # 'bus.apps.DublinbusConfig',
+    # 'planner.apps.DublinBusConfig',
+    'planner',
 ]
 
 MIDDLEWARE = [
@@ -149,5 +152,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 
-# DATA_PATH = "/Users/danieljordan/desktop/compsci/ResearchPracticum/rp_repo/Data Analysis/Daniel/bus_data"
-DATA_PATH = "C:/COMPUTER SCIENCE UCD/SEMESTER 3/Research_practicum_2017/Data Analysis/Eoghan/Revised/Data Cleaning/bus_data"
+DATA_PATH = "/Users/danieljordan/desktop/compsci/ResearchPracticum/rp_repo/Data Analysis/Daniel/bus_data"
+# DATA_PATH = "C:/COMPUTER SCIENCE UCD/SEMESTER 3/Research_practicum_2017/Data Analysis/Eoghan/Revised/Data Cleaning/bus_data"
