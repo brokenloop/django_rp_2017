@@ -102,20 +102,26 @@ $(document).ready(function(){
        // var route_pattern = $('#routeList').val();
        var route = $('#route').val();
        var pattern = $('#direction').val();
-       var hour = $('#hour').val();
+       var time = $('#timepicker').val();
+       var timeparts = time.split(":");
+       var hour = timeparts[0];
+       var minutes = timeparts[1];
+       console.log(hour);
+       console.log(minutes);
+       // var hour = $('#hour').val();
        var day = $('#day').val();
        var weather = $('#weather').val();
 
-       var params = {
+       params = {
            'startStop': startStop,
            'endStop': endStop,
            'route': route,
            'pattern': pattern,
            'hour': hour,
+           'minutes': minutes,
            'day': day,
            'weather': weather,
        }
-       console.log(params);
        getClockTime(params);
        // getTime(params);
    });
@@ -134,7 +140,7 @@ function clearInputs(inputs) {
 
 //INPUT ROUTES:
 
-//loads routes and displays them using autocomplete - called asyncly from loadStopData()
+//loads routes and displays them using autocomplete - called asyncly from loadRouteData()
 function fillRoute(data) {
     $(document).ready(function(){
 
@@ -391,12 +397,7 @@ function scrollTo(element) {
     return false;
 }
 
-//COOKIES
-
-//$(document).ready(function(){
-//    $('#routeList').val(Cookies.set('routeL'));
-//    $('#submitBtn').on('click', function() {
-//        var routeL = $('#routeList').val();
-//        Cookies.set('routeL', routeL);
-//    });
-//});'
+$(document).ready(function() {
+    var options = { twentyFour: true, timeSeparator: ':' };
+    $('.timepicker').wickedpicker(options);
+});
