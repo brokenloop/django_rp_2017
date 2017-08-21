@@ -79,3 +79,19 @@
     }
 
 }
+
+.navbar {
+    min-height: 0px;
+}
+
+.navbar .nav li {
+    display: table-cell;
+    width: 1%;
+    float: none;
+}
+
+.navbar .nav li a {
+    text-align: center;
+    line-height: 1px;
+    height: 10px;
+}
