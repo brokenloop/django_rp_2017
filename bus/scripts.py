@@ -201,7 +201,12 @@ def get_common(origin, destination):
     # print(rs_query)
 
 
+def seconds_to_string(total_seconds):
+    minutes, seconds = divmod(total_seconds, 60)
+    hours, minutes = divmod(minutes, 60)
 
+    hours = (str(hours) + " hours") if (hours > 0) else ""
+    hours = str(hours) if hours > 0 else ""
 
 
 if __name__=="__main__":
