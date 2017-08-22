@@ -52,12 +52,15 @@ def find_service_type(day):
 
 
 def get_departure_times(route, service, journeypattern, time):
-    t1 = str(time).split(":")[0]
-    t0 = str(int(t1)-1)
+    print("time", time)
+    t1 = str(time)
+    t1 = "0" + t1 if (len(t1) <= 1) else t1
+    print("time", t1)
+    t2 = str(int(t1)+1) if int(t1) < 23 else str("00")
     t1_query = Timetable.objects.filter(route_id=route, day=service, journey_pattern=journeypattern, departure__startswith=t1).only("departure")
-    t0_query = Timetable.objects.filter(route_id=route, day=service, journey_pattern=journeypattern, departure__startswith=t0).only("departure")
+    t2_query = Timetable.objects.filter(route_id=route, day=service, journey_pattern=journeypattern, departure__startswith=t2).only("departure")
 
-    departure_list = list(t0_query) + list(t1_query)
+    departure_list = list(t1_query) + list(t2_query)
     print(departure_list)
     return departure_list
 
@@ -78,8 +81,15 @@ def get_clocktime(origin, destination, line, pattern, hour, minutes, day, weathe
     pred1 = query_model(model, origin, pattern, hour, day, weather)
     pred2 = query_model(model, destination, pattern, hour, day, weather)
 
+    ideal_departure = datetime.timedelta.total_seconds(current_time) - pred1
+    ideal_hour = int(ideal_departure)//3600
+
     service = find_service_type(day)
-    times = get_departure_times(line, service, pattern, hour)
+    times = get_departure_times(line, service, pattern, ideal_hour)
+
+    if not times:
+        return "No Service:", "No bus at this time"
+    # times = get_departure_times(line, service, pattern, hour)
 
     seconds = []
 
@@ -92,15 +102,30 @@ def get_clocktime(origin, destination, line, pattern, hour, minutes, day, weathe
     seconds.sort()
 
     # current time minus the time it takes to arrive is the ideal departure time
-    ideal_departure = datetime.timedelta.total_seconds(current_time) - pred1
 
     # best actual departure time is the closest one before the ideal departure time
     best_index = bisect.bisect_left(seconds, ideal_departure)
-    best_departure = datetime.timedelta(seconds=seconds[best_index])
+
+    if len(seconds) > best_index:
+        best_departure = datetime.timedelta(seconds=seconds[best_index])
+    else:
+        return "No Service:", "No bus at this time"
 
     #clocktime arrival at origin and destination
     origin_arrival = best_departure + datetime.timedelta(seconds=pred1)
     destination_arrival = origin_arrival+datetime.timedelta(seconds=pred2)
+
+    print("pred1", datetime.timedelta(seconds=pred1))
+    print("pred2", datetime.timedelta(seconds=pred2))
+    print("seconds", seconds)
+    print("ideal_hour", ideal_hour)
+    print("ideal_departure", datetime.timedelta(seconds=ideal_departure))
+    print("ideal_departure", ideal_departure)
+    print("best_index", best_index)
+    print("best_departure", best_departure)
+    print("current_time", current_time)
+    print("origin_arrival", origin_arrival)
+    print("destination_arrival", destination_arrival)
 
     return origin_arrival, destination_arrival
 
@@ -235,7 +260,11 @@ if __name__=="__main__":
     # get_common(4886, 1166)
     # stops = route_15.stops.all()
     # print(stops)
-    a, b = get_clocktime(808, 2035, "46A", 1, 17, 30, 1, False)
+    # a, b = get_clocktime(808, 2035, "46A", 1, 17, 30, 1, False)
+    # a, b = get_clocktime(395, 2729, "56A", 1, 11, 42, 3, False)
+    a, b = get_clocktime(395, 2729, "15", 1, 7, 25, 3, False)
+
+
     print(a)
     print(b)
 
