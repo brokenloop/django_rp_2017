@@ -100,6 +100,7 @@ function getDirections(origin, destination, hour, day, weather) {
     $.get("directions", params, function(data) {
         clearResults("#journeyInfo");
         populateJourneyResults(data);
+        scrollTo(".journey-detail");
     });
 
 }
@@ -176,7 +177,8 @@ function createWalkLeg(duration, distance_text, distance_value, instruction) {
                       '</button>' +
                     '</p>'
 
-    var info = '<div class="collapse" id="' + distance_value +'div">' +
+
+    var info = '<div class="collapse top-buffer" id="' + distance_value +'div">' +
                         '<div class="panel panel-default">' +
                             '<div class="panel-body">' +
                                 // '<br>' +
@@ -248,4 +250,12 @@ function populate_day(selector, low, high) {
             $(selector).append('<option value=' + i +'>' + weekdays[i] + '</option>');
         }
     }
+}
+
+
+function scrollTo(element) {
+    $('html, body').animate({
+        scrollTop: $(element).offset().top
+    }, 500);
+    return false;
 }

@@ -66,12 +66,16 @@
 
           {#      <-------NAVIGATION BAR SECTION------->#}
           <nav class="navbar navbar-default">
-              <ul class="nav navbar-nav">
-                  <li><a href="/bus">Trip Planner</a></li>
-                  <li class="active"><a href="/planner">Route Planner</a></li>
-              </ul>
+{#              <div class="container-fluid">#}
+                  <ul class="nav navbar-nav">
+                      <li><a href="/bus">Trip Planner</a></li>
+                      <li class="active"><a href="/planner">Route Planner</a></li>
+                  </ul>
+{#              </div>#}
           </nav>
 
+
+        {#      <-------USER INPUT SECTION------->#}
           <hr>
             <div class="row">
                 <div class="col-sm-12">
@@ -103,7 +107,7 @@
 {#          <div class="jumbotron">#}
 {#              <h3 class="">Estimated Journey Time:</h3>#}
 {#          </div>#}
-          <div class="panel panel-default top-buffer bus-time">
+          <div class="panel panel-default top-buffer journey-detail">
               <div class="panel-heading">Journey Details</div>
                   <div class="panel-body" id="journeyInfo">
 {#                    <p>#}
