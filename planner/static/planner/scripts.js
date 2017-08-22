@@ -131,13 +131,14 @@ function populateJourneyResults(data) {
     var legs = data.routes[0].legs[0].steps;
     $.each(legs, function(index, value) {
         if (value.travel_mode === "TRANSIT") {
+            console.log(value);
             var line = value.transit_details.line.short_name;
             var duration = value.duration.text;
             var origin = value.transit_details.departure_stop.name;
             var destination = value.transit_details.arrival_stop.name;
-            createBusLeg(line, duration, origin, destination);
+            var num_stops = value.transit_details.num_stops;
+            createBusLeg(line, duration, num_stops, origin, destination);
         } else if (value.travel_mode === "WALKING") {
-            console.log(value);
             var duration = value.duration.text;
             var distance_text = value.distance.text;
             var distance_value = value.distance.value;
@@ -147,7 +148,7 @@ function populateJourneyResults(data) {
     });
 }
 
-function createBusLeg(line, duration, origin, destination) {
+function createBusLeg(line, duration, num_stops, origin, destination) {
 
     var button = '<p><button class="btn btn-info col-xs-12 text-left" type="button" data-toggle="collapse" style="text-align:left;"' +
                             'data-target="#' + line +'div" aria-expanded="false" aria-controls="collapseExample">' +
@@ -159,8 +160,9 @@ function createBusLeg(line, duration, origin, destination) {
                         '<div class="panel panel-default">' +
                             '<div class="panel-body">' +
                                 // '<br>' +
-                                '<p><b>Origin:</b> ' + origin + '</p>' +
-                                '<p><b>Destination:</b> ' + destination + '</p>' +
+                                '<p><b>Get on at:</b> ' + origin + '</p>' +
+                                '<p><b>Ride for: </b>' + num_stops + ' stops</p>' +
+                                '<p><b>Get off at:</b> ' + destination + '</p>' +
                             '</div>' +
                         '</div>' +
                     '</div>'
