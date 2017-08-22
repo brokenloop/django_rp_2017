@@ -105,8 +105,6 @@ $(document).ready(function(){
        var timeparts = time.split(":");
        var hour = timeparts[0];
        var minutes = timeparts[1];
-       console.log(hour);
-       console.log(minutes);
        // var hour = $('#hour').val();
        var day = $('#day').val();
        var weather = $('#weather').val();
@@ -151,7 +149,6 @@ function fillRoute(data) {
          $.each(data, function(index, value) {
                 route_list.push(index);
             });
-         console.log(route_list);
         $('#route').autocomplete({
             minLength: 1,
             source: function (request, response) {
@@ -353,7 +350,6 @@ function getSnappedCoords(coords) {
         path.push(value.lat.toString() + "," + value.lng.toString());
     });
     path = path.join("|");
-    // console.log(path);
     $.get('https://roads.googleapis.com/v1/snapToRoads', {
         interpolate: true,
         key: roadKey,
