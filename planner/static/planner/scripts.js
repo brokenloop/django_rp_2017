@@ -152,7 +152,7 @@ function createBusLeg(line, duration, num_stops, origin, destination) {
 
     var button = '<p><button class="btn btn-info col-xs-12 text-left" type="button" data-toggle="collapse" style="text-align:left;"' +
                             'data-target="#' + line +'div" aria-expanded="false" aria-controls="collapseExample">' +
-                        'Line: ' + line + ' - ' + duration +
+                        '<div class="pull-left">Line ' + line + '</div><div class="pull-right">' + duration + '</div>'
                       '</button>' +
                     '</p>'
 
@@ -175,7 +175,7 @@ function createWalkLeg(duration, distance_text, distance_value, instruction) {
     console.log("WALK");
     var button = '<p><button class="btn btn-success col-xs-12 text-left" type="button" data-toggle="collapse" style="text-align:left;"' +
                             'data-target="#' + distance_value +'div" aria-expanded="false" aria-controls="collapseExample">' +
-                        'Walk' + " - " + duration +
+                        '<div class="pull-left">Walk' + '</div><div class="pull-right">' + duration + '</div>' +
                       '</button>' +
                     '</p>'
 
