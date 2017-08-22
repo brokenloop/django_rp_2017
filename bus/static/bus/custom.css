@@ -36,10 +36,10 @@
 }
 
 /* Resizes navbar text on awkward screens to prevent overlapping. */
-@media only screen and (min-width: 800px) and (max-width: 940px) {
+@media only screen and (min-width: 750px) and (max-width: 940px) {
     .navbar .nav li a {
         font-size: .8em;
-        color: red;
+        /*color: red;*/
     }
 }
 
