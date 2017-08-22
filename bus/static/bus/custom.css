@@ -9,6 +9,40 @@
     /*align-self: center;*/
 }
 
+.navbar {
+    min-height: 0px;
+}
+
+.navbar .nav li {
+    display: table-cell;
+    width: 1%;
+    float: none;
+}
+
+.navbar .nav li a {
+    text-align: center;
+    line-height: 1px;
+    height: 10px;
+    /*color: red;*/
+    /*min-width: 100px;*/
+    font-size: .9em;
+
+}
+
+.navbar .nav > .thisPage > a {
+    /*color: red;*/
+    font-weight: bold;
+
+}
+
+/* Resizes navbar text on awkward screens to prevent overlapping. */
+@media only screen and (min-width: 800px) and (max-width: 940px) {
+    .navbar .nav li a {
+        font-size: .8em;
+        color: red;
+    }
+}
+
 @media only screen and (min-width: 750px) {
 
     body {
@@ -80,18 +114,18 @@
 
 }
 
-.navbar {
-    min-height: 0px;
-}
+/*.navbar {*/
+    /*min-height: 0px;*/
+/*}*/
 
-.navbar .nav li {
-    display: table-cell;
-    width: 1%;
-    float: none;
-}
+/*.navbar .nav li {*/
+    /*display: table-cell;*/
+    /*width: 1%;*/
+    /*float: none;*/
+/*}*/
 
-.navbar .nav li a {
-    text-align: center;
-    line-height: 1px;
-    height: 10px;
-}
+/*.navbar .nav li a {*/
+    /*text-align: center;*/
+    /*line-height: 1px;*/
+    /*height: 10px;*/
+/*}*/

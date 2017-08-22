@@ -65,14 +65,22 @@
           <img src="/static/planner/dblogo.png" alt="DublinBus" style="max-width: 100%">
 
           {#      <-------NAVIGATION BAR SECTION------->#}
-          <nav class="navbar navbar-default">
+{#          <nav class="navbar navbar-default">#}
 {#              <div class="container-fluid">#}
-                  <ul class="nav navbar-nav">
-                      <li><a href="/bus">Trip Planner</a></li>
-                      <li class="active"><a href="/planner">Route Planner</a></li>
-                  </ul>
+{#                  <ul class="nav navbar-nav">#}
+{#                      <li><a href="/bus">Trip Planner</a></li>#}
+{#                      <li class="active"><a href="/planner">Route Planner</a></li>#}
+{#                  </ul>#}
 {#              </div>#}
-          </nav>
+{#          </nav>#}
+          <nav class="navbar navbar-default">
+              <div class="container-fluid">
+                <ul class="nav navbar-nav">
+                  <li><a href="/bus">Trip Planner</a></li>
+                  <li class="thisPage"><a href="/planner">Route Planner</a></li>
+                </ul>
+              </div>
+            </nav>
 
 
         {#      <-------USER INPUT SECTION------->#}
