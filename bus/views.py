@@ -156,11 +156,11 @@ def clocktime_estimate(request):
         day = int(day)
 
         # get_clocktime returns two timedelta objects, origin arrival and destination arrival
-        origin_t, destination_t = get_clocktime(origin, destination, route, pattern, hour, minutes, day, weather)
+        origin_t, destination_t, travel_time = get_clocktime(origin, destination, route, pattern, hour, minutes, day, weather)
     except:
             return HttpResponse(status=500)
 
-    return JsonResponse({'clocktime': (str(origin_t), str(destination_t))})
+    return JsonResponse({'clocktime': (str(origin_t), str(destination_t)), 'travel_time': travel_time})
 
 def routes(request):
     if request.method == "GET":
@@ -292,4 +292,3 @@ def accessible_stops(request):
 
 def cookie(request):
     return render(request, 'bus/cookie.html')
-

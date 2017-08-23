@@ -81,6 +81,7 @@ def get_clocktime(origin, destination, line, pattern, hour, minutes, day, weathe
     pred1 = query_model(model, origin, pattern, hour, day, weather)
     pred2 = query_model(model, destination, pattern, hour, day, weather)
 
+    travel_time = seconds_to_string(pred2 - pred1)
     ideal_departure = datetime.timedelta.total_seconds(current_time) - pred1
     ideal_hour = int(ideal_departure)//3600
 
@@ -88,7 +89,7 @@ def get_clocktime(origin, destination, line, pattern, hour, minutes, day, weathe
     times = get_departure_times(line, service, pattern, ideal_hour)
 
     if not times:
-        return "No Service:", "No bus at this time"
+        return "No Service:", "No bus at this time", "N/A"
     # times = get_departure_times(line, service, pattern, hour)
 
     seconds = []
@@ -109,7 +110,7 @@ def get_clocktime(origin, destination, line, pattern, hour, minutes, day, weathe
     if len(seconds) > best_index:
         best_departure = datetime.timedelta(seconds=seconds[best_index])
     else:
-        return "No Service:", "No bus at this time"
+        return "No Service:", "No bus at this time", "N/A"
 
     #clocktime arrival at origin and destination
     origin_arrival = best_departure + datetime.timedelta(seconds=pred1)
@@ -127,7 +128,7 @@ def get_clocktime(origin, destination, line, pattern, hour, minutes, day, weathe
     print("origin_arrival", origin_arrival)
     print("destination_arrival", destination_arrival)
 
-    return origin_arrival, destination_arrival
+    return origin_arrival, destination_arrival, travel_time
 
 
 def query_model(model, stop, pattern, hour, day, weather):

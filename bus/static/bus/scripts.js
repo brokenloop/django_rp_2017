@@ -7,6 +7,7 @@ var markerArray = [];
 var mapKey = "AIzaSyB3um4WUb5l36zZyCnovdVFE6OEBfgf3wQ";
 var roadKey = "AIzaSyAUX0EvazigXFp19OEGF-I5XsUQQuqkrAY";
 var routeList;
+var numStops;
 var routeData;
 
 loadRouteData();
@@ -84,6 +85,8 @@ function getClockTime(params) {
        // alert("Data: " + data.Name + "\nStatus: " + status);
        $('#originPrediction').text(data.clocktime[0]);
        $('#destinationPrediction').text(data.clocktime[1]);
+       $('#journeyTime').text(data.travel_time);
+       $('#numStops').text(numStops);
       scrollTo(".bus-time");
 
    })
@@ -251,9 +254,9 @@ $(document).ready(function(){
             removeLine();
             var stopCoords = [];
             var stopCount = 0;
-            var numStops = data.length;
             var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
             var labelIndex = 0;
+            numStops = data.length;
             $.each(data, function(index, stop) {
                 var icon;
                 if (stopCount == 0) {

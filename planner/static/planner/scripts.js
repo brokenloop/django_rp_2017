@@ -131,7 +131,6 @@ function populateJourneyResults(data) {
     var legs = data.routes[0].legs[0].steps;
     $.each(legs, function(index, value) {
         if (value.travel_mode === "TRANSIT") {
-            console.log(value);
             var line = value.transit_details.line.short_name;
             var duration = value.duration.text;
             var origin = value.transit_details.departure_stop.name;
@@ -172,7 +171,6 @@ function createBusLeg(line, duration, num_stops, origin, destination) {
 }
 
 function createWalkLeg(duration, distance_text, distance_value, instruction) {
-    console.log("WALK");
     var button = '<p><button class="btn btn-success col-xs-12 text-left" type="button" data-toggle="collapse" style="text-align:left;"' +
                             'data-target="#' + distance_value +'div" aria-expanded="false" aria-controls="collapseExample">' +
                         '<div class="pull-left">Walk' + '</div><div class="pull-right">' + duration + '</div>' +
