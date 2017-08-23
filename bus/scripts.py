@@ -57,10 +57,19 @@ def get_departure_times(route, service, journeypattern, time):
     t1 = "0" + t1 if (len(t1) <= 1) else t1
     print("time", t1)
     t2 = str(int(t1)+1) if int(t1) < 23 else str("00")
+    t0 = str(int(t1)-1) if int(t1) != 0 else str("23")
+    print("t0:", t0, "  t1:", t1, "  t2:", t2)
+
+    #add leading zero to string of t0 and t2
+    t0 = "0" + t0 if (len(t0) <= 1) else str(t0)
+    t2 = "0" + t2 if (len(t2) <= 1) else str(t2)
+    print("t0:", t0, "  t1:", t1, "  t2:", t2)
+
+    t0_query = Timetable.objects.filter(route_id=route, day=service, journey_pattern=journeypattern, departure__startswith=t0).only("departure")
     t1_query = Timetable.objects.filter(route_id=route, day=service, journey_pattern=journeypattern, departure__startswith=t1).only("departure")
     t2_query = Timetable.objects.filter(route_id=route, day=service, journey_pattern=journeypattern, departure__startswith=t2).only("departure")
 
-    departure_list = list(t1_query) + list(t2_query)
+    departure_list = list(t0_query) + list(t1_query) + list(t2_query)
     print(departure_list)
     return departure_list
 
@@ -115,6 +124,9 @@ def get_clocktime(origin, destination, line, pattern, hour, minutes, day, weathe
     #clocktime arrival at origin and destination
     origin_arrival = best_departure + datetime.timedelta(seconds=pred1)
     destination_arrival = origin_arrival+datetime.timedelta(seconds=pred2)
+
+    if destination_arrival > datetime.timedelta(days=1):
+        destination_arrival -= datetime.timedelta(days=1)
 
     print("pred1", datetime.timedelta(seconds=pred1))
     print("pred2", datetime.timedelta(seconds=pred2))
