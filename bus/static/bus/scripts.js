@@ -4,9 +4,7 @@
 var map;
 var busPath;
 var markerArray = [];
-var mapKey = "AIzaSyB3um4WUb5l36zZyCnovdVFE6OEBfgf3wQ";
 var roadKey = "AIzaSyAUX0EvazigXFp19OEGF-I5XsUQQuqkrAY";
-var routeList;
 var numStops;
 var routeData;
 
@@ -28,15 +26,6 @@ function loadRouteData() {
     });
 }
 
-function populate_hour(selector, low, high) {
-    for (var i = low; i <= high; i++) {
-        if (i == new Date().getHours()) {
-            $(selector).append('<option value=' + i +' selected>' + i + ':00</option>');
-        } else {
-            $(selector).append('<option value=' + i +'>' + i + ':00</option>');
-        }
-    }
-}
 
 function populate_day(selector, low, high) {
     var weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
@@ -49,18 +38,6 @@ function populate_day(selector, low, high) {
     }
 }
 
-function getUnique(list) {
-    var result = []
-    var seen = {};
-    $.each(list, function(i, e) {
-        if (!seen[e]) {
-            seen[e] = true;
-            result.push(e);
-        }
-    });
-    return result;
-}
-
 
 // populate hour and day selects
 $(document).ready(function() {
@@ -68,21 +45,8 @@ $(document).ready(function() {
 });
 
 
-// function getTime(params) {
-//    $.get("time", params, function(data, status){
-//        // alert("Data: " + data.Name + "\nStatus: " + status);
-//        $('#timePrediction').text(data.time);
-//       scrollTo(".bus-time");
-//
-//    })
-//        .fail(function() {
-//            alert("Invalid input! Please change the input parameters.");
-//        });
-// }
-
 function getClockTime(params) {
    $.get("clocktime", params, function(data, status){
-       // alert("Data: " + data.Name + "\nStatus: " + status);
        $('#originPrediction').text(data.clocktime[0]);
        $('#destinationPrediction').text(data.clocktime[1]);
        $('#journeyTime').text(data.travel_time);
@@ -98,17 +62,14 @@ function getClockTime(params) {
 // Submitting the form and returning time prediction
 $(document).ready(function(){
    $("#submitBtn").click(function(){
-       // params = $("form").serialize();
        var startStop= $('#startStop').val().split(" ")[0];
        var endStop=$('#endStop').val().split(" ")[0];
-       // var route_pattern = $('#routeList').val();
        var route = $('#route').val();
        var pattern = $('#direction').val();
        var time = $('#timepicker').val();
        var timeparts = time.split(":");
        var hour = timeparts[0];
        var minutes = timeparts[1];
-       // var hour = $('#hour').val();
        var day = $('#day').val();
        var weather = $('#weather').val();
 
@@ -123,7 +84,6 @@ $(document).ready(function(){
            'weather': weather,
        }
        getClockTime(params);
-       // getTime(params);
    });
 });
 
@@ -272,8 +232,6 @@ $(document).ready(function(){
                 stopCoords.push({lat: stop.lat, lng: stop.lon});
             });
             setMapOnAll(map);
-            // createPolyLine(stopCoords);
-            // drawLine();
             getSnappedCoords(stopCoords);
             var bounds = new google.maps.LatLngBounds();
             for (var i = 0; i < markerArray.length; i++) {
@@ -287,8 +245,6 @@ $(document).ready(function(){
 
 //Creates a new marker
 function createMarker(lat, lon, contentString, label){
-    var pinMarker = "https://maps.google.com/mapfiles/kml/paddle/red-circle.png";
-    var circleMarker = "https://maps.google.com/mapfiles/kml/paddle/red-circle-lv.png";
     var marker = new google.maps.Marker({
         position: {
               'lat': lat,
@@ -297,8 +253,6 @@ function createMarker(lat, lon, contentString, label){
         title:"Station Marker",
         label: label,
         map: map,
-
-        // icon: (icon == "startEnd") ? pinMarker : circleMarker
     });
     markerArray.push(marker);
 
@@ -376,23 +330,6 @@ function transformCoords(data) {
     return coords;
 }
 
-
-function runSnapToRoad(path) {
-  var pathValues = [];
-  for (var i = 0; i < path.getLength(); i++) {
-    pathValues.push(path.getAt(i).toUrlValue());
-  }
-
-  $.get('https://roads.googleapis.com/v1/snapToRoads', {
-    interpolate: true,
-    key: apiKey,
-    path: pathValues.join('|')
-  }, function(data) {
-    processSnapToRoadResponse(data);
-    drawSnappedPolyline();
-    getAndDrawSpeedLimits();
-  });
-}
 
 function scrollTo(element) {
     $('html, body').animate({
